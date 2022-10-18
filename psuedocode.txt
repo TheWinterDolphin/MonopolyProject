@@ -1,0 +1,68 @@
+Players starting with $1,500
+Gaining $200 when passing Go
+Rolling of dice to move
+Taking an extra turn if the roll doubles
+Purchasing/Selling properties from/to bank
+Paying owner of property when landing on their properties
+Railroads spaces
+Tax/Utility spaces
+Jail and Go to Jail spaces
+
+Choose two Rules of Monopoly to implement:
+Chance or Community Chest cards
+Bankruptcy
+Upgrading of properties
+Trading between players
+Mortgaging your properties
+
+Creating the following classes Link, CircularLinkedList, Player, BoardSpace, and Main
+
+
+Pseudocode:
+Link<T> class:
+    Link next
+    T data
+    constructor Link(T newData)
+        data = newData
+
+Circular Linked List<T>:
+    Link first
+
+    constructor()
+        first = null
+
+    insertFirst(T newData)
+
+    find(T targetData)
+
+Player:
+    String name
+    Link<BoardSpace> location
+    int money
+    int turnsLeftInJail
+    ArrayList<BoardSpace> properties
+
+    constructor(name)
+
+BoardSpace:
+    String name
+
+Game:
+
+Main:
+
+Example Print:
+
+    ------------------------------------
+    | JL C1 EC C2 C3 R2 D1 CC D2 D3 FP |
+    | B3 -------------------------- E1 |
+    | B2 | M                      | CH |
+    | CH |   O                    | E2 |
+    | B1 |     N                  | E3 |
+    | R1 |       O                | R3 |
+    | IT |         P              | F1 |
+    | A2 |           O            | F2 |
+    | CC |             LY         | WW |
+    | A1 -------------------------- F3 |
+    | GO H2 LT H1 CH R4 G3 CC G2 G1 TJ |
+    ------------------------------------
