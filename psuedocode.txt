@@ -80,22 +80,94 @@ Tax extends BoardSpace:
     double dynamicTax (Luxury is null) (Income is 0.10)
 
 Game:
+    LinkList<BoardSpace> spaces
+    LinkList<PLayer> playerTurnOrder
+
+    constructor()
+
+    setup()
+        Ask for player names
+        Setup linkedlists
+
+    next()
+        player = playerTurnOrder.next
+        playerTurn(player)
+
+        for player in Players:
+            checkIfBankrupt(player)
+
+        if linklist's first.next == first:
+            print(Player name wins!)
+
+    checkIfBankrupt(player)
+        remove from linklist if bankrupt
+        make blank spaces where they had properties
+
+    playerTurn(player)
+        If in jail
+            numOfTurnsLeftInJail--
+            Roll
+            If double they are out
+                Roll again to move
+            If numOfTurnsLeftInJail == 0
+                lose 50$
+                Roll again to move
+
+        Normal
+            Loop
+                Roll
+                Move given spaces (check if go while happens and give 200)
+                if double
+                    numDoubles++
+                    if numDoubles==3
+                        goToJail
+                    else
+                        continue
+                else
+                    break
+            Do stuff depending on space
+
+        while True:
+            Ask to offer trade
+
+    propertyLand(player)
+        if unowned
+            ask to purchase
+        else
+            pay rent
+
+    utilityLand(player, int[] diceRoll)
+    taxLand(player)
+    railroadLand(player)
+    chanceLand(player)
+    communityChestLand(player)
+
+    trade(Player offeror)
+
+    int[] rollDice() (returns [random 1-6, random 1-6])
+
+    printBoard()
+        Example Print:
+            --------------------------------------------------------------------------------
+            | [JAIL] [ C1 ] [ EC ] [ C2 ] [ C3 ] [ R2 ] [ D1 ] [ CC ] [ D2 ] [ D3 ] [FrPk] |
+            | [ B3 ] -------------------------------------------------------------- [ E1 ] |
+            | [ B2 ] |                                                            | [ CH ] |
+            | [ CH ] |                                                            | [ E2 ] |
+            | [ B1 ] |                                                            | [ E3 ] |
+            | [ R1 ] |                      M O N O P O L Y                       | [ R3 ] |
+            | [ IT ] |                                                            | [ F1 ] |
+            | [ A2 ] |                                                            | [ F2 ] |
+            | [ CC ] |                                                            | [ WW ] |
+            | [ A1 ] -------------------------------------------------------------- [ F3 ] |
+            | [ GO ] [ H2 ] [ LT ] [ H1 ] [ CH ] [ R4 ] [ G3 ] [ CC ] [ G2 ] [ G1 ] [ToJL] |
+            --------------------------------------------------------------------------------
+
 
 Main:
+    Create game
+    Game.setup
+
+    while(true)
+        Game.next
 
 
-Example Print:
-
-    ------------------------------------
-    | JL C1 EC C2 C3 R2 D1 CC D2 D3 FP |
-    | B3 -------------------------- E1 |
-    | B2 |                        | CH |
-    | CH |                        | E2 |
-    | B1 |                        | E3 |
-    | R1 |    M O N O P O L Y     | R3 |
-    | IT |                        | F1 |
-    | A2 |                        | F2 |
-    | CC |                        | WW |
-    | A1 -------------------------- F3 |
-    | GO H2 LT H1 CH R4 G3 CC G2 G1 TJ |
-    ------------------------------------
