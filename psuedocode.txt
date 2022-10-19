@@ -51,7 +51,7 @@ Player:
     constructor(name)
 
 BoardSpace:
-    String type ("Property", "Go", "Chance", "Community Chest", "Utility", "Railroad", "To Jail", "Tax", "Blank")
+    String type ("Property", "GO", "Chance", "Community Chest", "Utility", "Railroad", "To Jail", "Tax", "Blank")
     constructor(type)
 
 Property extends BoardSpace:
