@@ -45,24 +45,57 @@ Player:
     constructor(name)
 
 BoardSpace:
+    String type ("Property", "Go", "Chance", "Community Chest", "Utility", "Railroad", "To Jail", "Tax", "Blank")
+    constructor(type)
+
+Property extends BoardSpace:
+    Player owner
+
+    String colorGroup ("A", "B", "C", ...)
+    boolean isMonopoly
+
     String name
+    int price
+    int rent
+    constructor(name, price, rent)
+        super(Property)
+
+Utility extends BoardSpace:
+    Player owner
+    boolean ifBothOwned
+    int price
+
+    //4 if 1 owned, 10 if both owned
+
+Railroad extends BoardSpace
+    Player owner
+    int rent
+
+    String name
+
+    int numOwnedBySamePlayer
+
+Tax extends BoardSpace:
+    int fixedTax (Luxury is 75) (Income 200)
+    double dynamicTax (Luxury is null) (Income is 0.10)
 
 Game:
 
 Main:
+
 
 Example Print:
 
     ------------------------------------
     | JL C1 EC C2 C3 R2 D1 CC D2 D3 FP |
     | B3 -------------------------- E1 |
-    | B2 | M                      | CH |
-    | CH |   O                    | E2 |
-    | B1 |     N                  | E3 |
-    | R1 |       O                | R3 |
-    | IT |         P              | F1 |
-    | A2 |           O            | F2 |
-    | CC |             LY         | WW |
+    | B2 |                        | CH |
+    | CH |                        | E2 |
+    | B1 |                        | E3 |
+    | R1 |    M O N O P O L Y     | R3 |
+    | IT |                        | F1 |
+    | A2 |                        | F2 |
+    | CC |                        | WW |
     | A1 -------------------------- F3 |
     | GO H2 LT H1 CH R4 G3 CC G2 G1 TJ |
     ------------------------------------
