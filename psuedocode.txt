@@ -25,6 +25,8 @@ Link<T> class:
     constructor Link(T newData)
         data = newData
 
+    replace(T newData)
+
 Circular Linked List<T>:
     Link first
 
@@ -34,6 +36,10 @@ Circular Linked List<T>:
     insertFirst(T newData)
 
     find(T targetData)
+
+    replace(T targetData, newData)
+
+    delete(T targetData)
 
 Player:
     String name
@@ -161,7 +167,6 @@ Game:
             | [ A1 ] -------------------------------------------------------------- [ F3 ] |
             | [ GO ] [ H2 ] [ LT ] [ H1 ] [ CH ] [ R4 ] [ G3 ] [ CC ] [ G2 ] [ G1 ] [ToJL] |
             --------------------------------------------------------------------------------
-
 
 Main:
     Create game
