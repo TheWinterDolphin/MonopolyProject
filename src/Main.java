@@ -5,6 +5,7 @@ public class Main {
         myLinkedList.insertFirst(10);
         myLinkedList.insertFirst(5);
         myLinkedList.insertFirst(3);
+        myLinkedList.delete(3);
         myLinkedList.devPrint(10);
     }
 }

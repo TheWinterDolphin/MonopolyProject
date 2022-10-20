@@ -22,6 +22,48 @@ public class CircularLinkedList<T> {
         }
     }
 
+    public Link<T> find(T targetData) {
+        if (targetData.equals(first.data)) {
+            return first;
+        }
+
+        Link<T> current = first.next;
+
+        while(current != first) {
+            if (current.data.equals(targetData)) {
+                return current;
+            }
+            current = current.next;
+        }
+
+        return null;
+    }
+
+    public Link<T> delete(T targetData) {
+        if (first.data.equals(targetData)) {
+            Link<T> deletedLink = first;
+            Link<T> current = first;
+            while(current.next != first) {
+                current = current.next;
+            }
+            current.next = first.next;
+            first = first.next;
+            return deletedLink;
+        }
+
+        Link<T> current = first;
+        while (current.next != first) {
+            if (current.next.data.equals(targetData)) {
+                Link<T> deletedLink = current.next;
+                current.next = current.next.next;
+                return deletedLink;
+            }
+            current = current.next;
+        }
+
+        return null;
+    }
+
     public void devPrint(int numOfLinks) {
         Link<T> current = first;
         for (int i=0; i<numOfLinks; i++) {
