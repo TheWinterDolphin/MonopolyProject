@@ -6,4 +6,20 @@ public class TaxSpace extends BoardSpace {
         this.fixedTax = fixedTax;
         this.dynamicTax = dynamicTax;
     }
+
+    public int getFixedTax() {
+        return fixedTax;
+    }
+
+    public void setFixedTax(int fixedTax) {
+        this.fixedTax = fixedTax;
+    }
+
+    public double getDynamicTax() {
+        return dynamicTax;
+    }
+
+    public void setDynamicTax(double dynamicTax) {
+        this.dynamicTax = dynamicTax;
+    }
 }
