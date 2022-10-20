@@ -1,6 +1,10 @@
 public class CircularLinkedList<T> {
     private Link<T> first;
 
+    public Link<T> getFirst() {
+        return first;
+    }
+
     public CircularLinkedList() {
         first = null;
     }

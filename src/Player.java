@@ -10,10 +10,14 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        BoardSpace go = new BoardSpace("GO");
+        BoardSpace go = new BoardSpace("GO", "GO");
         location = new Link<BoardSpace>(go);
         money = 1500;
         properties = null;
+    }
+
+    public String getColorString() {
+        return colorString;
     }
 
     public String getName() {
