@@ -3,8 +3,8 @@ public class Utility extends BoardSpace {
     private boolean bothOwned; // rent is dice roll * 4 if 1 owned, * 10 if both owned
     private int price;
 
-    public Utility(int price) {
-        super("Utility");
+    public Utility(String name, int price) {
+        super(name, "Utility");
         this.price = price;
     }
 

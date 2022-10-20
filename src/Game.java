@@ -25,32 +25,32 @@ public class Game {
                 */
     }
 
-    private String colorSpaceString(String spaceName, String uncoloredOutput) {
+    public void colorSpaceString(String spaceName, String uncoloredOutput) {
         String RESET = "\033[0m";
 
-        String char0 = String.valueOf(uncoloredOutput.charAt(0));
-        String char1 = String.valueOf(uncoloredOutput.charAt(1));
-        String char2 = String.valueOf(uncoloredOutput.charAt(2));
-        String char3 = String.valueOf(uncoloredOutput.charAt(3));
-        String char4 = String.valueOf(uncoloredOutput.charAt(4));
-        String char5 = String.valueOf(uncoloredOutput.charAt(5));
+        String char0 = uncoloredOutput.substring(0, 1);
+        String char1 = uncoloredOutput.substring(1, 2);
+        String char2 = uncoloredOutput.substring(2, 3);
+        String char3 = uncoloredOutput.substring(3, 4);
+        String char4 = uncoloredOutput.substring(4, 5);
+        String char5 = uncoloredOutput.substring(5, 6);
 
         String[] chars = new String[]{char0, char1, char2, char3, char4, char5};
 
         Link<Player> currentPlayer = playerTurnOrder.getFirst();
         if (currentPlayer.data.getLocation().data.getType().equals(spaceName)) {
-            chars[0] = currentPlayer.data.getColorString() + chars[0] + RESET;
+            chars[0] = ("" + currentPlayer.data.getColorString() + chars[0] + RESET);
         }
         currentPlayer = currentPlayer.next;
 
         int i = 1;
         while(currentPlayer != playerTurnOrder.getFirst()) {
             if (currentPlayer.data.getLocation().data.getType().equals(spaceName)) {
-                chars[i] = currentPlayer.data.getColorString() + chars[i] + RESET;
+                chars[i] = ("" + currentPlayer.data.getColorString() + chars[i] + RESET);
             }
             currentPlayer = currentPlayer.next;
         }
-        
-        return ("" + chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
+
+        System.out.print("" + chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
     }
 }
