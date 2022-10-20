@@ -64,6 +64,24 @@ public class CircularLinkedList<T> {
         return null;
     }
 
+    public boolean replace(T targetData, T newData) {
+        if (targetData.equals(first.data)) {
+            first.replaceData(newData);
+            return true;
+        }
+
+        Link<T> current = first.next;
+        while(current != first) {
+            if (current.data.equals(targetData)) {
+                current.replaceData(newData);
+                return true;
+            }
+            current = current.next;
+        }
+
+        return false;
+    }
+
     public void devPrint(int numOfLinks) {
         Link<T> current = first;
         for (int i=0; i<numOfLinks; i++) {
