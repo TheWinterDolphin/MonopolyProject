@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Player {
+    private String colorString; //Ex: "\033[0;91m"
     private String name;
     private Link<BoardSpace> location;
     private int money;
