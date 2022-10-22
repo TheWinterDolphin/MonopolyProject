@@ -1,8 +1,45 @@
 public class Game {
+    private boolean isGameOver;
     private CircularLinkedList<BoardSpace> spaces;
     private CircularLinkedList<Player> playerTurnOrder;
+    private Link<Player> currentPlayer;
 
-    public void printBoard() {
+    /*Andrew*/
+    public void next() {
+        currentPlayer = currentPlayer.next;
+        playerTurn(currentPlayer.data);
+
+        Link<Player> currentPlayerCheck = currentPlayer;
+
+        checkIfBankrupt(currentPlayerCheck.data);
+        currentPlayerCheck = currentPlayerCheck.next;
+
+        while(currentPlayerCheck != currentPlayer) {
+            checkIfBankrupt(currentPlayerCheck.data);
+            currentPlayerCheck = currentPlayerCheck.next;
+        }
+
+        checkGameOver();
+    }
+
+    private void playerTurn(Player player) {
+
+    }
+
+    private void checkIfBankrupt(Player player) {
+
+    }
+
+    /*Andrew*/
+    private void checkGameOver() {
+        if (playerTurnOrder.getFirst() == playerTurnOrder.getFirst().next) {
+            System.out.print("" + playerTurnOrder.getFirst().data.getName() + " wins!");
+            isGameOver = true;
+        }
+    }
+
+    /*Andrew*/
+    private void printBoard() {
         System.out.println("--------------------------------------------------------------------------------");
 
         //TopRow
@@ -97,6 +134,7 @@ public class Game {
         System.out.println("--------------------------------------------------------------------------------");
     }
 
+    /*Andrew*/
     private String colorSpaceString(String spaceName, String uncoloredOutput) {
         String RESET = "\033[0m";
 
