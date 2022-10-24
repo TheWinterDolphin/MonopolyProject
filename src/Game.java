@@ -1,13 +1,16 @@
+import java.util.Random;
+
 public class Game {
     private boolean isGameOver;
     private CircularLinkedList<BoardSpace> spaces;
     private CircularLinkedList<Player> playerTurnOrder;
     private Link<Player> currentPlayer;
+    private Random random = new Random();
 
     /*Andrew*/
     public void next() {
         currentPlayer = currentPlayer.next;
-        playerTurn(currentPlayer.data);
+        playerTurn(currentPlayer.data, null, 0);
 
         Link<Player> currentPlayerCheck = currentPlayer;
 
@@ -22,12 +25,76 @@ public class Game {
         checkGameOver();
     }
 
-    private void playerTurn(Player player) {
+    private void playerTurn(Player player, int[] inputDiceRoll, int numOfDoubles) {
+        int[] diceRoll;
 
+        if (inputDiceRoll == null) {
+            System.out.println("" + player.getName() + "'s Turn | Current Money: " + player.getMoney());
+            diceRoll = rollDice();
+        }
+        else {
+            diceRoll = inputDiceRoll;
+        }
+
+        if (player.getTurnsLeftInJail() > 0) {
+            player.setTurnsLeftInJail(player.getTurnsLeftInJail() - 1);
+
+            System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]);
+
+            if (diceRoll[0] == diceRoll[1]) {
+                System.out.println("It's a double! You are free from jail. Move forward immediately with this roll.");
+                //ADD TURN STUFF HERE
+                return;
+            }
+            else if (player.getTurnsLeftInJail() == 0) {
+                System.out.println("After 3 turns in jail, you are free. Please pay $50. Start your normal turn.");
+                player.setMoney(player.getMoney() - 50);
+                playerTurn(player);
+                return;
+            }
+            else {
+                System.out.println("Would you like to pay $50 to leave jail early?");
+                boolean choice = earlyJailLeaveInput();
+                if (choice) {
+                    System.out.println("You paid $50. You are free. Start your normal turn.");
+                    player.setMoney(player.getMoney() - 50);
+                    player.setTurnsLeftInJail(0);
+                    playerTurn(player);
+                    return;
+                }
+            }
+            System.out.println("You have " + player.getTurnsLeftInJail() + " turns left in jail.");
+            return;
+        }
+
+        int[] diceRoll = rollDice();
+        for (int i=0; i<(diceRoll[0]+diceRoll[1]); i++) {
+            if (player.getLocation().data.getName().equals("GO")) {
+                System.out.println("You passed GO! Collect $200.");
+                player.setMoney(player.getMoney() + 200);
+            }
+            player.setLocation(player.getLocation().next);
+        }
+        System.out.println("You landed on " + player.getLocation().data.getName());
+
+        if (player.getLocation().data.getType().equals("Property")) {
+            propertyLand(player);
+        }
     }
 
-    private void checkIfBankrupt(Player player) {
+    /*Andrew*/
+    private void propertyLand(Player player) {
+    }
 
+    /*Andrew*/
+    private void checkIfBankrupt(Player player) {
+        if (player.getMoney() <= 0) {
+            playerTurnOrder.delete(player);
+
+            for (BoardSpace property : player.getProperties()) {
+                spaces.replace(property, new BoardSpace(property.getName(), "Bankrupt Property"));
+            }
+        }
     }
 
     /*Andrew*/
@@ -36,6 +103,18 @@ public class Game {
             System.out.print("" + playerTurnOrder.getFirst().data.getName() + " wins!");
             isGameOver = true;
         }
+    }
+
+    /*Andrew*/
+    private int[] rollDice() {
+        int firstVal = (random.nextInt( 6) + 1);
+        int secondVal = (random.nextInt( 6) + 1);
+
+        int[] values = new int[2];
+        values[0] = firstVal;
+        values[1] = secondVal;
+
+        return values;
     }
 
     /*Andrew*/
