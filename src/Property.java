@@ -2,12 +2,10 @@ public class Property extends BoardSpace {
     private Player owner;
     private String colorGroup; //"A", "B", "C", etc.
     private boolean isMonopoly;
-    private String name;
     private int price;
     private int rent;
     public Property(String name, int price, int rent, String colorGroup) {
-        super("Property");
-        this.name = name;
+        super(name, "Property");
         this.price = price;
         this.rent = rent;
         this.colorGroup = colorGroup;
@@ -35,14 +33,6 @@ public class Property extends BoardSpace {
 
     public void setMonopoly(boolean monopoly) {
         isMonopoly = monopoly;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getPrice() {
