@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -95,6 +96,8 @@ public class Game {
         }
     }
     public void next() {
+        printBoard();
+
         currentPlayer = currentPlayer.next;
         playerTurn(currentPlayer.data, null, 0);
 
@@ -170,6 +173,8 @@ public class Game {
         }
         player.setLocation(player.getLocation().next);
 
+        printBoard();
+
         if (player.getLocation().data.getType().equals("GO")) {
             System.out.println("You landed on GO! Collect $200");
             player.setMoney(player.getMoney() + 200);
@@ -211,15 +216,21 @@ public class Game {
             System.out.print("FIX THIS ERROR THIS ISNT SUPPOSED TO BE POSSIBLE!");
         }
 
+        if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles < 2)) {
+            System.out.print("Your roll was a double! You get to roll again!");
+            playerTurn(player, rollDice(), numOfDoubles+1);
+        }
+
         System.out.print("Would you like to sell any of your properties to the bank? (Yes/No)");
         if (yesNoInput()) {
             while(true) {
                 System.out.print("What is the name of the property you would like to sell?");
-                BoardSpace property = inputProperty(); //Including Railroads and Utilities
+                BoardSpace property = inputProperty(player); //Including Railroads and Utilities
                 if (property.getType().equals("Property")) {
                     ((Property) property).setOwner(null);
                 }
                 else if (property.getType().equals("Railroad")) {
+                    player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
                     ((Railroad) property).setOwner(null);
                 }
                 else {
@@ -232,17 +243,7 @@ public class Game {
             }
         }
 
-        System.out.print("Would you like to offer any trades to other player? (Yes/No)");
-        if (yesNoInput()) {
-            while(true) {
-                //STUFF
-            }
-        }
-
-        if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles < 2)) {
-            System.out.print("Your roll was a double! You get to go again!");
-            playerTurn(player, rollDice(), numOfDoubles+1);
-        }
+        tradeWithOtherPlayers(player);
 
         System.out.println("End of " + player.getName() + "'s Turn | Current Money: " + player.getMoney() + "\n-------------------------------------------");
     }
@@ -265,6 +266,24 @@ public class Game {
     /*Andrew*/
     private void propertyLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        Property property = (Property) player.getLocation().data;
+        if (property.getOwner() == player) {
+            System.out.println("You already own this property. You do not need to pay rent.");
+        }
+        else if (property.getOwner() == null) {
+            System.out.println("This property is available to purchase. It costs $" + property.getPrice());
+            System.out.println("Would you like to buy this property? (Yes/No)");
+            if (yesNoInput()) {
+                property.setOwner(player);
+                System.out.println("You now own " + property.getName());
+            }
+        }
+        else {
+            System.out.println("This property is owned by " + property.getOwner().getName() + ", and rent costs $" + property.getRent());
+            player.setMoney(player.getMoney() - property.getRent());
+            property.getOwner().setMoney(property.getOwner().getMoney() + property.getRent());
+            System.out.println("You paid $" + property.getRent() + " to " + property.getOwner().getName());
+        }
     }
 
     private void communityChestLand(Player player) {
@@ -277,6 +296,26 @@ public class Game {
 
     private void railroadLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        Railroad railroad = (Railroad) player.getLocation().data;
+        if (railroad.getOwner() == player) {
+            System.out.println("You already own this railroad. You do not need to pay rent.");
+        }
+        else if (railroad.getOwner() == null) {
+            System.out.println("This property is available to purchase. It costs $" + railroad.getPrice());
+            System.out.println("Would you like to buy this property? (Yes/No)");
+            if (yesNoInput()) {
+                railroad.setOwner(player);
+                player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
+                System.out.println("You now own " + railroad.getRealName());
+            }
+        }
+        else {
+            int rent = (int) (12.5 * Math.pow(2, railroad.getOwner().getNumOfRailroadsOwned()));
+            System.out.println("This railroad is owned by " + railroad.getOwner().getName() + ", and rent costs $" + rent);
+            player.setMoney(player.getMoney() - rent);
+            railroad.getOwner().setMoney(railroad.getOwner().getMoney() + rent);
+            System.out.println("You paid $" + rent + " to " + railroad.getOwner().getName());
+        }
     }
 
     private void chanceLand(Player player) {
@@ -285,14 +324,101 @@ public class Game {
 
     private void jailVisitingLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("Don't worry, you are just visiting.");
     }
 
     private void freeParkingLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("Nothing happens.");
     }
 
     private void toJailLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
+        while(!player.getLocation().data.getType().equals("Jail")) {
+            player.setLocation(player.getLocation().next);
+        }
+        player.setTurnsLeftInJail(3);
+    }
+
+    private void tradeWithOtherPlayers(Player player) {
+        System.out.print("Would you like to offer any trades to other player? (Yes/No)");
+        if (yesNoInput()) {
+            while(true) {
+                System.out.print("Who is the player you want to trade with?");
+                Player recipient = inputPlayer();
+                System.out.print("How much money are you offering?");
+                int moneyToRecipient = inputPlayerMoney(player); //Make sure they are not offering more money than they have (and make sure it is a positive number)
+                System.out.print("Would you like to offer properties?");
+                ArrayList<BoardSpace> propertiesToRecipient = new ArrayList<>();
+                if (yesNoInput()) {
+                    while(true) {
+                        System.out.print("What is the name of the property you would like to offer?");
+                        propertiesToRecipient.add(inputProperty(player)); //Including Railroads and Utilities
+                        System.out.print("Would you like to stop offering properties? (Yes/No)");
+                        if (yesNoInput()) {
+                            break;
+                        }
+                    }
+                }
+
+                System.out.print("How much money are you requesting?");
+                int moneyFromRecipient = inputPlayerMoney(recipient); //Make sure they are not offering more money than they have (and make sure it is a positive number)
+                System.out.print("Would you like to request properties?");
+                ArrayList<BoardSpace> propertiesFromRecipient = new ArrayList<>();
+                if (yesNoInput()) {
+                    while(true) {
+                        System.out.print("What is the name of the property you would like to request?");
+                        propertiesFromRecipient.add(inputProperty(recipient)); //Including Railroads and Utilities
+                        System.out.print("Would you like to stop requesting properties? (Yes/No)");
+                        if (yesNoInput()) {
+                            break;
+                        }
+                    }
+                }
+
+                System.out.print("Does the player you are trading with agree to the deal you just inputted? (Yes/No)");
+                if (yesNoInput()) {
+                    player.setMoney(player.getMoney() + moneyFromRecipient - moneyToRecipient);
+                    recipient.setMoney(recipient.getMoney() + moneyToRecipient - moneyFromRecipient);
+
+                    for (BoardSpace property : propertiesFromRecipient) {
+                        if (property.getType().equals("Property")) {
+                            ((Property) property).setOwner(player);
+                        }
+                        else if (property.getType().equals("Railroad")) {
+                            player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
+                            recipient.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
+                            ((Railroad) property).setOwner(player);
+                        }
+                        else {
+                            ((Utility) property).setOwner(player);
+                        }
+                    }
+
+                    for (BoardSpace property : propertiesToRecipient) {
+                        if (property.getType().equals("Property")) {
+                            ((Property) property).setOwner(recipient);
+                        }
+                        else if (property.getType().equals("Railroad")) {
+                            player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
+                            recipient.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
+                            ((Railroad) property).setOwner(recipient);
+                        }
+                        else {
+                            ((Utility) property).setOwner(recipient);
+                        }
+                    }
+
+                    System.out.println("The deal has completed.");
+                }
+
+                System.out.print("Would you like to offer another trade to any player? (Yes/No)");
+                if (!yesNoInput()) {
+                    break;
+                }
+            }
+        }
     }
 
     /*Andrew*/

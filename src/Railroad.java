@@ -3,13 +3,11 @@ public class Railroad extends BoardSpace {
 
     private int price;
     private int rent;
-    private int numOwnedBySamePlayer;
 
     public Railroad(String spaceName, String realName) {
         super(spaceName, realName,"Railroad");
         this.rent = 25;
         this.price = 200;
-        numOwnedBySamePlayer = 0;
     }
 
     public Player getOwner() {
@@ -26,13 +24,5 @@ public class Railroad extends BoardSpace {
 
     public void setRent(int rent) {
         this.rent = rent;
-    }
-
-    public int getNumOwnedBySamePlayer() {
-        return numOwnedBySamePlayer;
-    }
-
-    public void setNumOwnedBySamePlayer(int numOwnedBySamePlayer) {
-        this.numOwnedBySamePlayer = numOwnedBySamePlayer;
     }
 }
