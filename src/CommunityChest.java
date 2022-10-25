@@ -27,43 +27,4 @@ public class CommunityChest {
         }
     }
 
-    /*
-    types:
-    variables:
-    - (boolean) go to jail
-    - (boolean) advance to go
-    - (int) how much money from bank (positive to receive, negative to give)
-    - get out of jail free
-    - (int) collect money from every player
-
-    - change location and get money
-    - get money from the bank
-    - pay money to the bank
-    - get out of jail free
-    - change location (go to jail)
-    - collect money from every player
-
-    types of Chance cards:
-    variables:
-    - (BoardSpace) new location
-    - (boolean) utility
-    - (boolean) railroad
-    - (int) money from bank
-    - get out of jail free
-    - go back three spaces
-    - go to jail
-    - pay each player money
-
-
-    - change location and get money
-    - change location, get money if pass go
-    - advance to nearest utility (if unowned, buy from Bank--else, dice and pay owner 10 * dice)
-    - advance to nearest railroad
-    - get money from bank
-    - get out of jail free
-    - go back three spaces
-    - change location (go to jail)
-    - pay each player money
-     */
-
 }
