@@ -46,19 +46,11 @@ public class Game {
         Utility ww = new Utility("WW", "Water Works", 150);
         Utility ec = new Utility("EC", "Electric Company", 150);
 
-        TaxSpace lutx = new TaxSpace("Luxury Tax",75, 0);
-        TaxSpace intx = new TaxSpace("Income Tax",200,0.1);
-
-
+        TaxSpace lutx = new TaxSpace("LxTx","Luxury Tax",75, 0);
+        TaxSpace intx = new TaxSpace("InTx","Income Tax",200,0.1);
 
     }
     /*
-    public Property(String name, int price, int rent, String colorGroup) {
-        super(name, "Property");
-        this.price = price;
-        this.rent = rent;
-        this.colorGroup = colorGroup;
-    }
             --------------------------------------------------------------------------------
             | [JAIL] [ C1 ] [ EC ] [ C2 ] [ C3 ] [ R2 ] [ D1 ] [ CC ] [ D2 ] [ D3 ] [FrPk] |
             | [ B3 ] -------------------------------------------------------------- [ E1 ] |

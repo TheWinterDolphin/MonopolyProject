@@ -10,7 +10,7 @@ public class Player {
 
     public Player(String name, CircularLinkedList<BoardSpace> spaces) {
         this.name = name;
-        BoardSpace go = new BoardSpace("GO", "GO");
+        BoardSpace go = new BoardSpace("GO", "GO", "GO");
         location = spaces.getFirst();
         money = 1500;
         properties = null;

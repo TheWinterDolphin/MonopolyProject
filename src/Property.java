@@ -3,6 +3,7 @@ public class Property extends BoardSpace {
     private boolean isMonopoly;
     private int price;
     private int rent;
+
     public Property(String spaceName, String realName, int price, int rent) {
         super(spaceName, realName,"Property");
         this.price = price;
