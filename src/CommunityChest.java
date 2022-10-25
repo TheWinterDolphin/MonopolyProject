@@ -3,6 +3,15 @@ public class CommunityChest {
     private String type; // goToJail, advanceToGo, getOutOfJail
     private int moneyFromPlayers; // positive to receive
 
+    private String message;
+
+    public CommunityChest(String message, int moneyFromBank, String type, int moneyFromPlayers) {
+        this.message = message;
+        this.moneyFromBank = moneyFromBank;
+        this.type = type;
+        this.moneyFromPlayers = moneyFromPlayers;
+    }
+
     public void useCard(Player player, CircularLinkedList<Player> players, CircularLinkedList<BoardSpace> spaces) {
         player.setMoney(player.getMoney() + moneyFromBank);
         // get money from players

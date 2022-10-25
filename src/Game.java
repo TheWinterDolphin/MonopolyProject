@@ -328,7 +328,7 @@ public class Game {
         System.out.println("End of " + player.getName() + "'s Turn | Current Money: " + player.getMoney() + "\n-------------------------------------------");
     }
 
-    private boolean yesNoInput() {
+    public boolean yesNoInput() {
         String response = input.nextLine();
         if (response.equalsIgnoreCase("yes")) {
             return true;
@@ -367,6 +367,7 @@ public class Game {
 
     private void communityChestLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        // TODO
     }
 
     private void taxLand(Player player) {
@@ -528,7 +529,7 @@ public class Game {
     }
 
     /*Andrew*/
-    private int[] rollDice() {
+    public int[] rollDice() {
         int firstVal = (random.nextInt( 6) + 1);
         int secondVal = (random.nextInt( 6) + 1);
 
