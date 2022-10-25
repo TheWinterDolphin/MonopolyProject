@@ -10,7 +10,6 @@ public class Game {
     private Random random = new Random();
 
     public Game() {
-
     }
 
     public void setup() {
@@ -124,7 +123,7 @@ public class Game {
         int[] diceRoll;
 
         if (inputDiceRoll == null) {
-            System.out.println("" + player.getName() + "'s Turn | Current Money: " + player.getMoney());
+            System.out.println("-------------------------------------------\nStart of " + player.getName() + "'s Turn | Current Money: " + player.getMoney());
             diceRoll = rollDice();
         }
         else {
@@ -144,7 +143,7 @@ public class Game {
             else if (player.getTurnsLeftInJail() == 0) {
                 System.out.println("After 3 turns in jail, you are free. Please pay $50. Start your normal turn.");
                 player.setMoney(player.getMoney() - 50);
-                playerTurn(player);
+                playerTurn(player, null, 0);
                 return;
             }
             else {
@@ -154,27 +153,106 @@ public class Game {
                     System.out.println("You paid $50. You are free. Start your normal turn.");
                     player.setMoney(player.getMoney() - 50);
                     player.setTurnsLeftInJail(0);
-                    playerTurn(player);
+                    playerTurn(player, null, 0);
                     return;
                 }
             }
             System.out.println("You have " + player.getTurnsLeftInJail() + " turns left in jail.");
+            System.out.println("Turn over!");
             return;
         }
 
-        int[] diceRoll = rollDice();
-        for (int i=0; i<(diceRoll[0]+diceRoll[1]); i++) {
-            if (player.getLocation().data.getName().equals("GO")) {
+        System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]);
+
+        if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles >= 2)) {
+            System.out.print("This was your third double! Sorry, you go to directly to jail.");
+            //ADD STUFF
+        }
+
+        for (int i=0; i<(diceRoll[0]+diceRoll[1] - 1); i++) {
+            if (player.getLocation().data.getType().equals("GO")) {
                 System.out.println("You passed GO! Collect $200.");
                 player.setMoney(player.getMoney() + 200);
             }
             player.setLocation(player.getLocation().next);
         }
-        System.out.println("You landed on " + player.getLocation().data.getName());
+        player.setLocation(player.getLocation().next);
 
-        if (player.getLocation().data.getType().equals("Property")) {
+        if (player.getLocation().data.getType().equals("GO")) {
+            System.out.println("You landed on GO! Collect $200");
+            player.setMoney(player.getMoney() + 200);
+        }
+
+        else if (player.getLocation().data.getType().equals("Property")) {
             propertyLand(player);
         }
+
+        else if (player.getLocation().data.getType().equals("Community Chest")) {
+            communityChestLand(player);
+        }
+
+        else if (player.getLocation().data.getType().equals("Tax")) {
+            taxLand(player);
+        }
+
+        else if (player.getLocation().data.getType().equals("Railroad")) {
+            railroadLand(player);
+        }
+
+        else if (player.getLocation().data.getType().equals("Jail")) {
+            jailVisitingLand(player);
+        }
+
+        else if (player.getLocation().data.getType().equals("Chance")) {
+            chanceLand(player);
+        }
+
+        else if (player.getLocation().data.getType().equals("Free Parking")) {
+            freeParkingLand(player);
+        }
+
+        else if (player.getLocation().data.getType().equals("To Jail")) {
+            toJailLand(player);
+        }
+
+        else {
+            System.out.print("FIX THIS ERROR THIS ISNT SUPPOSED TO BE POSSIBLE!");
+        }
+
+        System.out.print("Would you like to sell any of your properties to the bank? (Yes/No)");
+        if (yesNoInput()) {
+            while(true) {
+                System.out.print("What is the name of the property you would like to sell?");
+                BoardSpace property = inputProperty(); //Including Railroads and Utilities
+                if (property.getType().equals("Property")) {
+                    ((Property) property).setOwner(null);
+                }
+                else if (property.getType().equals("Railroad")) {
+                    ((Railroad) property).setOwner(null);
+                }
+                else {
+                    ((Utility) property).setOwner(null);
+                }
+                System.out.print("Would you like to stop selling properties? (Yes/No)");
+                if (yesNoInput()) {
+                    break;
+                }
+            }
+        }
+
+        System.out.print("Would you like to offer any trades to other player? (Yes/No)");
+        if (yesNoInput()) {
+            while(true) {
+                //STUFF
+            }
+        }
+
+        if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles < 2)) {
+            System.out.print("Your roll was a double! You get to go again!");
+            playerTurn(player, rollDice(), numOfDoubles+1);
+        }
+
+        System.out.println("End of " + player.getName() + "'s Turn | Current Money: " + player.getMoney() + "\n-------------------------------------------");
     }
 
     private boolean yesNoInput() {
@@ -194,15 +272,52 @@ public class Game {
 
     /*Andrew*/
     private void propertyLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void communityChestLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void taxLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void railroadLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void chanceLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void jailVisitingLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void freeParkingLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+    }
+
+    private void toJailLand(Player player) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
     }
 
     /*Andrew*/
     private void checkIfBankrupt(Player player) {
-        if (player.getMoney() <= 0) {
+        if (player.getMoney() < 0) {
             playerTurnOrder.delete(player);
 
             for (BoardSpace property : player.getProperties()) {
-                spaces.replace(property, new BoardSpace(property.getName(), "Bankrupt Property"));
+                if (property.getType().equals("Property")) {
+                    ((Property) property).setOwner(null);
+                }
+                else if (property.getType().equals("Railroad")) {
+                    ((Railroad) property).setOwner(null);
+                }
+                else {
+                    ((Utility) property).setOwner(null);
+                }
             }
         }
     }
@@ -316,7 +431,7 @@ public class Game {
         bottomRowString += " ";
         bottomRowString += colorSpaceString("G1", "[ G1 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("ToJL", "[ToJL]");
+        bottomRowString += colorSpaceString("ToJl", "[ToJl]");
         bottomRowString += " |";
         System.out.println(bottomRowString);
 
