@@ -6,6 +6,7 @@ public class Player {
     private Link<BoardSpace> location;
     private int money;
     private int turnsLeftInJail;
+    private int numOfRailroadsOwned;
     private ArrayList<BoardSpace> properties;
 
     public Player(String name) {
@@ -14,6 +15,7 @@ public class Player {
         location = new Link<BoardSpace>(go);
         money = 1500;
         properties = null;
+        numOfRailroadsOwned = 0;
     }
 
     public String getColorString() {
@@ -58,5 +60,13 @@ public class Player {
 
     public void setProperties(ArrayList<BoardSpace> properties) {
         this.properties = properties;
+    }
+
+    public int getNumOfRailroadsOwned() {
+        return numOfRailroadsOwned;
+    }
+
+    public void setNumOfRailroadsOwned(int numOfRailroadsOwned) {
+        this.numOfRailroadsOwned = numOfRailroadsOwned;
     }
 }
