@@ -2,20 +2,44 @@ import java.util.ArrayList;
 
 public class Player {
     private String colorString; //Ex: "\033[0;91m"
+    private String backgroundColorString;
     private String name;
     private Link<BoardSpace> location;
     private int money;
     private int turnsLeftInJail;
     private int numOfRailroadsOwned;
     private ArrayList<BoardSpace> properties;
+    private int numGetOutOfJailFree;
 
-    public Player(String name, CircularLinkedList<BoardSpace> spaces) {
+    public Player(String name, CircularLinkedList<BoardSpace> spaces, String colorString, String backgroundColorString) {
         this.name = name;
-        BoardSpace go = new BoardSpace("GO", "GO");
         location = spaces.getFirst();
+        this.colorString = colorString;
+        this.backgroundColorString = backgroundColorString;
         money = 1500;
         properties = null;
         numOfRailroadsOwned = 0;
+        numGetOutOfJailFree = 0;
+    }
+
+    public int getNumGetOutOfJailFree() {
+        return numGetOutOfJailFree;
+    }
+
+    public void setColorString(String colorString) {
+        this.colorString = colorString;
+    }
+
+    public String getBackgroundColorString() {
+        return backgroundColorString;
+    }
+
+    public void setBackgroundColorString(String backgroundColorString) {
+        this.backgroundColorString = backgroundColorString;
+    }
+
+    public void setNumGetOutOfJailFree(int numGetOutOfJailFree) {
+        this.numGetOutOfJailFree = numGetOutOfJailFree;
     }
 
     public String getColorString() {
@@ -68,5 +92,9 @@ public class Player {
 
     public void setNumOfRailroadsOwned(int numOfRailroadsOwned) {
         this.numOfRailroadsOwned = numOfRailroadsOwned;
+    }
+
+    public boolean equals(Player other) {
+        return other.name.equalsIgnoreCase(this.name);
     }
 }

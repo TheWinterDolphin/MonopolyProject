@@ -48,44 +48,116 @@ public class Game {
         Utility ww = new Utility("WW", "Water Works", 150);
         Utility ec = new Utility("EC", "Electric Company", 150);
 
-        TaxSpace lutx = new TaxSpace("Luxury Tax",75, 0);
-        TaxSpace intx = new TaxSpace("Income Tax",200,0.1);
+        TaxSpace lutx = new TaxSpace("LxTx","Luxury Tax",75, 0);
+        TaxSpace intx = new TaxSpace("InTx","Income Tax",200,0.1);
 
+        BoardSpace tojl = new BoardSpace("ToJl", "Go To Jail", "To Jail");
+        BoardSpace frpk = new BoardSpace("FrPk","Free Parking","Free Parking");
+        BoardSpace jail = new BoardSpace("JAIL", "Jail", "Jail");
+        BoardSpace go = new BoardSpace("GO","GO","GO");
 
+        BoardSpace ch3 = new BoardSpace("CH","Chance","Chance");
+        BoardSpace ch2 = new BoardSpace("CH","Chance","Chance");
+        BoardSpace ch1 = new BoardSpace("CH","Chance","Chance");
+        BoardSpace cc3 = new BoardSpace("CC", "Community Chest", "Community Chest");
+        BoardSpace cc2 = new BoardSpace("CC", "Community Chest", "Community Chest");
+        BoardSpace cc1 = new BoardSpace("CC", "Community Chest", "Community Chest");
+
+        //make spaces
+        spaces.insertFirst(h2);
+        spaces.insertFirst(lutx);
+        spaces.insertFirst(h1);
+        spaces.insertFirst(ch3);
+        spaces.insertFirst(r4);
+        spaces.insertFirst(g3);
+        spaces.insertFirst(cc3);
+        spaces.insertFirst(g2);
+        spaces.insertFirst(g1);
+        spaces.insertFirst(tojl);
+        spaces.insertFirst(f3);
+        spaces.insertFirst(ww);
+        spaces.insertFirst(f2);
+        spaces.insertFirst(f1);
+        spaces.insertFirst(r3);
+        spaces.insertFirst(e3);
+        spaces.insertFirst(e2);
+        spaces.insertFirst(ch2);
+        spaces.insertFirst(e1);
+        spaces.insertFirst(frpk);
+        spaces.insertFirst(d3);
+        spaces.insertFirst(d2);
+        spaces.insertFirst(cc2);
+        spaces.insertFirst(d1);
+        spaces.insertFirst(r2);
+        spaces.insertFirst(c3);
+        spaces.insertFirst(c2);
+        spaces.insertFirst(ec);
+        spaces.insertFirst(c1);
+        spaces.insertFirst(jail);
+        spaces.insertFirst(b3);
+        spaces.insertFirst(b2);
+        spaces.insertFirst(ch1);
+        spaces.insertFirst(b1);
+        spaces.insertFirst(r1);
+        spaces.insertFirst(intx);
+        spaces.insertFirst(a2);
+        spaces.insertFirst(cc1);
+        spaces.insertFirst(a1);
+        spaces.insertFirst(go);
 
     }
-    /*
-    public Property(String name, int price, int rent, String colorGroup) {
-        super(name, "Property");
-        this.price = price;
-        this.rent = rent;
-        this.colorGroup = colorGroup;
-    }
-            --------------------------------------------------------------------------------
-            | [JAIL] [ C1 ] [ EC ] [ C2 ] [ C3 ] [ R2 ] [ D1 ] [ CC ] [ D2 ] [ D3 ] [FrPk] |
-            | [ B3 ] -------------------------------------------------------------- [ E1 ] |
-            | [ B2 ] |                                                            | [ CH ] |
-            | [ CH ] |                                                            | [ E2 ] |
-            | [ B1 ] |                                                            | [ E3 ] |
-            | [ R1 ] |                      M O N O P O L Y                       | [ R3 ] |
-            | [InTx] |                                                            | [ F1 ] |
-            | [ A2 ] |                                                            | [ F2 ] |
-            | [ CC ] |                                                            | [ WW ] |
-            | [ A1 ] -------------------------------------------------------------- [ F3 ] |
-            | [ GO ] [ H2 ] [LuTx] [ H1 ] [ CH ] [ R4 ] [ G3 ] [ CC ] [ G2 ] [ G1 ] [ToJl] |
-            --------------------------------------------------------------------------------
-     */
     public CircularLinkedList<Player> inputPlayers() {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
+        String[] colorOptions = new String[]{"Red","Green","Yellow","Blue","Magenta","Cyan"};
         for (int i = 1; i <= numPlayers; i++) {
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
-            Player player = new Player(name, spaces);
+            // get color
+            String[] colorStrings = inputPlayerColor(colorOptions);
+            Player player = new Player(name, spaces, colorStrings[0], colorStrings[1]);
             players.insertFirst(player);
         }
         return players;
     }
+
+    private String[] inputPlayerColor(String[] colorOptions) {
+        // print options
+        System.out.print("What color would you like? (");
+        for (int i = 0; i < colorOptions.length - 1; i++) {
+            System.out.print(colorOptions[i] + ", ");
+        }
+        System.out.println(colorOptions[colorOptions.length - 1] + ")");
+        // get user input
+        String color = input.nextLine();
+        for (int i = 0; i < colorOptions.length; i++) {
+            if (color.equalsIgnoreCase(colorOptions[i])) {
+                if (colorOptions[i].equals("Red")) {
+                    return new String[]{"\033[0;31m","\033[41m"};
+                }
+                if (colorOptions[i].equals("Green")) {
+                    return new String[]{" \033[0;32m","\033[42m"};
+                }
+                if (colorOptions[i].equals("Yellow")) {
+                    return new String[]{"\033[0;33m","\033[43m"};
+                }
+                if (colorOptions[i].equals("Blue")) {
+                    return new String[]{"\033[0;34m","\033[44m"};
+                }
+                if (colorOptions[i].equals("Magenta")) {
+                    return new String[]{"\033[0;35m","\033[45m"};
+                }
+                if (colorOptions[i].equals("Cyan")) {
+                    return new String[]{"\033[0;36m","\033[46m"};
+                }
+            }
+        }
+        System.out.println("Please input a valid color.");
+        return inputPlayerColor(colorOptions);
+
+    }
+
+
 
     public int inputPlayerInt() {
         while (true) {
@@ -172,7 +244,7 @@ public class Game {
 
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles >= 2)) {
             System.out.print("This was your third double! Sorry, you go to directly to jail.");
-            //ADD STUFF
+            //ADD STUFF--can you add this stuff to where I wrote "Here!" in CommunityChest?
         }
 
         for (int i=0; i<(diceRoll[0]+diceRoll[1] - 1); i++) {
@@ -273,9 +345,8 @@ public class Game {
         }
         else {
             System.out.println("Please input either \"yes\" or \"no\".");
-            yesNoInput();
+            return yesNoInput();
         }
-        return false;
     }
 
     /*Andrew*/
@@ -290,7 +361,7 @@ public class Game {
             System.out.println("Would you like to buy this property? (Yes/No)");
             if (yesNoInput()) {
                 property.setOwner(player);
-                System.out.println("You now own " + property.getName());
+                System.out.println("You now own " + property.getRealName());
             }
         }
         else {
@@ -611,5 +682,45 @@ public class Game {
 
     public boolean getIsGameOver() {
         return isGameOver;
+    }
+    private BoardSpace inputProperty(Player player) {
+        String name = input.nextLine();
+        BoardSpace testProperty = new BoardSpace("spaceName",name,"type");
+        Link<BoardSpace> propertyLink = spaces.find(testProperty);
+        if (propertyLink != null) {
+            if (player.getProperties().contains(propertyLink.data))
+                return propertyLink.data;
+        }
+        System.out.println("Please input a valid property.");
+        return inputProperty(player);
+    }
+
+    private Player inputPlayer() {
+        String name = input.nextLine();
+        Player testPlayer = new Player(name, spaces, "colorString", "backgroundColorString");
+        Link<Player> playerLink = playerTurnOrder.find(testPlayer);
+        if (playerLink != null)
+            return playerLink.data;
+        System.out.println("Please input a valid player name.");
+        return inputPlayer();
+    }
+
+    private int inputPlayerMoney(Player player) {
+        while (true) {
+            try {
+                String response = input.nextLine();
+                int num = Integer.parseInt(response);
+                if (num <= 0) {
+                    System.out.println("Please input a number that is greater than 0.");
+                }
+                else if (num > player.getMoney()) {
+                    System.out.println("Please input a number that is less than " + player.getName() + "'s current balance.");
+                } else {
+                    return num;
+                }
+            } catch (Exception e) {
+                System.out.println("Please input an integer.");
+            }
+        }
     }
 }

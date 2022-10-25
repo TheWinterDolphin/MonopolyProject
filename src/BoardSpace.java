@@ -31,4 +31,8 @@ public class BoardSpace {
     public void setType(String type) {
         this.type = type;
     }
+
+    public boolean equals(BoardSpace other) {
+        return other.realName.equals(this.realName);
+    }
 }
