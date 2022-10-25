@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Player {
     private String colorString; //Ex: "\033[0;91m"
+    private String backgroundColorString;
     private String name;
     private Link<BoardSpace> location;
     private int money;
@@ -9,10 +10,11 @@ public class Player {
     private int numOfRailroadsOwned;
     private ArrayList<BoardSpace> properties;
 
-    public Player(String name, CircularLinkedList<BoardSpace> spaces) {
+    public Player(String name, CircularLinkedList<BoardSpace> spaces, String colorString, String backgroundColorString) {
         this.name = name;
-        BoardSpace go = new BoardSpace("GO", "GO", "GO");
         location = spaces.getFirst();
+        this.colorString = colorString;
+        this.backgroundColorString = backgroundColorString;
         money = 1500;
         properties = null;
         numOfRailroadsOwned = 0;
