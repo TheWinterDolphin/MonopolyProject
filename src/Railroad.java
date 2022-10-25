@@ -1,11 +1,14 @@
 public class Railroad extends BoardSpace {
     private Player owner;
+
+    private int price;
     private int rent;
     private int numOwnedBySamePlayer;
 
-    public Railroad(String name, int rent) {
-        super(name, "Railroad");
-        this.rent = rent;
+    public Railroad(String spaceName, String realName) {
+        super(spaceName, realName,"Railroad");
+        this.rent = 25;
+        this.price = 200;
         numOwnedBySamePlayer = 0;
     }
 

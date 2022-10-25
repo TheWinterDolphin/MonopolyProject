@@ -8,10 +8,10 @@ public class Player {
     private int turnsLeftInJail;
     private ArrayList<BoardSpace> properties;
 
-    public Player(String name) {
+    public Player(String name, CircularLinkedList<BoardSpace> spaces) {
         this.name = name;
         BoardSpace go = new BoardSpace("GO", "GO");
-        location = new Link<BoardSpace>(go);
+        location = spaces.getFirst();
         money = 1500;
         properties = null;
     }
