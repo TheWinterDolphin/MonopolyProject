@@ -33,6 +33,7 @@ public class Chance {
         }
         else if (type.equals("goToJail")) {
             player.setLocation(newLocation);
+            player.setTurnsLeftInJail(3);
         }
         else if (type.equals("backThreeSpaces")) {
             Link<BoardSpace> currentLocation = player.getLocation();
