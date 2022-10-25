@@ -11,6 +11,7 @@ public class Game {
     private Random random = new Random();
 
     public Game() {
+        isGameOver = false;
     }
 
     public void setup() {
@@ -123,6 +124,8 @@ public class Game {
     }
 
     private void playerTurn(Player player, int[] inputDiceRoll, int numOfDoubles) {
+        //ALSO NEED GET OUT OF JAIL FREE CARD STUFF
+
         int[] diceRoll;
 
         if (inputDiceRoll == null) {
@@ -204,12 +207,16 @@ public class Game {
             railroadLand(player);
         }
 
+        else if (player.getLocation().data.getType().equals("Chance")) {
+            chanceLand(player);
+        }
+
         else if (player.getLocation().data.getType().equals("Jail")) {
             jailVisitingLand(player);
         }
 
-        else if (player.getLocation().data.getType().equals("Chance")) {
-            chanceLand(player);
+        else if (player.getLocation().data.getType().equals("Utility")) {
+            utilityLand(player, diceRoll);
         }
 
         else if (player.getLocation().data.getType().equals("Free Parking")) {
@@ -335,6 +342,11 @@ public class Game {
         System.out.println("Don't worry, you are just visiting.");
     }
 
+    private void utilityLand(Player player, int[] diceRoll) {
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        //NEED TO FINISH THIS
+    }
+
     private void freeParkingLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         System.out.println("Nothing happens.");
@@ -350,6 +362,8 @@ public class Game {
     }
 
     private void tradeWithOtherPlayers(Player player) {
+        //GET OUT OF JAIL FREE CARD TRADING
+
         System.out.print("Would you like to offer any trades to other player? (Yes/No)");
         if (yesNoInput()) {
             while(true) {
@@ -595,4 +609,7 @@ public class Game {
         return ("" + chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
     }
 
+    public boolean getIsGameOver() {
+        return isGameOver;
+    }
 }
