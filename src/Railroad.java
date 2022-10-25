@@ -25,4 +25,8 @@ public class Railroad extends BoardSpace {
     public void setRent(int rent) {
         this.rent = rent;
     }
+
+    public int getPrice() {
+        return price;
+    }
 }

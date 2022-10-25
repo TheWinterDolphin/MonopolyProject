@@ -83,7 +83,6 @@ public class Game {
         spaces.insertFirst(ch2);
         spaces.insertFirst(e1);
         spaces.insertFirst(frpk);
-        spaces.insertFirst();
         spaces.insertFirst(d3);
         spaces.insertFirst(d2);
         spaces.insertFirst(cc2);
@@ -153,8 +152,7 @@ public class Game {
             }
         }
         System.out.println("Please input a valid color.");
-        inputPlayerColor(colorOptions);
-        return null;
+        return inputPlayerColor(colorOptions);
 
     }
 
@@ -340,9 +338,8 @@ public class Game {
         }
         else {
             System.out.println("Please input either \"yes\" or \"no\".");
-            yesNoInput();
+            return yesNoInput();
         }
-        return false;
     }
 
     /*Andrew*/
@@ -357,7 +354,7 @@ public class Game {
             System.out.println("Would you like to buy this property? (Yes/No)");
             if (yesNoInput()) {
                 property.setOwner(player);
-                System.out.println("You now own " + property.getName());
+                System.out.println("You now own " + property.getRealName());
             }
         }
         else {
@@ -667,6 +664,47 @@ public class Game {
         }
 
         return ("" + chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
+    }
+
+    private BoardSpace inputProperty(Player player) {
+        String name = input.nextLine();
+        BoardSpace testProperty = new BoardSpace("spaceName",name,"type");
+        Link<BoardSpace> propertyLink = spaces.find(testProperty);
+        if (propertyLink != null) {
+            if (player.getProperties().contains(propertyLink.data))
+                return propertyLink.data;
+        }
+        System.out.println("Please input a valid property.");
+        return inputProperty(player);
+    }
+
+    private Player inputPlayer() {
+        String name = input.nextLine();
+        Player testPlayer = new Player(name, spaces, "colorString", "backgroundColorString");
+        Link<Player> playerLink = playerTurnOrder.find(testPlayer);
+        if (playerLink != null)
+            return playerLink.data;
+        System.out.println("Please input a valid player name.");
+        return inputPlayer();
+    }
+
+    private int inputPlayerMoney(Player player) {
+        while (true) {
+            try {
+                String response = input.nextLine();
+                int num = Integer.parseInt(response);
+                if (num <= 0) {
+                    System.out.println("Please input a number that is greater than 0.");
+                }
+                else if (num > player.getMoney()) {
+                    System.out.println("Please input a number that is less than " + player.getName() + "'s current balance.");
+                } else {
+                    return num;
+                }
+            } catch (Exception e) {
+                System.out.println("Please input an integer.");
+            }
+        }
     }
 
 }

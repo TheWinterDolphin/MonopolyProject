@@ -71,4 +71,8 @@ public class Player {
     public void setNumOfRailroadsOwned(int numOfRailroadsOwned) {
         this.numOfRailroadsOwned = numOfRailroadsOwned;
     }
+
+    public boolean equals(Player other) {
+        return other.name.equalsIgnoreCase(this.name);
+    }
 }
