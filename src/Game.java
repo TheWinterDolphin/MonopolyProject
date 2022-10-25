@@ -241,7 +241,7 @@ public class Game {
 
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles >= 2)) {
             System.out.print("This was your third double! Sorry, you go to directly to jail.");
-            //ADD STUFF
+            //ADD STUFF--can you add this stuff to where I wrote "Here!" in CommunityChest?
         }
 
         for (int i=0; i<(diceRoll[0]+diceRoll[1] - 1); i++) {

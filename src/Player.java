@@ -9,6 +9,7 @@ public class Player {
     private int turnsLeftInJail;
     private int numOfRailroadsOwned;
     private ArrayList<BoardSpace> properties;
+    private int numGetOutOfJailFree;
 
     public Player(String name, CircularLinkedList<BoardSpace> spaces, String colorString, String backgroundColorString) {
         this.name = name;
@@ -18,6 +19,27 @@ public class Player {
         money = 1500;
         properties = null;
         numOfRailroadsOwned = 0;
+        numGetOutOfJailFree = 0;
+    }
+
+    public int getNumGetOutOfJailFree() {
+        return numGetOutOfJailFree;
+    }
+
+    public void setColorString(String colorString) {
+        this.colorString = colorString;
+    }
+
+    public String getBackgroundColorString() {
+        return backgroundColorString;
+    }
+
+    public void setBackgroundColorString(String backgroundColorString) {
+        this.backgroundColorString = backgroundColorString;
+    }
+
+    public void setNumGetOutOfJailFree(int numGetOutOfJailFree) {
+        this.numGetOutOfJailFree = numGetOutOfJailFree;
     }
 
     public String getColorString() {
