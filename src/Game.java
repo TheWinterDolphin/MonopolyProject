@@ -14,16 +14,73 @@ public class Game {
     }
 
     public void setup() {
-        playerTurnOrder = inputPlayers();
         // initialize spaces
+        playerTurnOrder = inputPlayers();
+        Property h2 = new Property("H2", "Boardwalk", 400, 50);
+        Property h1 = new Property("H1", "Park Place", 350, 35);
+        Property g3 = new Property("G3", "Pennsylvania Avenue", 320, 28);
+        Property g2 = new Property("G2", "North Carolina Avenue", 300, 26);
+        Property g1 = new Property("G1", "Pacific Avenue", 300, 26);
+        Property f3 = new Property("F3", "Marvin Gardens", 280, 24);
+        Property f2 = new Property("F2", "Ventnor Avenue", 260, 22);
+        Property f1 = new Property("F1", "Atlantic Avenue", 260, 22);
+        Property e3 = new Property("E3", "Illinois Avenue", 240, 20);
+        Property e2 = new Property("E2", "Indiana Avenue", 220, 18);
+        Property e1 = new Property("E1", "Kentucky Avenue", 220, 18);
+        Property d3 = new Property("D3", "New York Avenue", 200, 16);
+        Property d2 = new Property("D2", "Tennessee Avenue", 180, 14);
+        Property d1 = new Property("D1", "St. James Place", 180, 14);
+        Property c3 = new Property("C3", "Virginia Avenue", 160, 12);
+        Property c2 = new Property("C2", "States Avenue", 140, 10);
+        Property c1 = new Property("C1", "St. Charles Place", 140, 10);
+        Property b3 = new Property("B3", "Connecticut Avenue", 120, 8);
+        Property b2 = new Property("B2", "Vermont Avenue", 100, 6);
+        Property b1 = new Property("B1", "Oriental Avenue", 100, 6);
+        Property a2 = new Property("A2", "Baltic Avenue", 60, 4);
+        Property a1 = new Property("A1", "Mediterranean Avenue", 60, 2);
+
+        Railroad r4 = new Railroad("R4", "Short Line");
+        Railroad r3 = new Railroad("R3", "B.&O. Railroad");
+        Railroad r2 = new Railroad("R2", "Pennsylvania Railroad");
+        Railroad r1 = new Railroad("R1", "Reading Railroad");
+
+        Utility ww = new Utility("WW", "Water Works", 150);
+        Utility ec = new Utility("EC", "Electric Company", 150);
+
+        TaxSpace lutx = new TaxSpace("Luxury Tax",75, 0);
+        TaxSpace intx = new TaxSpace("Income Tax",200,0.1);
+
+
+
     }
+    /*
+    public Property(String name, int price, int rent, String colorGroup) {
+        super(name, "Property");
+        this.price = price;
+        this.rent = rent;
+        this.colorGroup = colorGroup;
+    }
+            --------------------------------------------------------------------------------
+            | [JAIL] [ C1 ] [ EC ] [ C2 ] [ C3 ] [ R2 ] [ D1 ] [ CC ] [ D2 ] [ D3 ] [FrPk] |
+            | [ B3 ] -------------------------------------------------------------- [ E1 ] |
+            | [ B2 ] |                                                            | [ CH ] |
+            | [ CH ] |                                                            | [ E2 ] |
+            | [ B1 ] |                                                            | [ E3 ] |
+            | [ R1 ] |                      M O N O P O L Y                       | [ R3 ] |
+            | [InTx] |                                                            | [ F1 ] |
+            | [ A2 ] |                                                            | [ F2 ] |
+            | [ CC ] |                                                            | [ WW ] |
+            | [ A1 ] -------------------------------------------------------------- [ F3 ] |
+            | [ GO ] [ H2 ] [LuTx] [ H1 ] [ CH ] [ R4 ] [ G3 ] [ CC ] [ G2 ] [ G1 ] [ToJl] |
+            --------------------------------------------------------------------------------
+     */
     public CircularLinkedList<Player> inputPlayers() {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
         for (int i = 1; i <= numPlayers; i++) {
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
-            Player player = new Player(name);
+            Player player = new Player(name, spaces);
             players.insertFirst(player);
         }
         return players;
@@ -197,6 +254,21 @@ public class Game {
         tradeWithOtherPlayers(player);
 
         System.out.println("End of " + player.getName() + "'s Turn | Current Money: " + player.getMoney() + "\n-------------------------------------------");
+    }
+
+    private boolean yesNoInput() {
+        String response = input.nextLine();
+        if (response.equalsIgnoreCase("yes")) {
+            return true;
+        }
+        else if (response.equalsIgnoreCase("no")) {
+            return false;
+        }
+        else {
+            System.out.println("Please input either \"yes\" or \"no\".");
+            yesNoInput();
+        }
+        return false;
     }
 
     /*Andrew*/
@@ -522,6 +594,5 @@ public class Game {
 
         return ("" + chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
     }
-
 
 }

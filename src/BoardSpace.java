@@ -1,17 +1,27 @@
 public class BoardSpace {
-    private String name;
-    private String type; // options: Property, GO, Chance, Community Chest, Utility, Railroad, To Jail, Tax, Blank
-    public BoardSpace(String name, String type) {
-        this.name = name;
+    private String spaceName;
+    private String realName;
+    private String type; // options: Property, GO, Chance, Community Chest, Utility, Railroad, To Jail, Tax, Jail, Free Parking
+    public BoardSpace(String spaceName, String realName, String type) {
+        this.spaceName = spaceName;
+        this.realName = realName;
         this.type = type;
     }
 
-    public String getName() {
-        return name;
+    public String getSpaceName() {
+        return spaceName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSpaceName(String name) {
+        this.spaceName = name;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName() {
+        this.realName = realName;
     }
 
     public String getType() {
