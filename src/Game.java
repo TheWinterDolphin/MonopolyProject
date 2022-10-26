@@ -57,7 +57,7 @@ public class Game {
         Utility ww = new Utility("WW", "Water Works", 150);
         Utility ec = new Utility("EC", "Electric Company", 150);
 
-        TaxSpace lutx = new TaxSpace("LxTx","Luxury Tax",75, 0);
+        TaxSpace lutx = new TaxSpace("LuTx","Luxury Tax",75, -1);
         TaxSpace intx = new TaxSpace("InTx","Income Tax",200,0.1);
 
         BoardSpace tojl = new BoardSpace("ToJl", "Go To Jail", "To Jail");
@@ -65,12 +65,14 @@ public class Game {
         BoardSpace jail = new BoardSpace("JAIL", "Jail", "Jail");
         BoardSpace go = new BoardSpace("GO","GO","GO");
 
-        BoardSpace ch3 = new BoardSpace("CH","Chance","Chance");
-        BoardSpace ch2 = new BoardSpace("CH","Chance","Chance");
-        BoardSpace ch1 = new BoardSpace("CH","Chance","Chance");
-        BoardSpace cc3 = new BoardSpace("CC", "Community Chest", "Community Chest");
-        BoardSpace cc2 = new BoardSpace("CC", "Community Chest", "Community Chest");
-        BoardSpace cc1 = new BoardSpace("CC", "Community Chest", "Community Chest");
+        BoardSpace ch3 = new BoardSpace("CH","Chance 3","Chance");
+        BoardSpace ch2 = new BoardSpace("CH","Chance 2","Chance");
+        BoardSpace ch1 = new BoardSpace("CH","Chance 1","Chance");
+        BoardSpace cc3 = new BoardSpace("CC", "Community Chest 3", "Community Chest");
+        BoardSpace cc2 = new BoardSpace("CC", "Community Chest 2", "Community Chest");
+        BoardSpace cc1 = new BoardSpace("CC", "Community Chest 1", "Community Chest");
+
+        spaces = new CircularLinkedList<>();
 
         //make spaces
         spaces.insertFirst(h2);
@@ -115,6 +117,12 @@ public class Game {
         spaces.insertFirst(go);
 
         playerTurnOrder = inputPlayers();
+
+
+        currentPlayer = playerTurnOrder.getFirst();
+        while(currentPlayer.next != playerTurnOrder.getFirst()) {
+            currentPlayer = currentPlayer.next;
+        }
 
         //initialize community chest list
         CommunityChest ccc1 = new CommunityChest("Advance to GO (Collect $200).", 200, "advanceToGo", 0);
@@ -183,10 +191,13 @@ public class Game {
         chanceCards.insertFirst(chc13);
 
         topChanceCard = chc13;
+
     }
+
     public CircularLinkedList<Player> inputPlayers() {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
+
         ArrayList<String> colorOptions = new ArrayList<>();
         colorOptions.add("Red");
         colorOptions.add("Green");
@@ -194,7 +205,8 @@ public class Game {
         colorOptions.add("Blue");
         colorOptions.add("Magenta");
         colorOptions.add("Cyan");
-        for (int i = 1; i <= numPlayers; i++) {
+        for (int i = numPlayers; i > 0; i--) {
+
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
             // get color
@@ -264,6 +276,8 @@ public class Game {
         System.out.println("Please input a valid color.");
         return inputPlayerColor(colorOptions);
     }
+
+
     public int inputPlayerInt() {
         while (true) {
             try {
@@ -281,6 +295,7 @@ public class Game {
             }
         }
     }
+    
     public void next() {
         printBoard();
 
@@ -306,7 +321,7 @@ public class Game {
         int[] diceRoll;
 
         if (inputDiceRoll == null) {
-            System.out.println("-------------------------------------------\nStart of " + player.getName() + "'s Turn | Current Money: " + player.getMoney());
+            System.out.println("-------------------------------------------\nStart of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney());
             diceRoll = rollDice();
         }
         else {
@@ -349,10 +364,13 @@ public class Game {
 
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles >= 2)) {
             System.out.print("This was your third double! Sorry, you go to directly to jail.");
+            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
+            return;
             //ADD STUFF--can you add this stuff to where I wrote "Here!" in CommunityChest?
         }
 
-        for (int i=0; i<(diceRoll[0]+diceRoll[1] - 1); i++) {
+        player.setLocation(player.getLocation().next);
+        for (int i=1; i<(diceRoll[0]+diceRoll[1] - 1); i++) {
             if (player.getLocation().data.getType().equals("GO")) {
                 System.out.println("You passed GO! Collect $200.");
                 player.setMoney(player.getMoney() + 200);
@@ -402,6 +420,8 @@ public class Game {
 
         else if (player.getLocation().data.getType().equals("To Jail")) {
             toJailLand(player);
+            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
+            return;
         }
 
         else {
@@ -413,31 +433,31 @@ public class Game {
             playerTurn(player, rollDice(), numOfDoubles+1);
         }
 
-        System.out.print("Would you like to sell any of your properties to the bank? (Yes/No)");
-        if (yesNoInput()) {
-            while(true) {
-                System.out.print("What is the name of the property you would like to sell?");
-                BoardSpace property = inputProperty(player); //Including Railroads and Utilities
-                if (property.getType().equals("Property")) {
-                    ((Property) property).setOwner(null);
-                }
-                else if (property.getType().equals("Railroad")) {
-                    player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
-                    ((Railroad) property).setOwner(null);
-                }
-                else {
-                    ((Utility) property).setOwner(null);
-                }
-                System.out.print("Would you like to stop selling properties? (Yes/No)");
-                if (yesNoInput()) {
-                    break;
+        if ((diceRoll[0] != diceRoll[1])) {
+            System.out.print("Would you like to sell any of your properties to the bank? (Yes/No)");
+            if (yesNoInput()) {
+                while (true) {
+                    System.out.print("What is the name of the property you would like to sell?");
+                    BoardSpace property = inputProperty(player); //Including Railroads and Utilities
+                    if (property.getType().equals("Property")) {
+                        ((Property) property).setOwner(null);
+                    } else if (property.getType().equals("Railroad")) {
+                        player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
+                        ((Railroad) property).setOwner(null);
+                    } else {
+                        ((Utility) property).setOwner(null);
+                    }
+                    System.out.print("Would you like to stop selling properties? (Yes/No)");
+                    if (yesNoInput()) {
+                        break;
+                    }
                 }
             }
+
+            tradeWithOtherPlayers(player);
+
+            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
         }
-
-        tradeWithOtherPlayers(player);
-
-        System.out.println("End of " + player.getName() + "'s Turn | Current Money: " + player.getMoney() + "\n-------------------------------------------");
     }
 
     public boolean yesNoInput() {
@@ -463,10 +483,16 @@ public class Game {
         }
         else if (property.getOwner() == null) {
             System.out.println("This property is available to purchase. It costs $" + property.getPrice());
-            System.out.println("Would you like to buy this property? (Yes/No)");
-            if (yesNoInput()) {
-                property.setOwner(player);
-                System.out.println("You now own " + property.getRealName());
+            if (player.getMoney() >= property.getPrice()) {
+                System.out.println("Would you like to buy this property? (Yes/No)");
+                if (yesNoInput()) {
+                    property.setOwner(player);
+                    player.setMoney(player.getMoney() - property.getPrice());
+                    System.out.println("You now own " + property.getRealName());
+                }
+            }
+            else {
+                System.out.println("You unfortunately cannot afford this property.");
             }
         }
         else {
@@ -486,6 +512,7 @@ public class Game {
 
     private void taxLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        //NEED TO FINISH THIS
     }
 
     private void railroadLand(Player player) {
@@ -670,90 +697,90 @@ public class Game {
 
         //TopRow
         String topRowString = "| ";
-        topRowString += colorSpaceString("JAIL", "[JAIL]");
+        topRowString += colorSpaceString("Jail", "[JAIL]");
         topRowString += " ";
-        topRowString += colorSpaceString("C1", "[ C1 ]");
+        topRowString += colorSpaceString("St. Charles Place", "[ C1 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("EC", "[ EC ]");
+        topRowString += colorSpaceString("Electric Company", "[ EC ]");
         topRowString += " ";
-        topRowString += colorSpaceString("C2", "[ C2 ]");
+        topRowString += colorSpaceString("States Avenue", "[ C2 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("C3", "[ C3 ]");
+        topRowString += colorSpaceString("Virginia Avenue", "[ C3 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("R2", "[ R2 ]");
+        topRowString += colorSpaceString("Pennsylvania Railroad", "[ R2 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("D1", "[ D1 ]");
+        topRowString += colorSpaceString("St. James Place", "[ D1 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("CC_TopRow", "[ CC ]");
+        topRowString += colorSpaceString("Community Chest 2", "[ CC ]");
         topRowString += " ";
-        topRowString += colorSpaceString("D2", "[ D2 ]");
+        topRowString += colorSpaceString("Tennessee Avenue", "[ D2 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("D3", "[ D3 ]");
+        topRowString += colorSpaceString("New York Avenue", "[ D3 ]");
         topRowString += " ";
-        topRowString += colorSpaceString("FrPk", "[FrPk]");
+        topRowString += colorSpaceString("Free Parking", "[FrPk]");
         topRowString += " |";
         System.out.println(topRowString);
 
         //Middle Rows
-        System.out.println("| " + colorSpaceString("B3", "[ B3 ]") +
+        System.out.println("| " + colorSpaceString("Connecticut Avenue", "[ B3 ]") +
                 " -------------------------------------------------------------- " +
-                colorSpaceString("E1", "[ E1 ]") + " |");
+                colorSpaceString("Kentucky Avenue", "[ E1 ]") + " |");
 
-        System.out.println("| " + colorSpaceString("B2", "[ B2 ]") +
+        System.out.println("| " + colorSpaceString("Vermont Avenue", "[ B2 ]") +
                 " |                                                            | " +
-                colorSpaceString("CH_RightCol", "[ CH ]") + " |");
+                colorSpaceString("Chance 2", "[ CH ]") + " |");
 
-        System.out.println("| " + colorSpaceString("CH_LeftCol", "[ CH ]") +
+        System.out.println("| " + colorSpaceString("Chance 1", "[ CH ]") +
                 " |                                                            | " +
-                colorSpaceString("E2", "[ E2 ]") + " |");
+                colorSpaceString("Indiana Avenue", "[ E2 ]") + " |");
 
-        System.out.println("| " + colorSpaceString("B1", "[ B1 ]") +
+        System.out.println("| " + colorSpaceString("Oriental Avenue", "[ B1 ]") +
                 " |                                                            | " +
-                colorSpaceString("E3", "[ E3 ]") + " |");
+                colorSpaceString("Illinois Avenue", "[ E3 ]") + " |");
 
-        System.out.println("| " + colorSpaceString("R1", "[ R1 ]") +
+        System.out.println("| " + colorSpaceString("Reading Railroad", "[ R1 ]") +
                 " |                      M O N O P O L Y                       | " +
-                colorSpaceString("R3", "[ R3 ]") + " |");
+                colorSpaceString("B.&O. Railroad", "[ R3 ]") + " |");
 
-        System.out.println("| " + colorSpaceString("InTx", "[InTx]") +
+        System.out.println("| " + colorSpaceString("Income Tax", "[InTx]") +
                 " |                                                            | " +
-                colorSpaceString("F1", "[ F1 ]") + " |");
+                colorSpaceString("Atlantic Avenue", "[ F1 ]") + " |");
 
-        System.out.println("| " + colorSpaceString("A2", "[ A2 ]") +
+        System.out.println("| " + colorSpaceString("Baltic Avenue", "[ A2 ]") +
                 " |                                                            | " +
-                colorSpaceString("F2", "[ F2 ]") + " |");
+                colorSpaceString("Ventnor Avenue", "[ F2 ]") + " |");
 
-        System.out.println("| " + colorSpaceString("CC_LeftCol", "[ CC ]") +
+        System.out.println("| " + colorSpaceString("Community Chest 1", "[ CC ]") +
                 " |                                                            | " +
-                colorSpaceString("WW", "[ WW ]") + " |");
+                colorSpaceString("Water Works", "[ WW ]") + " |");
 
-        System.out.println("| " + colorSpaceString("A1", "[ A1 ]") +
+        System.out.println("| " + colorSpaceString("Mediterranean Avenue", "[ A1 ]") +
                 " -------------------------------------------------------------- " +
-                colorSpaceString("F3", "[ F3 ]") + " |");
+                colorSpaceString("Marvin Gardens", "[ F3 ]") + " |");
 
         //TopRow
         String bottomRowString = "| ";
         bottomRowString += colorSpaceString("GO", "[ GO ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("H2", "[ H2 ]");
+        bottomRowString += colorSpaceString("Boardwalk", "[ H2 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("LuTx", "[LuTx]");
+        bottomRowString += colorSpaceString("Luxury Tax", "[LuTx]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("H1", "[ H1 ]");
+        bottomRowString += colorSpaceString("Park Place", "[ H1 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("CH_bottomRow", "[ CH ]");
+        bottomRowString += colorSpaceString("Chance 3", "[ CH ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("R4", "[ R4 ]");
+        bottomRowString += colorSpaceString("Short Line", "[ R4 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("G3", "[ G3 ]");
+        bottomRowString += colorSpaceString("Pennsylvania Avenue", "[ G3 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("CC_bottomRow", "[ CC ]");
+        bottomRowString += colorSpaceString("Community Chest 3", "[ CC ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("G2", "[ G2 ]");
+        bottomRowString += colorSpaceString("North Carolina Avenue", "[ G2 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("G1", "[ G1 ]");
+        bottomRowString += colorSpaceString("Pacific Avenue", "[ G1 ]");
         bottomRowString += " ";
-        bottomRowString += colorSpaceString("ToJl", "[ToJl]");
+        bottomRowString += colorSpaceString("Go To Jail", "[ToJl]");
         bottomRowString += " |";
         System.out.println(bottomRowString);
 
@@ -761,7 +788,7 @@ public class Game {
     }
 
     /*Andrew*/
-    private String colorSpaceString(String spaceName, String uncoloredOutput) {
+    private String colorSpaceString(String realName, String uncoloredOutput) {
         String RESET = "\033[0m";
 
         String char0 = uncoloredOutput.substring(0, 1);
@@ -773,22 +800,42 @@ public class Game {
 
         String[] chars = new String[]{char0, char1, char2, char3, char4, char5};
 
-        Link<Player> currentPlayer = playerTurnOrder.getFirst();
-        if (currentPlayer.data.getLocation().data.getType().equals(spaceName)) {
-            chars[0] = ("" + currentPlayer.data.getColorString() + chars[0] + RESET);
+        Link<BoardSpace> current2 = spaces.getFirst();
+        while(!((current2.data.getSpaceName().equals(uncoloredOutput.substring(1, 5))) || (current2.data.getSpaceName().equals(uncoloredOutput.substring(2, 4))))) {
+            current2 = current2.next;
         }
-        currentPlayer = currentPlayer.next;
+
+        String ownerPrefix = "";
+
+        if (current2.data.getType().equals("Property")) {
+            if (((Property) current2.data).getOwner() != null){
+                ownerPrefix = ((Property) current2.data).getOwner().getForegroundColorString();
+            }
+        }
+
+        Link<Player> current = playerTurnOrder.getFirst();
+        if (current.data.getLocation().data.getRealName().equals(realName)) {
+            chars[0] = ("" + current.data.getBackgroundColorString() + chars[0] + RESET);
+        }
+        current = current.next;
 
         int i = 1;
-        while(currentPlayer != playerTurnOrder.getFirst()) {
-            if (currentPlayer.data.getLocation().data.getType().equals(spaceName)) {
-                chars[i] = ("" + currentPlayer.data.getColorString() + chars[i] + RESET);
+        while(current != playerTurnOrder.getFirst()) {
+            if (current.data.getLocation().data.getRealName().equals(realName)) {
+                chars[i] = ("" + current.data.getBackgroundColorString() + chars[i] + RESET);
             }
-            currentPlayer = currentPlayer.next;
+            current = current.next;
             i++;
         }
+        
+        chars[0] = ownerPrefix + chars[0] + RESET;
+        chars[1] = ownerPrefix + chars[1] + RESET;
+        chars[2] = ownerPrefix + chars[2] + RESET;
+        chars[3] = ownerPrefix + chars[3] + RESET;
+        chars[4] = ownerPrefix + chars[4] + RESET;
+        chars[5] = ownerPrefix + chars[5] + RESET;
 
-        return ("" + chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
+        return (chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
     }
 
     public boolean getIsGameOver() {
