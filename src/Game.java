@@ -163,16 +163,16 @@ public class Game {
 
         // initialize chance list
         Chance chc1 = new Chance("Advance to GO (Collect $200).", spaces.getFirst(), null, 0, 0);
-        Chance chc2 = new Chance("Advance to Illinois Ave. If you pass GO, collect $200.", spaces.find(e3), null, 0, 0);
-        Chance chc3 = new Chance("Advance to St. Charles Place. If you pass GO, collect $200.", spaces.find(c1), null, 0, 0);
+        Chance chc2 = new Chance("Advance to Illinois Ave (E3). If you pass GO, collect $200.", spaces.find(e3), null, 0, 0);
+        Chance chc3 = new Chance("Advance to St. Charles Place (C1). If you pass GO, collect $200.", spaces.find(c1), null, 0, 0);
         Chance chc4 = new Chance("Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 times the amount thrown.", null, "utility", 0, 0);
         Chance chc5 = new Chance("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the rent to which they are otherwise entitled.", null, "railroad", 0, 0);
         Chance chc6 = new Chance("Bank pays you dividend of $50.", null, null, 50, 0);
         Chance chc7 = new Chance("Get Out of Jail Free!", null, "getOutOfJail", 0, 0);
         Chance chc8 = new Chance("Go back three spaces.", null, "backThreeSpaces", 0, 0);
         Chance chc9 = new Chance("Go to Jail. Do not pass Go, do not collect $200.", spaces.find(jail), "goToJail", 0, 0);
-        Chance chc10 = new Chance("Take a trip to Reading Railroad. If you pass Go, collect $200.", spaces.find(r1), null, 0, 0);
-        Chance chc11 = new Chance("Take a walk on the Boardwalk. Advance token to Boardwalk.", spaces.find(h2), null, 0, 0);
+        Chance chc10 = new Chance("Take a trip to Reading Railroad (R1). If you pass Go, collect $200.", spaces.find(r1), null, 0, 0);
+        Chance chc11 = new Chance("Take a walk on the Boardwalk (H2). Advance token to Boardwalk.", spaces.find(h2), null, 0, 0);
         Chance chc12 = new Chance("You have been elected Chairman of the Board. Pay each player $50.", null, null, 0, -50);
         Chance chc13 = new Chance("Your building loan matures. Receive $150.", null, null, 150, 0);
 
