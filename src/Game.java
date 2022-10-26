@@ -172,7 +172,7 @@ public class Game {
         Chance chc8 = new Chance("Go back three spaces.", null, "backThreeSpaces", 0, 0);
         Chance chc9 = new Chance("Go to Jail. Do not pass Go, do not collect $200.", spaces.find(jail), "goToJail", 0, 0);
         Chance chc10 = new Chance("Take a trip to Reading Railroad (R1). If you pass Go, collect $200.", spaces.find(r1), null, 0, 0);
-        Chance chc11 = new Chance("Take a walk on the Boardwalk (H2). Advance token to Boardwalk.", spaces.find(h2), null, 0, 0);
+        Chance chc11 = new Chance("Take a walk on the Boardwalk. Advance token to Boardwalk (H2).", spaces.find(h2), null, 0, 0);
         Chance chc12 = new Chance("You have been elected Chairman of the Board. Pay each player $50.", null, null, 0, -50);
         Chance chc13 = new Chance("Your building loan matures. Receive $150.", null, null, 150, 0);
 
@@ -510,7 +510,7 @@ public class Game {
     }
 
     /*Andrew*/
-    private void propertyLand(Player player) {
+    public void propertyLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         Property property = (Property) player.getLocation().data;
         if (property.getOwner() == player) {
