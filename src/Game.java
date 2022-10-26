@@ -921,10 +921,18 @@ public class Game {
 
     private Player inputPlayer() {
         String name = input.nextLine();
-        Player testPlayer = new Player(name, spaces, "colorString", "backgroundColorString");
-        Link<Player> playerLink = playerTurnOrder.find(testPlayer);
-        if (playerLink != null)
-            return playerLink.data;
+        Link<Player> current = playerTurnOrder.getFirst();
+        int i = 0;
+        while(true) {
+            if (current.data.getName().equals(name) && (!name.equals(currentPlayer.data.getName()))) {
+                return current.data;
+            }
+            if (i > 6) {
+                break;
+            }
+            current = current.next;
+            i++;
+        }
         System.out.println("Please input a valid player name.");
         return inputPlayer();
     }
@@ -934,8 +942,8 @@ public class Game {
             try {
                 String response = input.nextLine();
                 int num = Integer.parseInt(response);
-                if (num <= 0) {
-                    System.out.println("Please input a number that is greater than 0.");
+                if (num < 0) {
+                    System.out.println("Please input a number that is greater than or equal to 0.");
                 }
                 else if (num > player.getMoney()) {
                     System.out.println("Please input a number that is less than " + player.getName() + "'s current balance.");
