@@ -118,7 +118,6 @@ public class Game {
 
         playerTurnOrder = inputPlayers();
 
-
         currentPlayer = playerTurnOrder.getFirst();
         while(currentPlayer.next != playerTurnOrder.getFirst()) {
             currentPlayer = currentPlayer.next;
@@ -197,22 +196,21 @@ public class Game {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
 
-        ArrayList<String> colorOptions = new ArrayList<>();
+        ArrayList<String> colorOptions = new ArrayList<>(); // all options the player have for colors
         colorOptions.add("Red");
         colorOptions.add("Green");
         colorOptions.add("Yellow");
         colorOptions.add("Blue");
         colorOptions.add("Magenta");
         colorOptions.add("Cyan");
-        for (int i = numPlayers; i > 0; i--) {
-
+        for (int i = numPlayers; i > 0; i--) { // iterate through players
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
             // get color
             ArrayList<String> colorStrings = inputPlayerColor(colorOptions);
-            Player player = new Player(name, spaces, colorStrings.get(0), colorStrings.get(1));
-            colorOptions.remove(colorStrings.get(2));
-            players.insertFirst(player);
+            Player player = new Player(name, spaces, colorStrings.get(0), colorStrings.get(1)); // initialize player instance
+            colorOptions.remove(colorStrings.get(2)); // remove the taken color from options
+            players.insertFirst(player); // add to Circular Linked List
         }
         return players;
     }
@@ -227,11 +225,11 @@ public class Game {
         // get user input
         String color = input.nextLine();
         for (int i = 0; i < colorOptions.size(); i++) {
-            if (color.equalsIgnoreCase(colorOptions.get(i))) {
+            if (color.equalsIgnoreCase(colorOptions.get(i))) { // return an array with the ansi strings according to the color the player enters
                 if (colorOptions.get(i).equals("Red")) {
                     ArrayList<String> strings = new ArrayList<>();
-                    strings.add("\033[0;31m");
-                    strings.add("\033[41m");
+                    strings.add("\033[0;31m"); // foreground color string
+                    strings.add("\033[41m"); // background color string
                     strings.add("Red");
                     return strings;
                 }
@@ -272,19 +270,19 @@ public class Game {
                 }
             }
         }
-        System.out.println("Please input a valid color.");
-        return inputPlayerColor(colorOptions);
+        System.out.println("Please input a valid color."); // this is reached if the user input a non-color
+        return inputPlayerColor(colorOptions); // repeat this method until the player inputs a valid color
     }
 
 
     public int inputPlayerInt() { /* Jaya */
-        while (true) {
+        while (true) { // repeat until player inputs a valid number
             try {
                 System.out.print("Number of players: ");
                 String response = input.nextLine();
                 int num = Integer.parseInt(response);
-                if (num < 2) {
-                    System.out.println("Please input a number that is greater than or equal to 2.");
+                if (num < 2 || num > 6) { // ensures that they input 2-6 players
+                    System.out.println("Please input a number that is between 2 and 6.");
                 } else {
                     return num;
                 }
@@ -498,7 +496,7 @@ public class Game {
         }
     }
     /* Jaya */
-    public boolean yesNoInput() {
+    public boolean yesNoInput() { // gets a yes or no input from the user
         String response = input.nextLine();
         if (response.equalsIgnoreCase("yes")) {
             return true;
@@ -507,8 +505,8 @@ public class Game {
             return false;
         }
         else {
-            System.out.println("Please input either \"yes\" or \"no\".");
-            return yesNoInput();
+            System.out.println("Please input either \"yes\" or \"no\"."); // this is reached if the user input something other than "yes" or "no"
+            return yesNoInput(); // repeats this method until the user inputs either "yes" or "no"
         }
     }
 
@@ -602,10 +600,10 @@ public class Game {
     }
     /* Jaya */
     private void chanceLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
-        topChanceCard.useCard(player, playerTurnOrder, spaces, this);
-        Link<Chance> nextCard = chanceCards.find(topChanceCard).next;
-        topChanceCard = nextCard.data;
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //print the space they landed on
+        topChanceCard.useCard(player, playerTurnOrder, spaces, this); // uses the top card
+        Link<Chance> nextCard = chanceCards.find(topChanceCard).next; // sets the topChanceCard to the next card in deck
+        topChanceCard = nextCard.data; // the same thing as above
     }
     /* Andrew */
     private void jailVisitingLand(Player player) {
@@ -1015,7 +1013,7 @@ public class Game {
     public CircularLinkedList<Chance> getChanceCards() {
         return chanceCards;
     }
-    /* Both Andrew and Jaya */
+    /* Andrew and Jaya */
     private BoardSpace inputProperty(Player player) {
         String name = input.nextLine();
         Link<BoardSpace> current = spaces.getFirst();
@@ -1037,7 +1035,7 @@ public class Game {
         System.out.println("Please input a valid property.");
         return inputProperty(player);
     }
-    /* Both Andrew and Jaya */
+    /* Andrew and Jaya */
     private Player inputPlayer() {
         String name = input.nextLine();
         Link<Player> current = playerTurnOrder.getFirst();
@@ -1061,10 +1059,10 @@ public class Game {
             try {
                 String response = input.nextLine();
                 int num = Integer.parseInt(response);
-                if (num < 0) {
+                if (num < 0) { // makes sure the number is positive
                     System.out.println("Please input a number that is greater than or equal to 0.");
                 }
-                else if (num > player.getMoney()) {
+                else if (num > player.getMoney()) { // makes sure that have at least as much money as they are offering
                     System.out.println("Please input a number that is less than " + player.getName() + "'s current balance.");
                 } else {
                     return num;
