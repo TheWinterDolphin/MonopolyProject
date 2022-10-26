@@ -10,8 +10,8 @@ public class Game {
     private Link<Player> currentPlayer;
     private Random random = new Random();
 
-    private CircularLinkedList<CommunityChest> communityChestCards;
-    private CircularLinkedList<Chance> chanceCards;
+    public CircularLinkedList<CommunityChest> communityChestCards;
+    public CircularLinkedList<Chance> chanceCards;
 
     private Chance topChanceCard;
     private CommunityChest topCommunityChestCard;
@@ -510,7 +510,7 @@ public class Game {
 
     private void communityChestLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
-        topCommunityChestCard.useCard(player, playerTurnOrder, spaces);
+        topCommunityChestCard.useCard(player, playerTurnOrder, spaces, this);
         Link<CommunityChest> nextCard = communityChestCards.find(topCommunityChestCard).next;
         topCommunityChestCard = nextCard.data;
     }
