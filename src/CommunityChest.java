@@ -41,7 +41,7 @@ public class CommunityChest {
         else if (type.equals("getOutOfJail")) {
             player.setComChestGetOutOfJail(true);
             System.out.println("The card has been added to your hand.");
-            game.communityChestCards.delete(this);
+            game.getCommunityChestCards().delete(this);
         }
     }
 

@@ -10,8 +10,8 @@ public class Game {
     private Link<Player> currentPlayer;
     private Random random = new Random();
 
-    public CircularLinkedList<CommunityChest> communityChestCards;
-    public CircularLinkedList<Chance> chanceCards;
+    private CircularLinkedList<CommunityChest> communityChestCards;
+    private CircularLinkedList<Chance> chanceCards;
 
     private Chance topChanceCard;
     private CommunityChest topCommunityChestCard;
@@ -336,6 +336,34 @@ public class Game {
                 playerTurn(player, new int[] {(diceRoll[0]+1), (diceRoll[1]-1)}, 0, true);
                 return;
             }
+            else if (player.isChanceGetOutOfJail() || player.isComChestGetOutOfJail()) {
+                System.out.println("Would you like to use your Get Out of Jail Free Card? (Yes/No)");
+                if (yesNoInput()) {
+                    if (player.isChanceGetOutOfJail() && player.isComChestGetOutOfJail()) {
+                        System.out.println("You have both a Chance and Community Chest Get Out of Jail Free Card! Would you like to use the Chance one? (Yes/No)");
+                        if (yesNoInput()) {
+                            player.setChanceGetOutOfJail(false);
+                            chanceCards.insertFirst(new Chance("Get Out of Jail Free!", null, "getOutOfJail", 0, 0));
+                        }
+                        else {
+                            player.setComChestGetOutOfJail(false);
+                            communityChestCards.insertFirst(new CommunityChest("Get Out Of Jail Free!", 0, "getOutOfJail", 0));
+                        }
+                    }
+                    else if (player.isChanceGetOutOfJail()) {
+                        player.setChanceGetOutOfJail(false);
+                        chanceCards.insertFirst(new Chance("Get Out of Jail Free!", null, "getOutOfJail", 0, 0));
+                    }
+                    else {
+                        player.setComChestGetOutOfJail(false);
+                        communityChestCards.insertFirst(new CommunityChest("Get Out Of Jail Free!", 0, "getOutOfJail", 0));
+                    }
+                    System.out.println("You are free. Start your normal turn.");
+                    player.setTurnsLeftInJail(0);
+                    playerTurn(player, null, 0, false);
+                    return;
+                }
+            }
             else if (player.getTurnsLeftInJail() == 0) {
                 System.out.println("After 3 turns in jail, you are free. Please pay $50. Start your normal turn.");
                 player.setMoney(player.getMoney() - 50);
@@ -344,8 +372,7 @@ public class Game {
             }
             else {
                 System.out.println("Would you like to pay $50 to leave jail early? (Yes/No)");
-                boolean choice = yesNoInput();
-                if (choice) {
+                if (yesNoInput()) {
                     System.out.println("You paid $50. You are free. Start your normal turn.");
                     player.setMoney(player.getMoney() - 50);
                     player.setTurnsLeftInJail(0);
@@ -439,17 +466,20 @@ public class Game {
         }
 
         if ((diceRoll[0] != diceRoll[1])) {
-            System.out.print("Would you like to sell any of your properties to the bank? (Yes/No)");
+            System.out.print("Would you like to sell any of your properties (including railroads and utilities) to the bank? (Yes/No)");
             if (yesNoInput()) {
                 while (true) {
                     System.out.print("What is the name of the property you would like to sell?");
                     BoardSpace property = inputProperty(player); //Including Railroads and Utilities
                     if (property.getType().equals("Property")) {
                         ((Property) property).setOwner(null);
+                        player.setMoney(player.getMoney() + (((Property) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
                     } else if (property.getType().equals("Railroad")) {
                         player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
+                        player.setMoney(player.getMoney() + (((Railroad) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
                         ((Railroad) property).setOwner(null);
                     } else {
+                        player.setMoney(player.getMoney() + (((Utility) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
                         ((Utility) property).setOwner(null);
                     }
                     System.out.print("Would you like to stop selling properties? (Yes/No)");
@@ -523,13 +553,15 @@ public class Game {
             player.setMoney(player.getMoney() - taxSpace.getFixedTax());
         }
         else {
-            System.out.println("You must pay $" + taxSpace.getFixedTax() + " or " + (taxSpace.getDynamicTax()*100) + "% (For you this is $" + (taxSpace.getDynamicTax()*player.getMoney()) + ")");
-            System.out.println("Would you rather pay the fixed tax ($" + taxSpace.getFixedTax() + ")?");
+            System.out.println("You must pay $" + taxSpace.getFixedTax() + " or " + ((int) taxSpace.getDynamicTax()*100) + "% (For you this is $" + ((int) taxSpace.getDynamicTax()*player.getMoney()) + ")");
+            System.out.println("Would you rather pay the fixed tax ($" + taxSpace.getFixedTax() + ")? (Yes/No)");
             if (yesNoInput()) {
                 player.setMoney(player.getMoney() - taxSpace.getFixedTax());
+                System.out.println("You paid $" + taxSpace.getFixedTax() + " to the bank.");
             }
             else {
-                player.setMoney((int)(player.getMoney() - (taxSpace.getDynamicTax()*player.getMoney())));
+                player.setMoney(player.getMoney() - ((int) (taxSpace.getDynamicTax()*player.getMoney())));
+                System.out.println("You paid $" + ((int) (taxSpace.getDynamicTax()*player.getMoney())) + " to the bank.");
             }
         }
     }
@@ -907,13 +939,28 @@ public class Game {
     public boolean getIsGameOver() {
         return isGameOver;
     }
+
+    public CircularLinkedList<CommunityChest> getCommunityChestCards() {
+        return communityChestCards;
+    }
+
+    public CircularLinkedList<Chance> getChanceCards() {
+        return chanceCards;
+    }
+
     private BoardSpace inputProperty(Player player) {
         String name = input.nextLine();
-        BoardSpace testProperty = new BoardSpace("spaceName",name,"type");
-        Link<BoardSpace> propertyLink = spaces.find(testProperty);
-        if (propertyLink != null) {
-            if (player.getProperties().contains(propertyLink.data))
-                return propertyLink.data;
+        Link<BoardSpace> current = spaces.getFirst();
+        int i = 0;
+        while(true) {
+            if (current.data.getRealName().equals(name) && (player.getProperties().contains(current))) {
+                return current.data;
+            }
+            if (i > 40) {
+                break;
+            }
+            current = current.next;
+            i++;
         }
         System.out.println("Please input a valid property.");
         return inputProperty(player);
