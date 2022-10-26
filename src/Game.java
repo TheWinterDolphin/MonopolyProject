@@ -118,12 +118,12 @@ public class Game {
 
         playerTurnOrder = inputPlayers();
 
-<<<<<<< HEAD
+
         currentPlayer = playerTurnOrder.getFirst();
         while(currentPlayer.next != playerTurnOrder.getFirst()) {
             currentPlayer = currentPlayer.next;
         }
-=======
+
         //initialize community chest list
         CommunityChest ccc1 = new CommunityChest("Advance to GO (Collect $200).", 200, "advanceToGo", 0);
         CommunityChest ccc2 = new CommunityChest("Bank error in your favor. Collect $200.", 200, null, 0);
@@ -191,16 +191,16 @@ public class Game {
         chanceCards.insertFirst(chc13);
 
         topChanceCard = chc13;
->>>>>>> 7fe8415d22848f2a7ddbe70e7b0f765c5c88ae3b
+
     }
 
     public CircularLinkedList<Player> inputPlayers() {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
-<<<<<<< HEAD
+
         String[] colorOptions = new String[]{"Red","Green","Yellow","Blue","Magenta","Cyan"};
         for (int i = numPlayers; i > 0; i--) {
-=======
+
         ArrayList<String> colorOptions = new ArrayList<>();
         colorOptions.add("Red");
         colorOptions.add("Green");
@@ -209,7 +209,7 @@ public class Game {
         colorOptions.add("Magenta");
         colorOptions.add("Cyan");
         for (int i = 1; i <= numPlayers; i++) {
->>>>>>> 7fe8415d22848f2a7ddbe70e7b0f765c5c88ae3b
+
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
             // get color
@@ -279,10 +279,8 @@ public class Game {
         System.out.println("Please input a valid color.");
         return inputPlayerColor(colorOptions);
     }
-<<<<<<< HEAD
-    
-=======
->>>>>>> 7fe8415d22848f2a7ddbe70e7b0f765c5c88ae3b
+
+
     public int inputPlayerInt() {
         while (true) {
             try {
