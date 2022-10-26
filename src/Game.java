@@ -295,14 +295,14 @@ public class Game {
     }
     /* Andrew */
     public void next() {
-        printBoard();
+        printBoard(); //Prints the board in between each player's turn
 
-        currentPlayer = currentPlayer.next;
-        playerTurn(currentPlayer.data, null, 0, false);
+        currentPlayer = currentPlayer.next; //Next player will have their turn
+        playerTurn(currentPlayer.data, null, 0, false); //Start next player's turn with a random dice roll, 0 doubles so far, and they are not leaving jail early by means of a double
 
-        Link<Player> currentPlayerCheck = currentPlayer.next;
+        Link<Player> currentPlayerCheck = currentPlayer.next; //Start with the nextPlayer for checking if bankrupt
 
-        checkIfBankrupt(currentPlayerCheck.data);
+        checkIfBankrupt(currentPlayerCheck.data); //
         currentPlayerCheck = currentPlayerCheck.next;
 
         while(currentPlayerCheck != currentPlayer.next) {
@@ -472,14 +472,14 @@ public class Game {
                         if (property.getType().equals("Property")) {
                             ((Property) property).setOwner(null);
                             player.removeProperty(property);
-                            player.setMoney(player.getMoney() + (((Property) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                            player.setMoney(player.getMoney() + (((Property) property).getPrice()));
                         } else if (property.getType().equals("Railroad")) {
                             player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
-                            player.setMoney(player.getMoney() + (((Railroad) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                            player.setMoney(player.getMoney() + (((Railroad) property).getPrice()));
                             ((Railroad) property).setOwner(null);
                             player.removeProperty(property);
                         } else {
-                            player.setMoney(player.getMoney() + (((Utility) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                            player.setMoney(player.getMoney() + (((Utility) property).getPrice()));
                             ((Utility) property).setOwner(null);
                             player.removeProperty(property);
                         }
@@ -697,7 +697,7 @@ public class Game {
                     }
                 }
                 boolean comChestGetOutOfJailToRecipient = false;
-                if (recipient.isChanceGetOutOfJail()) {
+                if (recipient.isComChestGetOutOfJail()) {
                     System.out.print("Would you like to offer your Community Chest Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         comChestGetOutOfJailToRecipient = true;
