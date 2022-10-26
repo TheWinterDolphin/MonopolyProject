@@ -465,28 +465,30 @@ public class Game {
         }
 
         if ((diceRoll[0] != diceRoll[1])) {
-            System.out.print("Would you like to sell any of your properties (including railroads and utilities) to the bank? (Yes/No)");
-            if (yesNoInput()) {
-                while (true) {
-                    System.out.print("What is the name of the property you would like to sell?");
-                    BoardSpace property = inputProperty(player); //Including Railroads and Utilities
-                    if (property.getType().equals("Property")) {
-                        ((Property) property).setOwner(null);
-                        player.removeProperty(property);
-                        player.setMoney(player.getMoney() + (((Property) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
-                    } else if (property.getType().equals("Railroad")) {
-                        player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
-                        player.setMoney(player.getMoney() + (((Railroad) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
-                        ((Railroad) property).setOwner(null);
-                        player.removeProperty(property);
-                    } else {
-                        player.setMoney(player.getMoney() + (((Utility) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
-                        ((Utility) property).setOwner(null);
-                        player.removeProperty(property);
-                    }
-                    System.out.print("Would you like to stop selling properties? (Yes/No)");
-                    if (yesNoInput()) {
-                        break;
+            if (player.getProperties().size() > 0) {
+                System.out.print("Would you like to sell any of your properties (including railroads and utilities) to the bank? (Yes/No)");
+                if (yesNoInput()) {
+                    while (true) {
+                        System.out.print("What is the name of the property you would like to sell?");
+                        BoardSpace property = inputProperty(player); //Including Railroads and Utilities
+                        if (property.getType().equals("Property")) {
+                            ((Property) property).setOwner(null);
+                            player.removeProperty(property);
+                            player.setMoney(player.getMoney() + (((Property) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                        } else if (property.getType().equals("Railroad")) {
+                            player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
+                            player.setMoney(player.getMoney() + (((Railroad) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                            ((Railroad) property).setOwner(null);
+                            player.removeProperty(property);
+                        } else {
+                            player.setMoney(player.getMoney() + (((Utility) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                            ((Utility) property).setOwner(null);
+                            player.removeProperty(property);
+                        }
+                        System.out.print("Would you like to stop selling properties? (Yes/No)");
+                        if (yesNoInput()) {
+                            break;
+                        }
                     }
                 }
             }
@@ -556,15 +558,15 @@ public class Game {
             player.setMoney(player.getMoney() - taxSpace.getFixedTax());
         }
         else {
-            System.out.println("You must pay $" + taxSpace.getFixedTax() + " or " + ((int) taxSpace.getDynamicTax()*100) + "% (For you this is $" + ((int) taxSpace.getDynamicTax()*player.getMoney()) + ")");
+            System.out.println("You must pay $" + taxSpace.getFixedTax() + " or " + ((int) (taxSpace.getDynamicTax()*100)) + "% (For you this is $" + ((int) (taxSpace.getDynamicTax()*player.getMoney())) + ")");
             System.out.println("Would you rather pay the fixed tax ($" + taxSpace.getFixedTax() + ")? (Yes/No)");
             if (yesNoInput()) {
                 player.setMoney(player.getMoney() - taxSpace.getFixedTax());
                 System.out.println("You paid $" + taxSpace.getFixedTax() + " to the bank.");
             }
             else {
-                player.setMoney(player.getMoney() - ((int) (taxSpace.getDynamicTax()*player.getMoney())));
                 System.out.println("You paid $" + ((int) (taxSpace.getDynamicTax()*player.getMoney())) + " to the bank.");
+                player.setMoney(player.getMoney() - ((int) (taxSpace.getDynamicTax()*player.getMoney())));
             }
         }
     }
@@ -673,31 +675,66 @@ public class Game {
                 Player recipient = inputPlayer();
                 System.out.print("How much money are you offering?");
                 int moneyToRecipient = inputPlayerMoney(player); //Make sure they are not offering more money than they have (and make sure it is a positive number)
-                System.out.print("Would you like to offer properties?");
+
                 ArrayList<BoardSpace> propertiesToRecipient = new ArrayList<>();
-                if (yesNoInput()) {
-                    while(true) {
-                        System.out.print("What is the name of the property you would like to offer?");
-                        propertiesToRecipient.add(inputProperty(player)); //Including Railroads and Utilities
-                        System.out.print("Would you like to stop offering properties? (Yes/No)");
-                        if (yesNoInput()) {
-                            break;
+                if (player.getProperties().size() > 0) {
+                    System.out.print("Would you like to offer properties?");
+                    if (yesNoInput()) {
+                        while (true) {
+                            System.out.print("What is the name of the property you would like to offer?");
+                            propertiesToRecipient.add(inputProperty(player)); //Including Railroads and Utilities
+                            System.out.print("Would you like to stop offering properties? (Yes/No)");
+                            if (yesNoInput()) {
+                                break;
+                            }
                         }
+                    }
+                }
+
+                boolean chanceGetOutOfJailToRecipient = false;
+                if (recipient.isChanceGetOutOfJail()) {
+                    System.out.print("Would you like to offer your Chance Get out Of Jail Free Card? (Yes/No)");
+                    if (yesNoInput()) {
+                        chanceGetOutOfJailToRecipient = true;
+                    }
+                }
+                boolean comChestGetOutOfJailToRecipient = false;
+                if (recipient.isChanceGetOutOfJail()) {
+                    System.out.print("Would you like to offer your Community Chest Get out Of Jail Free Card? (Yes/No)");
+                    if (yesNoInput()) {
+                        comChestGetOutOfJailToRecipient = true;
                     }
                 }
 
                 System.out.print("How much money are you requesting?");
                 int moneyFromRecipient = inputPlayerMoney(recipient); //Make sure they are not offering more money than they have (and make sure it is a positive number)
-                System.out.print("Would you like to request properties?");
                 ArrayList<BoardSpace> propertiesFromRecipient = new ArrayList<>();
-                if (yesNoInput()) {
-                    while(true) {
-                        System.out.print("What is the name of the property you would like to request?");
-                        propertiesFromRecipient.add(inputProperty(recipient)); //Including Railroads and Utilities
-                        System.out.print("Would you like to stop requesting properties? (Yes/No)");
-                        if (yesNoInput()) {
-                            break;
+                if (recipient.getProperties().size() > 0) {
+                    System.out.print("Would you like to request properties?");
+                    if (yesNoInput()) {
+                        while (true) {
+                            System.out.print("What is the name of the property you would like to request?");
+                            propertiesFromRecipient.add(inputProperty(recipient)); //Including Railroads and Utilities
+                            System.out.print("Would you like to stop requesting properties? (Yes/No)");
+                            if (yesNoInput()) {
+                                break;
+                            }
                         }
+                    }
+                }
+
+                boolean chanceGetOutOfJailFromRecipient = false;
+                if (recipient.isChanceGetOutOfJail()) {
+                    System.out.print("Would you like to request their Chance Get out Of Jail Free Card? (Yes/No)");
+                    if (yesNoInput()) {
+                        chanceGetOutOfJailFromRecipient = true;
+                    }
+                }
+                boolean comChestGetOutOfJailFromRecipient = false;
+                if (recipient.isChanceGetOutOfJail()) {
+                    System.out.print("Would you like to request their Community Chest Get out Of Jail Free Card? (Yes/No)");
+                    if (yesNoInput()) {
+                        comChestGetOutOfJailFromRecipient = true;
                     }
                 }
 
@@ -705,6 +742,23 @@ public class Game {
                 if (yesNoInput()) {
                     player.setMoney(player.getMoney() + moneyFromRecipient - moneyToRecipient);
                     recipient.setMoney(recipient.getMoney() + moneyToRecipient - moneyFromRecipient);
+
+                    if (chanceGetOutOfJailToRecipient) {
+                        player.setChanceGetOutOfJail(false);
+                        recipient.setChanceGetOutOfJail(true);
+                    }
+                    if (chanceGetOutOfJailFromRecipient) {
+                        player.setChanceGetOutOfJail(true);
+                        recipient.setChanceGetOutOfJail(false);
+                    }
+                    if (comChestGetOutOfJailToRecipient) {
+                        player.setComChestGetOutOfJail(false);
+                        recipient.setComChestGetOutOfJail(true);
+                    }
+                    if (comChestGetOutOfJailToRecipient) {
+                        player.setComChestGetOutOfJail(true);
+                        recipient.setComChestGetOutOfJail(false);
+                    }
 
                     for (BoardSpace property : propertiesFromRecipient) {
                         if (property.getType().equals("Property")) {
@@ -755,7 +809,7 @@ public class Game {
         if (player.getMoney() < 0) {
             playerTurnOrder.delete(player);
             System.out.println("" + player.getName() + " went bankrupt. Sorry, you are out of the game.");
-            if (player.getProperties() != null) {
+            if (player.getProperties().size() > 0) {
                 for (BoardSpace property : player.getProperties()) {
                     if (property.getType().equals("Property")) {
                         ((Property) property).setOwner(null);
@@ -968,8 +1022,12 @@ public class Game {
         Link<BoardSpace> current = spaces.getFirst();
         int i = 0;
         while(true) {
-            if (current.data.getRealName().equals(name) && (player.getProperties().contains(current))) {
-                return current.data;
+            if (current.data.getRealName().equals(name) || current.data.getSpaceName().equals(name)) {
+                for (BoardSpace property : player.getProperties()) {
+                    if (property.getRealName().equals(name) || property.getSpaceName().equals(name) ) {
+                        return current.data;
+                    }
+                }
             }
             if (i > 40) {
                 break;

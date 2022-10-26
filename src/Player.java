@@ -23,6 +23,7 @@ public class Player {
         numOfRailroadsOwned = 0;
         chanceGetOutOfJail = false;
         comChestGetOutOfJail = false;
+        this.properties = new ArrayList<>();
     }
 
 
