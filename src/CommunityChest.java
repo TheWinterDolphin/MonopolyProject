@@ -39,7 +39,7 @@ public class CommunityChest {
             System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
         }
         else if (type.equals("getOutOfJail")) {
-            player.setNumGetOutOfJailFree(player.getNumGetOutOfJailFree() + 1);
+            player.setComChestGetOutOfJail(true);
             System.out.println("The card has been added to your hand.");
             game.communityChestCards.delete(this);
         }
