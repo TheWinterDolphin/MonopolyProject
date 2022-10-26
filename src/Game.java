@@ -22,7 +22,6 @@ public class Game {
 
     public void setup() {
         // initialize spaces
-        playerTurnOrder = inputPlayers();
         Property h2 = new Property("H2", "Boardwalk", 400, 50);
         Property h1 = new Property("H1", "Park Place", 350, 35);
         Property g3 = new Property("G3", "Pennsylvania Avenue", 320, 28);
@@ -110,6 +109,8 @@ public class Game {
         spaces.insertFirst(cc1);
         spaces.insertFirst(a1);
         spaces.insertFirst(go);
+
+        playerTurnOrder = inputPlayers();
 
         //initialize community chest list
         CommunityChest ccc1 = new CommunityChest("Advance to GO (Collect $200).", 200, "advanceToGo", 0);
