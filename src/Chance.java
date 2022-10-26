@@ -5,7 +5,16 @@ public class Chance {
     private int moneyFromPlayers; // positive to receive, negative to give
     private String message;
 
+    public Chance(String message, Link<BoardSpace> newLocation, String type, int moneyFromBank, int moneyFromPlayers) {
+        this.message = message;
+        this.newLocation = newLocation;
+        this.type = type;
+        this.moneyFromBank = moneyFromBank;
+        this.moneyFromPlayers = moneyFromPlayers;
+    }
+
     public void useCard(Player player, CircularLinkedList<Player> players, CircularLinkedList<BoardSpace> spaces, Game game) {
+        System.out.println(message);
         player.setMoney(player.getMoney() + moneyFromBank);
         // pay each player
         int sum = 0;
