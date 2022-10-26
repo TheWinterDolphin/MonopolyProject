@@ -19,9 +19,6 @@ public class Player {
         this.foregroundColorString = foregroundColorString;
         this.backgroundColorString = backgroundColorString;
         money = 1500;
-        if (name.equals("Blue")) {
-            money = -100000;
-        }
         properties = null;
         numOfRailroadsOwned = 0;
         chanceGetOutOfJail = false;
