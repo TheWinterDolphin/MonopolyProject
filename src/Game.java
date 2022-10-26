@@ -118,6 +118,7 @@ public class Game {
 
         playerTurnOrder = inputPlayers();
 
+        //Sets the currentPlayer to the "last" player, that way that at the first method call of game.next(), it advances the currentPlayer to the actual first player
         currentPlayer = playerTurnOrder.getFirst();
         while(currentPlayer.next != playerTurnOrder.getFirst()) {
             currentPlayer = currentPlayer.next;
@@ -568,7 +569,7 @@ public class Game {
         }
     }
     /* Andrew */
-    private void railroadLand(Player player) {
+    public void railroadLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         Railroad railroad = (Railroad) player.getLocation().data;
         if (railroad.getOwner() == player) {
