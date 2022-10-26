@@ -300,7 +300,7 @@ public class Game {
         printBoard();
 
         currentPlayer = currentPlayer.next;
-        playerTurn(currentPlayer.data, null, 0);
+        playerTurn(currentPlayer.data, null, 0, false);
 
         Link<Player> currentPlayerCheck = currentPlayer;
 
@@ -315,9 +315,7 @@ public class Game {
         checkGameOver();
     }
 
-    private void playerTurn(Player player, int[] inputDiceRoll, int numOfDoubles) {
-        //ALSO NEED GET OUT OF JAIL FREE CARD STUFF
-
+    private void playerTurn(Player player, int[] inputDiceRoll, int numOfDoubles, boolean leavingJailEarlyWithDouble) {
         int[] diceRoll;
 
         if (inputDiceRoll == null) {
@@ -335,13 +333,13 @@ public class Game {
 
             if (diceRoll[0] == diceRoll[1]) {
                 System.out.println("It's a double! You are free from jail. Move forward immediately with this roll.");
-                //ADD TURN STUFF HERE
+                playerTurn(player, new int[] {(diceRoll[0]+1), (diceRoll[1]-1)}, 0, true);
                 return;
             }
             else if (player.getTurnsLeftInJail() == 0) {
                 System.out.println("After 3 turns in jail, you are free. Please pay $50. Start your normal turn.");
                 player.setMoney(player.getMoney() - 50);
-                playerTurn(player, null, 0);
+                playerTurn(player, null, 0, false);
                 return;
             }
             else {
@@ -351,7 +349,7 @@ public class Game {
                     System.out.println("You paid $50. You are free. Start your normal turn.");
                     player.setMoney(player.getMoney() - 50);
                     player.setTurnsLeftInJail(0);
-                    playerTurn(player, null, 0);
+                    playerTurn(player, null, 0, false);
                     return;
                 }
             }
@@ -360,10 +358,17 @@ public class Game {
             return;
         }
 
-        System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]);
+        if (!leavingJailEarlyWithDouble) {
+            System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]);
+        }
 
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles >= 2)) {
-            System.out.print("This was your third double! Sorry, you go to directly to jail.");
+            System.out.print("This was your third double!");
+            System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
+            while(!player.getLocation().data.getType().equals("Jail")) {
+                player.setLocation(player.getLocation().next);
+            }
+            player.setTurnsLeftInJail(3);
             System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
             return;
             //ADD STUFF--can you add this stuff to where I wrote "Here!" in CommunityChest?
@@ -430,7 +435,7 @@ public class Game {
 
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles < 2)) {
             System.out.print("Your roll was a double! You get to roll again!");
-            playerTurn(player, rollDice(), numOfDoubles+1);
+            playerTurn(player, rollDice(), numOfDoubles+1, false);
         }
 
         if ((diceRoll[0] != diceRoll[1])) {
@@ -512,7 +517,21 @@ public class Game {
 
     private void taxLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
-        //NEED TO FINISH THIS
+        TaxSpace taxSpace = (TaxSpace) player.getLocation().data;
+        if (taxSpace.getDynamicTax() == -1) {
+            System.out.println("You must pay $" + taxSpace.getFixedTax());
+            player.setMoney(player.getMoney() - taxSpace.getFixedTax());
+        }
+        else {
+            System.out.println("You must pay $" + taxSpace.getFixedTax() + " or " + (taxSpace.getDynamicTax()*100) + "% (For you this is $" + (taxSpace.getDynamicTax()*player.getMoney()) + ")");
+            System.out.println("Would you rather pay the fixed tax ($" + taxSpace.getFixedTax() + ")?");
+            if (yesNoInput()) {
+                player.setMoney(player.getMoney() - taxSpace.getFixedTax());
+            }
+            else {
+                player.setMoney((int)(player.getMoney() - (taxSpace.getDynamicTax()*player.getMoney())));
+            }
+        }
     }
 
     private void railroadLand(Player player) {
@@ -522,12 +541,18 @@ public class Game {
             System.out.println("You already own this railroad. You do not need to pay rent.");
         }
         else if (railroad.getOwner() == null) {
-            System.out.println("This property is available to purchase. It costs $" + railroad.getPrice());
-            System.out.println("Would you like to buy this property? (Yes/No)");
-            if (yesNoInput()) {
-                railroad.setOwner(player);
-                player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
-                System.out.println("You now own " + railroad.getRealName());
+            System.out.println("This railroad is available to purchase. It costs $" + railroad.getPrice());
+            if (player.getMoney() >= railroad.getPrice()) {
+                System.out.println("Would you like to buy this railroad? (Yes/No)");
+                if (yesNoInput()) {
+                    railroad.setOwner(player);
+                    player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
+                    player.setMoney(player.getMoney() - railroad.getPrice());
+                    System.out.println("You now own " + railroad.getRealName());
+                }
+            }
+            else {
+                System.out.println("You unfortunately cannot afford this railroad.");
             }
         }
         else {
@@ -553,7 +578,38 @@ public class Game {
 
     private void utilityLand(Player player, int[] diceRoll) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
-        //NEED TO FINISH THIS
+        Utility utility = (Utility) player.getLocation().data;
+        if (utility.getOwner() == player) {
+            System.out.println("You already own this utility. You do not need to pay rent.");
+        }
+        else if (utility.getOwner() == null) {
+            System.out.println("This utility is available to purchase. It costs $" + utility.getPrice());
+            if (player.getMoney() >= utility.getPrice()) {
+                System.out.println("Would you like to buy this utility? (Yes/No)");
+                if (yesNoInput()) {
+                    utility.setOwner(player);
+                    player.setNumOfUtilitiesOwned(player.getNumOfUtilitiesOwned() + 1);
+                    player.setMoney(player.getMoney() - utility.getPrice());
+                    System.out.println("You now own " + utility.getRealName());
+                }
+            }
+            else {
+                System.out.println("You unfortunately cannot afford this utility.");
+            }
+        }
+        else {
+            int rentFactor;
+            if (utility.getOwner().getNumOfUtilitiesOwned() == 2) {
+                rentFactor = 10;
+            }
+            else {
+                rentFactor = 4;
+            }
+            System.out.println("This utility is owned by " + utility.getOwner().getName() + ", and rent costs " + rentFactor + " times your last roll (" + diceRoll[0] + " + " + diceRoll[1] + ").");
+            player.setMoney(player.getMoney() - (rentFactor * (diceRoll[0] + diceRoll[1])));
+            utility.getOwner().setMoney(utility.getOwner().getMoney() + (rentFactor * (diceRoll[0] + diceRoll[1])));
+            System.out.println("You paid $" + (rentFactor * (diceRoll[0] + diceRoll[1])) + " to " + utility.getOwner().getName());
+        }
     }
 
     private void freeParkingLand(Player player) {
@@ -810,6 +866,16 @@ public class Game {
         if (current2.data.getType().equals("Property")) {
             if (((Property) current2.data).getOwner() != null){
                 ownerPrefix = ((Property) current2.data).getOwner().getForegroundColorString();
+            }
+        }
+        else if (current2.data.getType().equals("Railroad")) {
+            if (((Railroad) current2.data).getOwner() != null){
+                ownerPrefix = ((Railroad) current2.data).getOwner().getForegroundColorString();
+            }
+        }
+        else if (current2.data.getType().equals("Utility")) {
+            if (((Utility) current2.data).getOwner() != null){
+                ownerPrefix = ((Utility) current2.data).getOwner().getForegroundColorString();
             }
         }
 

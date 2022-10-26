@@ -8,6 +8,7 @@ public class Player {
     private int money;
     private int turnsLeftInJail;
     private int numOfRailroadsOwned;
+    private int numOfUtilitiesOwned;
     private ArrayList<BoardSpace> properties;
     private boolean chanceGetOutOfJail;
     private boolean comChestGetOutOfJail;
@@ -107,5 +108,13 @@ public class Player {
 
     public void setForegroundColorString(String foregroundColorString) {
         this.foregroundColorString = foregroundColorString;
+    }
+
+    public int getNumOfUtilitiesOwned() {
+        return numOfUtilitiesOwned;
+    }
+
+    public void setNumOfUtilitiesOwned(int numOfUtilitiesOwned) {
+        this.numOfUtilitiesOwned = numOfUtilitiesOwned;
     }
 }

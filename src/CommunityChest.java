@@ -31,7 +31,12 @@ public class CommunityChest {
             player.setLocation(spaces.getFirst()); // move them to Go
         }
         else if (type.equals("goToJail")) {
-            // Here!
+            System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
+            while(!player.getLocation().data.getType().equals("Jail")) {
+                player.setLocation(player.getLocation().next);
+            }
+            player.setTurnsLeftInJail(3);
+            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
         }
         else if (type.equals("getOutOfJail")) {
             player.setComChestGetOutOfJail(true);
