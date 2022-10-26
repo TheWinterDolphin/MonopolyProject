@@ -20,7 +20,7 @@ public class Game {
         isGameOver = false;
     }
 
-    public void setup() {
+    public void setup() { /* Jaya */
         spaces = new CircularLinkedList<>();
         chanceCards = new CircularLinkedList<>();
         communityChestCards = new CircularLinkedList<>();
@@ -159,7 +159,7 @@ public class Game {
         communityChestCards.insertFirst(ccc15);
         communityChestCards.insertFirst(ccc16);
 
-        topCommunityChestCard = ccc16;
+        topCommunityChestCard = ccc9;
 
         // initialize chance list
         Chance chc1 = new Chance("Advance to GO (Collect $200).", spaces.getFirst(), null, 0, 0);
@@ -190,11 +190,10 @@ public class Game {
         chanceCards.insertFirst(chc12);
         chanceCards.insertFirst(chc13);
 
-        topChanceCard = chc13;
-
+        topChanceCard = chc10;
     }
 
-    public CircularLinkedList<Player> inputPlayers() {
+    public CircularLinkedList<Player> inputPlayers() { /* Jaya */
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
 
@@ -218,7 +217,7 @@ public class Game {
         return players;
     }
 
-    private ArrayList<String> inputPlayerColor(ArrayList<String> colorOptions) {
+    private ArrayList<String> inputPlayerColor(ArrayList<String> colorOptions) { /* Jaya */
         // print options
         System.out.print("What color would you like? (");
         for (int i = 0; i < colorOptions.size() - 1; i++) {
@@ -278,7 +277,7 @@ public class Game {
     }
 
 
-    public int inputPlayerInt() {
+    public int inputPlayerInt() { /* Jaya */
         while (true) {
             try {
                 System.out.print("Number of players: ");
@@ -295,7 +294,7 @@ public class Game {
             }
         }
     }
-    
+    /* Andrew */
     public void next() {
         printBoard();
 
@@ -314,7 +313,7 @@ public class Game {
 
         checkGameOver();
     }
-
+    /* Andrew */
     private void playerTurn(Player player, int[] inputDiceRoll, int numOfDoubles, boolean leavingJailEarlyWithDouble) {
         int[] diceRoll;
 
@@ -498,7 +497,7 @@ public class Game {
             System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
         }
     }
-
+    /* Jaya */
     public boolean yesNoInput() {
         String response = input.nextLine();
         if (response.equalsIgnoreCase("yes")) {
@@ -542,14 +541,14 @@ public class Game {
             System.out.println("You paid $" + property.getRent() + " to " + property.getOwner().getName());
         }
     }
-
+    /* Andrew */
     private void communityChestLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         topCommunityChestCard.useCard(player, playerTurnOrder, spaces, this);
         Link<CommunityChest> nextCard = communityChestCards.find(topCommunityChestCard).next;
         topCommunityChestCard = nextCard.data;
     }
-
+    /* Andrew */
     private void taxLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         TaxSpace taxSpace = (TaxSpace) player.getLocation().data;
@@ -570,7 +569,7 @@ public class Game {
             }
         }
     }
-
+    /* Andrew */
     private void railroadLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         Railroad railroad = (Railroad) player.getLocation().data;
@@ -601,19 +600,19 @@ public class Game {
             System.out.println("You paid $" + rent + " to " + railroad.getOwner().getName());
         }
     }
-
+    /* Jaya */
     private void chanceLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         topChanceCard.useCard(player, playerTurnOrder, spaces, this);
         Link<Chance> nextCard = chanceCards.find(topChanceCard).next;
         topChanceCard = nextCard.data;
     }
-
+    /* Andrew */
     private void jailVisitingLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         System.out.println("Don't worry, you are just visiting.");
     }
-
+    /* Andrew */
     private void utilityLand(Player player, int[] diceRoll) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         Utility utility = (Utility) player.getLocation().data;
@@ -650,12 +649,12 @@ public class Game {
             System.out.println("You paid $" + (rentFactor * (diceRoll[0] + diceRoll[1])) + " to " + utility.getOwner().getName());
         }
     }
-
+    /* Andrew */
     private void freeParkingLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         System.out.println("Nothing happens.");
     }
-
+    /* Andrew */
     private void toJailLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
@@ -664,7 +663,7 @@ public class Game {
         }
         player.setTurnsLeftInJail(3);
     }
-
+    /* Andrew */
     private void tradeWithOtherPlayers(Player player) {
         //GET OUT OF JAIL FREE CARD TRADING
 
@@ -1016,7 +1015,7 @@ public class Game {
     public CircularLinkedList<Chance> getChanceCards() {
         return chanceCards;
     }
-
+    /* Both Andrew and Jaya */
     private BoardSpace inputProperty(Player player) {
         String name = input.nextLine();
         Link<BoardSpace> current = spaces.getFirst();
@@ -1038,7 +1037,7 @@ public class Game {
         System.out.println("Please input a valid property.");
         return inputProperty(player);
     }
-
+    /* Both Andrew and Jaya */
     private Player inputPlayer() {
         String name = input.nextLine();
         Link<Player> current = playerTurnOrder.getFirst();
@@ -1056,7 +1055,7 @@ public class Game {
         System.out.println("Please input a valid player name.");
         return inputPlayer();
     }
-
+    /* Jaya */
     private int inputPlayerMoney(Player player) {
         while (true) {
             try {
