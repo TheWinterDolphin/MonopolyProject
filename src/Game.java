@@ -302,12 +302,12 @@ public class Game {
         currentPlayer = currentPlayer.next;
         playerTurn(currentPlayer.data, null, 0, false);
 
-        Link<Player> currentPlayerCheck = currentPlayer;
+        Link<Player> currentPlayerCheck = currentPlayer.next;
 
         checkIfBankrupt(currentPlayerCheck.data);
         currentPlayerCheck = currentPlayerCheck.next;
 
-        while(currentPlayerCheck != currentPlayer) {
+        while(currentPlayerCheck != currentPlayer.next) {
             checkIfBankrupt(currentPlayerCheck.data);
             currentPlayerCheck = currentPlayerCheck.next;
         }
@@ -473,14 +473,17 @@ public class Game {
                     BoardSpace property = inputProperty(player); //Including Railroads and Utilities
                     if (property.getType().equals("Property")) {
                         ((Property) property).setOwner(null);
+                        player.removeProperty(property);
                         player.setMoney(player.getMoney() + (((Property) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
                     } else if (property.getType().equals("Railroad")) {
                         player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
                         player.setMoney(player.getMoney() + (((Railroad) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
                         ((Railroad) property).setOwner(null);
+                        player.removeProperty(property);
                     } else {
                         player.setMoney(player.getMoney() + (((Utility) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
                         ((Utility) property).setOwner(null);
+                        player.removeProperty(property);
                     }
                     System.out.print("Would you like to stop selling properties? (Yes/No)");
                     if (yesNoInput()) {
@@ -522,6 +525,7 @@ public class Game {
                 System.out.println("Would you like to buy this property? (Yes/No)");
                 if (yesNoInput()) {
                     property.setOwner(player);
+                    player.addProperty(property);
                     player.setMoney(player.getMoney() - property.getPrice());
                     System.out.println("You now own " + property.getRealName());
                 }
@@ -578,6 +582,7 @@ public class Game {
                 System.out.println("Would you like to buy this railroad? (Yes/No)");
                 if (yesNoInput()) {
                     railroad.setOwner(player);
+                    player.addProperty(railroad);
                     player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
                     player.setMoney(player.getMoney() - railroad.getPrice());
                     System.out.println("You now own " + railroad.getRealName());
@@ -620,6 +625,7 @@ public class Game {
                 System.out.println("Would you like to buy this utility? (Yes/No)");
                 if (yesNoInput()) {
                     utility.setOwner(player);
+                    player.addProperty(utility);
                     player.setNumOfUtilitiesOwned(player.getNumOfUtilitiesOwned() + 1);
                     player.setMoney(player.getMoney() - utility.getPrice());
                     System.out.println("You now own " + utility.getRealName());
@@ -709,10 +715,13 @@ public class Game {
                             player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
                             recipient.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
                             ((Railroad) property).setOwner(player);
+
                         }
                         else {
                             ((Utility) property).setOwner(player);
                         }
+                        player.addProperty(property);
+                        recipient.removeProperty(property);
                     }
 
                     for (BoardSpace property : propertiesToRecipient) {
@@ -727,6 +736,8 @@ public class Game {
                         else {
                             ((Utility) property).setOwner(recipient);
                         }
+                        player.removeProperty(property);
+                        recipient.addProperty(property);
                     }
 
                     System.out.println("The deal has completed.");
@@ -744,16 +755,21 @@ public class Game {
     private void checkIfBankrupt(Player player) {
         if (player.getMoney() < 0) {
             playerTurnOrder.delete(player);
-
-            for (BoardSpace property : player.getProperties()) {
-                if (property.getType().equals("Property")) {
-                    ((Property) property).setOwner(null);
-                }
-                else if (property.getType().equals("Railroad")) {
-                    ((Railroad) property).setOwner(null);
-                }
-                else {
-                    ((Utility) property).setOwner(null);
+            System.out.println("" + player.getName() + " went bankrupt. Sorry, you are out of the game.");
+            if (player.getProperties() != null) {
+                for (BoardSpace property : player.getProperties()) {
+                    if (property.getType().equals("Property")) {
+                        ((Property) property).setOwner(null);
+                        player.removeProperty(property);
+                    }
+                    else if (property.getType().equals("Railroad")) {
+                        ((Railroad) property).setOwner(null);
+                        player.removeProperty(property);
+                    }
+                    else {
+                        ((Utility) property).setOwner(null);
+                        player.removeProperty(property);
+                    }
                 }
             }
         }

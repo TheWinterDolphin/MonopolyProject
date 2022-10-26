@@ -19,6 +19,9 @@ public class Player {
         this.foregroundColorString = foregroundColorString;
         this.backgroundColorString = backgroundColorString;
         money = 1500;
+        if (name.equals("Blue")) {
+            money = -100000;
+        }
         properties = null;
         numOfRailroadsOwned = 0;
         chanceGetOutOfJail = false;
@@ -84,6 +87,14 @@ public class Player {
 
     public ArrayList<BoardSpace> getProperties() {
         return properties;
+    }
+
+    public void addProperty(BoardSpace property) {
+        this.properties.add(property);
+    }
+
+    public void removeProperty(BoardSpace property) {
+        this.properties.remove(property);
     }
 
     public void setProperties(ArrayList<BoardSpace> properties) {
