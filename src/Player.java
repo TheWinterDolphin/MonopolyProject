@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Player {
-    private String colorString; //Ex: "\033[0;91m"
+    private String foregroundColorString; //Ex: "\033[0;91m"
     private String backgroundColorString;
     private String name;
     private Link<BoardSpace> location;
@@ -11,10 +11,10 @@ public class Player {
     private ArrayList<BoardSpace> properties;
     private int numGetOutOfJailFree;
 
-    public Player(String name, CircularLinkedList<BoardSpace> spaces, String colorString, String backgroundColorString) {
+    public Player(String name, CircularLinkedList<BoardSpace> spaces, String foregroundColorString, String backgroundColorString) {
         this.name = name;
         location = spaces.getFirst();
-        this.colorString = colorString;
+        this.foregroundColorString = foregroundColorString;
         this.backgroundColorString = backgroundColorString;
         money = 1500;
         properties = null;
@@ -24,10 +24,6 @@ public class Player {
 
     public int getNumGetOutOfJailFree() {
         return numGetOutOfJailFree;
-    }
-
-    public void setColorString(String colorString) {
-        this.colorString = colorString;
     }
 
     public String getBackgroundColorString() {
@@ -40,10 +36,6 @@ public class Player {
 
     public void setNumGetOutOfJailFree(int numGetOutOfJailFree) {
         this.numGetOutOfJailFree = numGetOutOfJailFree;
-    }
-
-    public String getColorString() {
-        return colorString;
     }
 
     public String getName() {
@@ -96,5 +88,13 @@ public class Player {
 
     public boolean equals(Player other) {
         return other.name.equalsIgnoreCase(this.name);
+    }
+
+    public String getForegroundColorString() {
+        return foregroundColorString;
+    }
+
+    public void setForegroundColorString(String foregroundColorString) {
+        this.foregroundColorString = foregroundColorString;
     }
 }
