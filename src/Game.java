@@ -198,9 +198,6 @@ public class Game {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
 
-        String[] colorOptions = new String[]{"Red","Green","Yellow","Blue","Magenta","Cyan"};
-        for (int i = numPlayers; i > 0; i--) {
-
         ArrayList<String> colorOptions = new ArrayList<>();
         colorOptions.add("Red");
         colorOptions.add("Green");
@@ -208,7 +205,7 @@ public class Game {
         colorOptions.add("Blue");
         colorOptions.add("Magenta");
         colorOptions.add("Cyan");
-        for (int i = 1; i <= numPlayers; i++) {
+        for (int i = numPlayers; i > 0; i--) {
 
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
@@ -515,6 +512,7 @@ public class Game {
 
     private void taxLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        //NEED TO FINISH THIS
     }
 
     private void railroadLand(Player player) {
