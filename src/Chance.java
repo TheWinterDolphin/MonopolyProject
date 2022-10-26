@@ -37,7 +37,8 @@ public class Chance {
             }
         }
         // do different things depending on type
-        if (type.equals("getOutOfJail")) {
+        if (type == null);
+        else if (type.equals("getOutOfJail")) {
             player.setNumGetOutOfJailFree(player.getNumGetOutOfJailFree() + 1);
         }
         else if (type.equals("goToJail")) {

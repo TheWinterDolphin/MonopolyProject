@@ -26,7 +26,8 @@ public class CommunityChest {
         } while (current != first);
         player.setMoney(player.getMoney() + sum);
         // do different things depending on type
-        if (type.equals("advanceToGo")) {
+        if (type == null);
+        else if (type.equals("advanceToGo")) {
             player.setLocation(spaces.getFirst()); // move them to Go
         }
         else if (type.equals("goToJail")) {
