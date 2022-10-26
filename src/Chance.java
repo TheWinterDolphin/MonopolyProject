@@ -54,6 +54,7 @@ public class Chance {
         }
         else if (type.equals("goToJail")) {
             player.setLocation(newLocation);
+            System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
             player.setTurnsLeftInJail(3);
         }
         else if (type.equals("backThreeSpaces")) {

@@ -398,7 +398,6 @@ public class Game {
             player.setTurnsLeftInJail(3);
             System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
             return;
-            //ADD STUFF--can you add this stuff to where I wrote "Here!" in CommunityChest?
         }
 
         player.setLocation(player.getLocation().next);
