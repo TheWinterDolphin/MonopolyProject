@@ -1,6 +1,7 @@
+/* Jaya */
 public class BoardSpace {
-    private String spaceName;
-    private String realName;
+    private String spaceName; // the name that shows up on the board, i.e. "H1"
+    private String realName; // the actual name of the space/property, i.e. "Reading Railroad"
     private String type; // options: Property, GO, Chance, Community Chest, Utility, Railroad, To Jail, Tax, Jail, Free Parking
     public BoardSpace(String spaceName, String realName, String type) {
         this.spaceName = spaceName;
@@ -32,7 +33,7 @@ public class BoardSpace {
         this.type = type;
     }
 
-    public boolean equals(BoardSpace other) {
+    public boolean equals(BoardSpace other) { // compares the realName of the BoardSpaces
         return other.realName.equals(this.realName);
     }
 }

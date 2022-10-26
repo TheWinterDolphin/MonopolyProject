@@ -1,9 +1,10 @@
+/* Jaya */
 public class CommunityChest {
     private int moneyFromBank; // positive to receive, negative to give
     private String type; // goToJail, advanceToGo, getOutOfJail
-    private int moneyFromPlayers; // positive to receive
+    private int moneyFromPlayers; // how much money each player owes you--positive to receive
 
-    private String message;
+    private String message; // message on the card
 
     public CommunityChest(String message, int moneyFromBank, String type, int moneyFromPlayers) {
         this.message = message;
@@ -19,12 +20,12 @@ public class CommunityChest {
         int sum = 0;
         Link<Player> first = players.getFirst();
         Link<Player> current = first;
-        do {
+        do { // iterate through the players, adding the money that each player owes to sum and removing that money from that player's balance
             sum += moneyFromPlayers;
             current.data.setMoney(current.data.getMoney() - moneyFromPlayers);
             current = current.next;
-        } while (current != first);
-        player.setMoney(player.getMoney() + sum);
+        } while (current != first); // stop when you get back to the beginning of the loop
+        player.setMoney(player.getMoney() + sum); // increase player's money by the amount gained from the other players
         // do different things depending on type
         if (type == null);
         else if (type.equals("advanceToGo")) {
@@ -32,7 +33,7 @@ public class CommunityChest {
         }
         else if (type.equals("goToJail")) {
             System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
-            while(!player.getLocation().data.getType().equals("Jail")) {
+            while(!player.getLocation().data.getType().equals("Jail")) { // move them until they get to Jail
                 player.setLocation(player.getLocation().next);
             }
             player.setTurnsLeftInJail(3);
@@ -41,7 +42,7 @@ public class CommunityChest {
         else if (type.equals("getOutOfJail")) {
             player.setComChestGetOutOfJail(true);
             System.out.println("The card has been added to your hand.");
-            game.getCommunityChestCards().delete(this);
+            game.getCommunityChestCards().delete(this); // remove the card from the Community Chest deck while it's in the player's hand
         }
     }
 
