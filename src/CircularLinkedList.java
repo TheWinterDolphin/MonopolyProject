@@ -1,15 +1,16 @@
 /*Andrew*/
 public class CircularLinkedList<T> {
-    private Link<T> first;
+    private Link<T> first; //Only store the first link in the circle
 
-    public Link<T> getFirst() {
+    public Link<T> getFirst() { //Getter for first
         return first;
     }
 
     public CircularLinkedList() {
-        first = null;
+        first = null; //First is null at first when circle is empty
     }
 
+    //Makes a newLink
     public void insertFirst(T newData) {
         Link<T> newLink = new Link<T>(newData);
         if (first == null) {
