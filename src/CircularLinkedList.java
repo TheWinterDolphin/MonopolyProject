@@ -10,31 +10,35 @@ public class CircularLinkedList<T> {
         first = null; //First is null at first when circle is empty
     }
 
-    //Makes a newLink
+    //Makes a newLink with newData and makes it the first link in the circle
     public void insertFirst(T newData) {
-        Link<T> newLink = new Link<T>(newData);
-        if (first == null) {
-            newLink.next = newLink;
-            first = newLink;
+        Link<T> newLink = new Link<T>(newData); //Create newLink with newData
+        if (first == null) { //If this is the first link in the circle
+            newLink.next = newLink; //This link points to itself
+            first = newLink; //First equals the newLink
         }
         else {
-            newLink.next = first;
+            newLink.next = first; //NewLink's next is original first link
+
+            //Loop through links in the circle until you get to the link that points to the original first link
             Link<T> current = first;
             while(current.next != first) {
                 current = current.next;
             }
-            current.next = newLink;
-            first = newLink;
+
+            current.next = newLink; //This "last" link's next is now the newLInk
+            first = newLink; //newLink is now the first in the circle
         }
     }
 
+    //Returns a link that has the given targetData
     public Link<T> find(T targetData) {
-        if (targetData.equals(first.data)) {
+        if (targetData.equals(first.data)) { //Edge case for if the first link has the targetData
             return first;
         }
 
+        //Loop through each link in the circle (stop at
         Link<T> current = first.next;
-
         while(current != first) {
             if (current.data.equals(targetData)) {
                 return current;
