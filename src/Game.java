@@ -187,46 +187,77 @@ public class Game {
     public CircularLinkedList<Player> inputPlayers() {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
-        String[] colorOptions = new String[]{"Red","Green","Yellow","Blue","Magenta","Cyan"};
+        ArrayList<String> colorOptions = new ArrayList<>();
+        colorOptions.add("Red");
+        colorOptions.add("Green");
+        colorOptions.add("Yellow");
+        colorOptions.add("Blue");
+        colorOptions.add("Magenta");
+        colorOptions.add("Cyan");
         for (int i = 1; i <= numPlayers; i++) {
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
             // get color
-            String[] colorStrings = inputPlayerColor(colorOptions);
-            Player player = new Player(name, spaces, colorStrings[0], colorStrings[1]);
+            ArrayList<String> colorStrings = inputPlayerColor(colorOptions);
+            Player player = new Player(name, spaces, colorStrings.get(0), colorStrings.get(1));
+            colorOptions.remove(colorStrings.get(2));
             players.insertFirst(player);
         }
         return players;
     }
 
-    private String[] inputPlayerColor(String[] colorOptions) {
+    private ArrayList<String> inputPlayerColor(ArrayList<String> colorOptions) {
         // print options
         System.out.print("What color would you like? (");
-        for (int i = 0; i < colorOptions.length - 1; i++) {
-            System.out.print(colorOptions[i] + ", ");
+        for (int i = 0; i < colorOptions.size() - 1; i++) {
+            System.out.print(colorOptions.get(i) + ", ");
         }
-        System.out.println(colorOptions[colorOptions.length - 1] + ")");
+        System.out.println(colorOptions.get(colorOptions.size() - 1) + ")");
         // get user input
         String color = input.nextLine();
-        for (int i = 0; i < colorOptions.length; i++) {
-            if (color.equalsIgnoreCase(colorOptions[i])) {
-                if (colorOptions[i].equals("Red")) {
-                    return new String[]{"\033[0;31m","\033[41m"};
+        for (int i = 0; i < colorOptions.size(); i++) {
+            if (color.equalsIgnoreCase(colorOptions.get(i))) {
+                if (colorOptions.get(i).equals("Red")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;31m");
+                    strings.add("\033[41m");
+                    strings.add("Red");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Green")) {
-                    return new String[]{" \033[0;32m","\033[42m"};
+                if (colorOptions.get(i).equals("Green")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;32m");
+                    strings.add("\033[42m");
+                    strings.add("Green");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Yellow")) {
-                    return new String[]{"\033[0;33m","\033[43m"};
+                if (colorOptions.get(i).equals("Yellow")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;33m");
+                    strings.add("\033[43m");
+                    strings.add("Yellow");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Blue")) {
-                    return new String[]{"\033[0;34m","\033[44m"};
+                if (colorOptions.get(i).equals("Blue")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;34m");
+                    strings.add("\033[44m");
+                    strings.add("Blue");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Magenta")) {
-                    return new String[]{"\033[0;35m","\033[45m"};
+                if (colorOptions.get(i).equals("Magenta")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;35m");
+                    strings.add("\033[45m");
+                    strings.add("Magenta");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Cyan")) {
-                    return new String[]{"\033[0;36m","\033[46m"};
+                if (colorOptions.get(i).equals("Cyan")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;36m");
+                    strings.add("\033[46m");
+                    strings.add("Cyan");
+                    return strings;
                 }
             }
         }
