@@ -21,6 +21,10 @@ public class Game {
     }
 
     public void setup() {
+        spaces = new CircularLinkedList<>();
+        chanceCards = new CircularLinkedList<>();
+        communityChestCards = new CircularLinkedList<>();
+
         // initialize spaces
         Property h2 = new Property("H2", "Boardwalk", 400, 50);
         Property h1 = new Property("H1", "Park Place", 350, 35);
