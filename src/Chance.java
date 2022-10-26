@@ -26,20 +26,24 @@ public class Chance {
             current = current.next;
         } while (current != first);
         player.setMoney(player.getMoney() + sum);
-        if (newLocation != null && type != null && !type.equals("goToJail")) {
-            // move to location, collect $200 if pass go
-            Link<BoardSpace> currentLocation = player.getLocation();
-            while (!currentLocation.data.equals(newLocation.data)) {
-                currentLocation = currentLocation.next;
-                if (currentLocation.equals(spaces.getFirst())) { // if they pass Go
-                    player.setMoney(player.getMoney() + 200);
+        if (newLocation != null) {
+            if (type != null && type.equals("goToJail"));
+            else {
+                // move to location, collect $200 if pass go
+                Link<BoardSpace> currentLocation = player.getLocation();
+                while (!currentLocation.data.equals(newLocation.data)) {
+                    currentLocation = currentLocation.next;
+                    if (currentLocation.equals(spaces.getFirst())) { // if they pass Go
+                        player.setMoney(player.getMoney() + 200);
+                    }
                 }
+                player.setLocation(currentLocation);
             }
         }
         // do different things depending on type
         if (type == null);
         else if (type.equals("getOutOfJail")) {
-            player.setNumGetOutOfJailFree(player.getNumGetOutOfJailFree() + 1);
+            player.setChanceGetOutOfJail(true);
             System.out.println("The card has been added to your hand.");
             game.chanceCards.delete(this);
         }

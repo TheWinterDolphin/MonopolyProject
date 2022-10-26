@@ -9,7 +9,8 @@ public class Player {
     private int turnsLeftInJail;
     private int numOfRailroadsOwned;
     private ArrayList<BoardSpace> properties;
-    private int numGetOutOfJailFree;
+    private boolean chanceGetOutOfJail;
+    private boolean comChestGetOutOfJail;
 
     public Player(String name, CircularLinkedList<BoardSpace> spaces, String foregroundColorString, String backgroundColorString) {
         this.name = name;
@@ -19,12 +20,10 @@ public class Player {
         money = 1500;
         properties = null;
         numOfRailroadsOwned = 0;
-        numGetOutOfJailFree = 0;
+        chanceGetOutOfJail = false;
+        comChestGetOutOfJail = false;
     }
 
-    public int getNumGetOutOfJailFree() {
-        return numGetOutOfJailFree;
-    }
 
     public String getBackgroundColorString() {
         return backgroundColorString;
@@ -34,8 +33,20 @@ public class Player {
         this.backgroundColorString = backgroundColorString;
     }
 
-    public void setNumGetOutOfJailFree(int numGetOutOfJailFree) {
-        this.numGetOutOfJailFree = numGetOutOfJailFree;
+    public boolean isChanceGetOutOfJail() {
+        return chanceGetOutOfJail;
+    }
+
+    public void setChanceGetOutOfJail(boolean chanceGetOutOfJail) {
+        this.chanceGetOutOfJail = chanceGetOutOfJail;
+    }
+
+    public boolean isComChestGetOutOfJail() {
+        return comChestGetOutOfJail;
+    }
+
+    public void setComChestGetOutOfJail(boolean comChestGetOutOfJail) {
+        this.comChestGetOutOfJail = comChestGetOutOfJail;
     }
 
     public String getName() {
