@@ -1,3 +1,4 @@
+/* Jaya */
 public class Property extends BoardSpace {
     private Player owner;
     private boolean isMonopoly;

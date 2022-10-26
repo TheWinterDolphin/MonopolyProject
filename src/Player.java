@@ -1,16 +1,16 @@
 import java.util.ArrayList;
-
+/* Jaya */
 public class Player {
     private String foregroundColorString; //Ex: "\033[0;91m"
     private String backgroundColorString;
     private String name;
     private Link<BoardSpace> location;
     private int money;
-    private int turnsLeftInJail;
+    private int turnsLeftInJail; // starts at 3, every turn they spend in jail, it decreases
     private int numOfRailroadsOwned;
     private int numOfUtilitiesOwned;
-    private ArrayList<BoardSpace> properties;
-    private boolean chanceGetOutOfJail;
+    private ArrayList<BoardSpace> properties; // an ArrayList of all the properties they own
+    private boolean chanceGetOutOfJail; // whether they hold the Get Out of Jail Free card
     private boolean comChestGetOutOfJail;
 
     public Player(String name, CircularLinkedList<BoardSpace> spaces, String foregroundColorString, String backgroundColorString) {
@@ -18,7 +18,7 @@ public class Player {
         location = spaces.getFirst();
         this.foregroundColorString = foregroundColorString;
         this.backgroundColorString = backgroundColorString;
-        money = 1500;
+        money = 1500; // starts with $1500
         properties = null;
         numOfRailroadsOwned = 0;
         chanceGetOutOfJail = false;

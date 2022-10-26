@@ -1,3 +1,4 @@
+/* Jaya */
 public class TaxSpace extends BoardSpace {
     private int fixedTax; //Luxury is 75, Income is 200
     private double dynamicTax; //Luxury is 0, income is 0.10

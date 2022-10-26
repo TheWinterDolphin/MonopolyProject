@@ -568,7 +568,7 @@ public class Game {
         }
     }
     /* Andrew */
-    private void railroadLand(Player player) {
+    public void railroadLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         Railroad railroad = (Railroad) player.getLocation().data;
         if (railroad.getOwner() == player) {
