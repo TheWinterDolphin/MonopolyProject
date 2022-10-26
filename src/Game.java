@@ -10,11 +10,21 @@ public class Game {
     private Link<Player> currentPlayer;
     private Random random = new Random();
 
+    private CircularLinkedList<CommunityChest> communityChestCards;
+    private CircularLinkedList<Chance> chanceCards;
+
+    private Chance topChanceCard;
+    private CommunityChest topCommunityChestCard;
+
     public Game() {
         isGameOver = false;
     }
 
     public void setup() {
+        spaces = new CircularLinkedList<>();
+        chanceCards = new CircularLinkedList<>();
+        communityChestCards = new CircularLinkedList<>();
+
         // initialize spaces
         Property h2 = new Property("H2", "Boardwalk", 400, 50);
         Property h1 = new Property("H1", "Park Place", 350, 35);
@@ -108,62 +118,171 @@ public class Game {
 
         playerTurnOrder = inputPlayers();
 
+<<<<<<< HEAD
         currentPlayer = playerTurnOrder.getFirst();
         while(currentPlayer.next != playerTurnOrder.getFirst()) {
             currentPlayer = currentPlayer.next;
         }
+=======
+        //initialize community chest list
+        CommunityChest ccc1 = new CommunityChest("Advance to GO (Collect $200).", 200, "advanceToGo", 0);
+        CommunityChest ccc2 = new CommunityChest("Bank error in your favor. Collect $200.", 200, null, 0);
+        CommunityChest ccc3 = new CommunityChest("Doctor's fees. Pay $50.", -50, null, 0);
+        CommunityChest ccc4 = new CommunityChest("From sale of stock you get $50.", 50, null, 0);
+        CommunityChest ccc5 = new CommunityChest("Get Out Of Jail Free!", 0, "getOutOfJail", 0);
+        CommunityChest ccc6 = new CommunityChest("Go to Jail. Go directly to jail. Do not pass GO, do not collect $200.", 0, "goToJail", 0);
+        CommunityChest ccc7 = new CommunityChest("Grand Opera Night. Collect $50 from every player for opening night seats.", 0, null, 50);
+        CommunityChest ccc8 = new CommunityChest("Holiday Fund matures. Receive $100.", 100, null, 0);
+        CommunityChest ccc9 = new CommunityChest("Income Tax refund. Collect $20.", 20, null, 0);
+        CommunityChest ccc10 = new CommunityChest("It is your birthday. Collect $10 from every player.", 0, null, 10);
+        CommunityChest ccc11 = new CommunityChest("Life insurance matures - Collect $100", 100, null, 0);
+        CommunityChest ccc12 = new CommunityChest("Hospital Fees. Pay $50.", -50, null, 0);
+        CommunityChest ccc13 = new CommunityChest("School fees. Pay $50.", -50, null, 0);
+        CommunityChest ccc14 = new CommunityChest("Receive $25 consultancy fee.", 25, null, 0);
+        CommunityChest ccc15 = new CommunityChest("You have won second prize in a beauty contest. Collect $10.", 10, null, 0);
+        CommunityChest ccc16 = new CommunityChest("You inherit $100.", 100, null, 0);
+
+        communityChestCards.insertFirst(ccc1);
+        communityChestCards.insertFirst(ccc2);
+        communityChestCards.insertFirst(ccc3);
+        communityChestCards.insertFirst(ccc4);
+        communityChestCards.insertFirst(ccc5);
+        communityChestCards.insertFirst(ccc6);
+        communityChestCards.insertFirst(ccc7);
+        communityChestCards.insertFirst(ccc8);
+        communityChestCards.insertFirst(ccc9);
+        communityChestCards.insertFirst(ccc10);
+        communityChestCards.insertFirst(ccc11);
+        communityChestCards.insertFirst(ccc12);
+        communityChestCards.insertFirst(ccc13);
+        communityChestCards.insertFirst(ccc14);
+        communityChestCards.insertFirst(ccc15);
+        communityChestCards.insertFirst(ccc16);
+
+        topCommunityChestCard = ccc16;
+
+        // initialize chance list
+        Chance chc1 = new Chance("Advance to GO (Collect $200).", spaces.getFirst(), null, 0, 0);
+        Chance chc2 = new Chance("Advance to Illinois Ave. If you pass GO, collect $200.", spaces.find(e3), null, 0, 0);
+        Chance chc3 = new Chance("Advance to St. Charles Place. If you pass GO, collect $200.", spaces.find(c1), null, 0, 0);
+        Chance chc4 = new Chance("Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 times the amount thrown.", null, "utility", 0, 0);
+        Chance chc5 = new Chance("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the rent to which they are otherwise entitled.", null, "railroad", 0, 0);
+        Chance chc6 = new Chance("Bank pays you dividend of $50.", null, null, 50, 0);
+        Chance chc7 = new Chance("Get Out of Jail Free!", null, "getOutOfJail", 0, 0);
+        Chance chc8 = new Chance("Go back three spaces.", null, "backThreeSpaces", 0, 0);
+        Chance chc9 = new Chance("Go to Jail. Do not pass Go, do not collect $200.", spaces.find(jail), "goToJail", 0, 0);
+        Chance chc10 = new Chance("Take a trip to Reading Railroad. If you pass Go, collect $200.", spaces.find(r1), null, 0, 0);
+        Chance chc11 = new Chance("Take a walk on the Boardwalk. Advance token to Boardwalk.", spaces.find(h2), null, 0, 0);
+        Chance chc12 = new Chance("You have been elected Chairman of the Board. Pay each player $50.", null, null, 0, -50);
+        Chance chc13 = new Chance("Your building loan matures. Receive $150.", null, null, 150, 0);
+
+        chanceCards.insertFirst(chc1);
+        chanceCards.insertFirst(chc2);
+        chanceCards.insertFirst(chc3);
+        chanceCards.insertFirst(chc4);
+        chanceCards.insertFirst(chc5);
+        chanceCards.insertFirst(chc6);
+        chanceCards.insertFirst(chc7);
+        chanceCards.insertFirst(chc8);
+        chanceCards.insertFirst(chc9);
+        chanceCards.insertFirst(chc10);
+        chanceCards.insertFirst(chc11);
+        chanceCards.insertFirst(chc12);
+        chanceCards.insertFirst(chc13);
+
+        topChanceCard = chc13;
+>>>>>>> 7fe8415d22848f2a7ddbe70e7b0f765c5c88ae3b
     }
 
     public CircularLinkedList<Player> inputPlayers() {
         CircularLinkedList<Player> players = new CircularLinkedList<>();
         int numPlayers = inputPlayerInt();
+<<<<<<< HEAD
         String[] colorOptions = new String[]{"Red","Green","Yellow","Blue","Magenta","Cyan"};
         for (int i = numPlayers; i > 0; i--) {
+=======
+        ArrayList<String> colorOptions = new ArrayList<>();
+        colorOptions.add("Red");
+        colorOptions.add("Green");
+        colorOptions.add("Yellow");
+        colorOptions.add("Blue");
+        colorOptions.add("Magenta");
+        colorOptions.add("Cyan");
+        for (int i = 1; i <= numPlayers; i++) {
+>>>>>>> 7fe8415d22848f2a7ddbe70e7b0f765c5c88ae3b
             System.out.print("Name of Player " + i + ": ");
             String name = input.nextLine();
             // get color
-            String[] colorStrings = inputPlayerColor(colorOptions);
-            Player player = new Player(name, spaces, colorStrings[0], colorStrings[1]);
+            ArrayList<String> colorStrings = inputPlayerColor(colorOptions);
+            Player player = new Player(name, spaces, colorStrings.get(0), colorStrings.get(1));
+            colorOptions.remove(colorStrings.get(2));
             players.insertFirst(player);
         }
         return players;
     }
 
-    private String[] inputPlayerColor(String[] colorOptions) {
+    private ArrayList<String> inputPlayerColor(ArrayList<String> colorOptions) {
         // print options
         System.out.print("What color would you like? (");
-        for (int i = 0; i < colorOptions.length - 1; i++) {
-            System.out.print(colorOptions[i] + ", ");
+        for (int i = 0; i < colorOptions.size() - 1; i++) {
+            System.out.print(colorOptions.get(i) + ", ");
         }
-        System.out.println(colorOptions[colorOptions.length - 1] + ")");
+        System.out.println(colorOptions.get(colorOptions.size() - 1) + ")");
         // get user input
         String color = input.nextLine();
-        for (int i = 0; i < colorOptions.length; i++) {
-            if (color.equalsIgnoreCase(colorOptions[i])) {
-                if (colorOptions[i].equals("Red")) {
-                    return new String[]{"\033[0;31m","\033[41m"};
+        for (int i = 0; i < colorOptions.size(); i++) {
+            if (color.equalsIgnoreCase(colorOptions.get(i))) {
+                if (colorOptions.get(i).equals("Red")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;31m");
+                    strings.add("\033[41m");
+                    strings.add("Red");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Green")) {
-                    return new String[]{" \033[0;32m","\033[42m"};
+                if (colorOptions.get(i).equals("Green")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;32m");
+                    strings.add("\033[42m");
+                    strings.add("Green");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Yellow")) {
-                    return new String[]{"\033[0;33m","\033[43m"};
+                if (colorOptions.get(i).equals("Yellow")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;33m");
+                    strings.add("\033[43m");
+                    strings.add("Yellow");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Blue")) {
-                    return new String[]{"\033[0;34m","\033[44m"};
+                if (colorOptions.get(i).equals("Blue")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;34m");
+                    strings.add("\033[44m");
+                    strings.add("Blue");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Magenta")) {
-                    return new String[]{"\033[0;35m","\033[45m"};
+                if (colorOptions.get(i).equals("Magenta")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;35m");
+                    strings.add("\033[45m");
+                    strings.add("Magenta");
+                    return strings;
                 }
-                if (colorOptions[i].equals("Cyan")) {
-                    return new String[]{"\033[0;36m","\033[46m"};
+                if (colorOptions.get(i).equals("Cyan")) {
+                    ArrayList<String> strings = new ArrayList<>();
+                    strings.add("\033[0;36m");
+                    strings.add("\033[46m");
+                    strings.add("Cyan");
+                    return strings;
                 }
             }
         }
         System.out.println("Please input a valid color.");
         return inputPlayerColor(colorOptions);
     }
+<<<<<<< HEAD
     
+=======
+>>>>>>> 7fe8415d22848f2a7ddbe70e7b0f765c5c88ae3b
     public int inputPlayerInt() {
         while (true) {
             try {
@@ -346,7 +465,7 @@ public class Game {
         }
     }
 
-    private boolean yesNoInput() {
+    public boolean yesNoInput() {
         String response = input.nextLine();
         if (response.equalsIgnoreCase("yes")) {
             return true;
@@ -391,6 +510,9 @@ public class Game {
 
     private void communityChestLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        topCommunityChestCard.useCard(player, playerTurnOrder, spaces);
+        Link<CommunityChest> nextCard = communityChestCards.find(topCommunityChestCard).next;
+        topCommunityChestCard = nextCard.data;
     }
 
     private void taxLand(Player player) {
@@ -423,6 +545,9 @@ public class Game {
 
     private void chanceLand(Player player) {
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        topChanceCard.useCard(player, playerTurnOrder, spaces, this);
+        Link<Chance> nextCard = chanceCards.find(topChanceCard).next;
+        topChanceCard = nextCard.data;
     }
 
     private void jailVisitingLand(Player player) {
@@ -559,7 +684,7 @@ public class Game {
     }
 
     /*Andrew*/
-    private int[] rollDice() {
+    public int[] rollDice() {
         int firstVal = (random.nextInt( 6) + 1);
         int secondVal = (random.nextInt( 6) + 1);
 
