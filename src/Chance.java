@@ -38,12 +38,17 @@ public class Chance {
                     }
                 }
                 player.setLocation(currentLocation);
+                // give them options to do things
+
+                if (!currentLocation.data.getSpaceName().equals("GO")) {
+                    game.propertyLand(player);
+                }
             }
         }
         // do different things depending on type
         if (type == null);
         else if (type.equals("getOutOfJail")) {
-            player.setChanceGetOutOfJail(true);
+//            player.setChanceGetOutOfJail(true);
             System.out.println("The card has been added to your hand.");
             game.getChanceCards().delete(this);
         }
@@ -64,20 +69,24 @@ public class Chance {
                 currentLocation = currentLocation.next;
             }
             Railroad railroad = (Railroad) currentLocation.data;
-            System.out.println("You landed on " + railroad.getRealName() + " (" + railroad.getSpaceName() + ")");
             if (railroad.getOwner() == null) { // railroad is unowned
-                System.out.println("This railroad is available to purchase. It costs $" + railroad.getPrice());
-                System.out.println("Would you like to buy this railroad? (Yes/No)");
-                if (game.yesNoInput()) {
-                    railroad.setOwner(player);
-                    System.out.println("You now own " + railroad.getRealName());
+                if (player.getMoney() >= railroad.getPrice()) {
+                    System.out.println("Would you like to buy this railroad? (Yes/No)");
+                    if (game.yesNoInput()) {
+                        railroad.setOwner(player);
+                        player.setMoney(player.getMoney() - railroad.getPrice());
+                        System.out.println("You now own " + railroad.getRealName());
+                    }
+                }
+                else {
+                    System.out.println("You unfortunately cannot afford this railroad.");
                 }
             }
             else if (railroad.getOwner() == player) {
                 System.out.println("You already own this railroad. You do not need to pay rent.");
             }
             else {
-                System.out.println("This property is owned by " + railroad.getOwner().getName() + ", and rent costs $" + railroad.getRent() + ", so you have to pay $" + railroad.getRent() * 2);
+                System.out.println("This railroad is owned by " + railroad.getOwner().getName() + ", and rent costs $" + railroad.getRent() + ", so you have to pay $" + railroad.getRent() * 2);
                 player.setMoney(player.getMoney() - railroad.getRent() * 2);
                 railroad.getOwner().setMoney(railroad.getOwner().getMoney() + railroad.getRent());
 
@@ -92,10 +101,16 @@ public class Chance {
             System.out.println("You landed on " + utility.getRealName() + " (" + utility.getSpaceName() + ")");
             if (utility.getOwner() == null) { // railroad is unowned
                 System.out.println("This utility is available to purchase. It costs $" + utility.getPrice());
-                System.out.println("Would you like to buy this utility? (Yes/No)");
-                if (game.yesNoInput()) {
-                    utility.setOwner(player);
-                    System.out.println("You now own " + utility.getRealName());
+                if (player.getMoney() >= utility.getPrice()) {
+                    System.out.println("Would you like to buy this property? (Yes/No)");
+                    if (game.yesNoInput()) {
+                        utility.setOwner(player);
+                        player.setMoney(player.getMoney() - utility.getPrice());
+                        System.out.println("You now own " + utility.getRealName());
+                    }
+                }
+                else {
+                    System.out.println("You unfortunately cannot afford this utility.");
                 }
             }
             else if (utility.getOwner() == player) {
