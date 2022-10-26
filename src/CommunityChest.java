@@ -12,7 +12,7 @@ public class CommunityChest {
         this.moneyFromPlayers = moneyFromPlayers;
     }
 
-    public void useCard(Player player, CircularLinkedList<Player> players, CircularLinkedList<BoardSpace> spaces) {
+    public void useCard(Player player, CircularLinkedList<Player> players, CircularLinkedList<BoardSpace> spaces, Game game) {
         System.out.println(message);
         player.setMoney(player.getMoney() + moneyFromBank);
         // get money from players
@@ -36,6 +36,7 @@ public class CommunityChest {
         else if (type.equals("getOutOfJail")) {
             player.setNumGetOutOfJailFree(player.getNumGetOutOfJailFree() + 1);
             System.out.println("The card has been added to your hand.");
+            game.communityChestCards.delete(this);
         }
     }
 

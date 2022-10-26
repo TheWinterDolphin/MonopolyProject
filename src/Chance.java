@@ -40,6 +40,8 @@ public class Chance {
         if (type == null);
         else if (type.equals("getOutOfJail")) {
             player.setNumGetOutOfJailFree(player.getNumGetOutOfJailFree() + 1);
+            System.out.println("The card has been added to your hand.");
+            game.chanceCards.delete(this);
         }
         else if (type.equals("goToJail")) {
             player.setLocation(newLocation);
