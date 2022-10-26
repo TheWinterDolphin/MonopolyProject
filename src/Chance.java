@@ -26,7 +26,7 @@ public class Chance {
             current = current.next;
         } while (current != first);
         player.setMoney(player.getMoney() + sum);
-        if (newLocation != null && !type.equals("goToJail")) {
+        if (newLocation != null && type != null && !type.equals("goToJail")) {
             // move to location, collect $200 if pass go
             Link<BoardSpace> currentLocation = player.getLocation();
             while (!currentLocation.data.equals(newLocation.data)) {
