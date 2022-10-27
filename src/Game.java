@@ -577,8 +577,13 @@ public class Game {
                             player.removeProperty(property);
                         }
                         System.out.print("You sold " + property.getRealName() + " to the Bank.");
-                        System.out.print("Would you like to stop selling properties? (Yes/No)"); //Keep looping and selling properties if the player wants to
-                        if (yesNoInput()) {
+                        if (player.getProperties().size() > 0) { //Check to make sure that they have more properties to sell
+                            System.out.print("Would you like to stop selling properties? (Yes/No)"); //Keep looping and selling properties if the player wants to
+                            if (yesNoInput()) {
+                                break;
+                            }
+                        }
+                        else {
                             break;
                         }
                     }
