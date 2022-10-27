@@ -1,20 +1,22 @@
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.ArrayList; //used for holding variable amounts of BoardSpaces in trade methods and for dynamically changing the colors that can be validly inputted
+import java.util.Random; //used for dice rolls
+import java.util.Scanner; //used for input methods
 
 public class Game {
     private CircularLinkedList<BoardSpace> spaces;
+
     private CircularLinkedList<Player> playerTurnOrder;
-    private Scanner input = new Scanner(System.in);
-    private boolean isGameOver;
     private Link<Player> currentPlayer;
-    private Random random = new Random();
 
     private CircularLinkedList<CommunityChest> communityChestCards;
     private CircularLinkedList<Chance> chanceCards;
 
     private Chance topChanceCard;
     private CommunityChest topCommunityChestCard;
+
+    private final Scanner input = new Scanner(System.in); //used in input methods
+    private boolean isGameOver; //when true, loop in Main stops
+    private final Random random = new Random(); //used for dice rolls
 
     public Game() {
         isGameOver = false;
@@ -500,7 +502,7 @@ public class Game {
             player.setMoney(player.getMoney() + 200);
         }
 
-        //Depending on the type of the BoardSpace landed on, different Land methods are called
+        //Depending on the type of the BoardSpace landed on, different Land methods are called (other than GO which is handled in if statement above)
         else if (player.getLocation().data.getType().equals("Property")) {
             propertyLand(player);
         }
