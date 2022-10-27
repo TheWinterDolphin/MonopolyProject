@@ -690,14 +690,14 @@ public class Game {
                 }
 
                 boolean chanceGetOutOfJailToRecipient = false;
-                if (recipient.isChanceGetOutOfJail()) {
+                if (player.isChanceGetOutOfJail()) {
                     System.out.print("Would you like to offer your Chance Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         chanceGetOutOfJailToRecipient = true;
                     }
                 }
                 boolean comChestGetOutOfJailToRecipient = false;
-                if (recipient.isComChestGetOutOfJail()) {
+                if (player.isComChestGetOutOfJail()) {
                     System.out.print("Would you like to offer your Community Chest Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         comChestGetOutOfJailToRecipient = true;
@@ -729,7 +729,7 @@ public class Game {
                     }
                 }
                 boolean comChestGetOutOfJailFromRecipient = false;
-                if (recipient.isChanceGetOutOfJail()) {
+                if (recipient.isComChestGetOutOfJail()) {
                     System.out.print("Would you like to request their Community Chest Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         comChestGetOutOfJailFromRecipient = true;
@@ -753,7 +753,7 @@ public class Game {
                         player.setComChestGetOutOfJail(false);
                         recipient.setComChestGetOutOfJail(true);
                     }
-                    if (comChestGetOutOfJailToRecipient) {
+                    if (comChestGetOutOfJailFromRecipient) {
                         player.setComChestGetOutOfJail(true);
                         recipient.setComChestGetOutOfJail(false);
                     }
