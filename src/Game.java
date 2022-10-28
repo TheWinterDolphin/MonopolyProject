@@ -572,6 +572,7 @@ public class Game {
                             ((Railroad) property).setOwner(null); //Cast the type of property to the right class to get access to owner
                             player.removeProperty(property);
                         } else {
+                            player.setNumOfUtilitiesOwned(player.getNumOfUtilitiesOwned() - 1);
                             player.setMoney(player.getMoney() + (((Utility) property).getPrice()));
                             ((Utility) property).setOwner(null); //Cast the type of property to the right class to get access to owner
                             player.removeProperty(property);
