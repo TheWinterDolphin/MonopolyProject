@@ -72,6 +72,7 @@ public class Chance {
             while (!(currentLocation.data.getType().equals("Railroad"))) { // move until you get to a railroad
                 currentLocation = currentLocation.next;
             }
+            player.setLocation(currentLocation.next);
             Railroad railroad = (Railroad) currentLocation.data;
             if (railroad.getOwner() == null) { // railroad is unowned
                 if (player.getMoney() >= railroad.getPrice()) { // if the player has enough money to buy the railroad
