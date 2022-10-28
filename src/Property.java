@@ -1,9 +1,9 @@
 /* Jaya */
 public class Property extends BoardSpace {
-    private Player owner;
-    private boolean isMonopoly;
-    private int price;
-    private int rent;
+    private Player owner; //Which player owns the property
+
+    private int price; //Cost to buy property
+    private int rent; //Cost for landing on property and paying owner
 
     public Property(String spaceName, String realName, int price, int rent) {
         super(spaceName, realName,"Property");
@@ -17,14 +17,6 @@ public class Property extends BoardSpace {
 
     public void setOwner(Player owner) {
         this.owner = owner;
-    }
-
-    public boolean isMonopoly() {
-        return isMonopoly;
-    }
-
-    public void setMonopoly(boolean monopoly) {
-        isMonopoly = monopoly;
     }
 
     public int getPrice() {

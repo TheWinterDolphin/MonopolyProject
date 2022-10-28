@@ -1,13 +1,13 @@
 /* Jaya */
 public class Railroad extends BoardSpace {
-    private Player owner;
+    private Player owner; //Which player owns the railroad
 
-    private int price;
-    private int rent;
+    private int price; //Cost to buy railroad
+    private int rent; //Cost for landing on railroad and paying owner
 
     public Railroad(String spaceName, String realName) {
         super(spaceName, realName,"Railroad");
-        this.rent = 25;
+        this.rent = 25; //Rent for 1 railroad is $25, but when multiple are owned it doubles for each additional railroad (handled in Game class in railroadLand)
         this.price = 200;
     }
 

@@ -1,8 +1,9 @@
 /* Jaya */
 public class Utility extends BoardSpace {
-    private Player owner;
-    private boolean bothOwned; // rent is dice roll * 4 if 1 owned, * 10 if both owned
-    private int price;
+    private Player owner; //Which player owns the utility
+    private int price; //Cost to buy utility
+    // rent is (dice roll * 4) if both owned, (dice roll * 10) if both owned (but this is handled in Game class under utilityLand() so no need to have a rent variable here)
+
     public Utility(String spaceName, String realName, int price) {
         super(spaceName, realName,"Utility");
         this.price = price;
@@ -14,14 +15,6 @@ public class Utility extends BoardSpace {
 
     public void setOwner(Player owner) {
         this.owner = owner;
-    }
-
-    public boolean isBothOwned() {
-        return bothOwned;
-    }
-
-    public void setBothOwned(boolean bothOwned) {
-        this.bothOwned = bothOwned;
     }
 
     public int getPrice() {
