@@ -1,20 +1,22 @@
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.ArrayList; //used for holding variable amounts of BoardSpaces in trade methods and for dynamically changing the colors that can be validly inputted
+import java.util.Random; //used for dice rolls
+import java.util.Scanner; //used for input methods
 
 public class Game {
     private CircularLinkedList<BoardSpace> spaces;
+
     private CircularLinkedList<Player> playerTurnOrder;
-    private Scanner input = new Scanner(System.in);
-    private boolean isGameOver;
     private Link<Player> currentPlayer;
-    private Random random = new Random();
 
     private CircularLinkedList<CommunityChest> communityChestCards;
     private CircularLinkedList<Chance> chanceCards;
 
     private Chance topChanceCard;
     private CommunityChest topCommunityChestCard;
+
+    private final Scanner input = new Scanner(System.in); //used in input methods
+    private boolean isGameOver; //when true, loop in Main stops
+    private final Random random = new Random(); //used for dice rolls
 
     public Game() {
         isGameOver = false;
@@ -118,6 +120,7 @@ public class Game {
 
         playerTurnOrder = inputPlayers();
 
+        //Sets the currentPlayer to the "last" player, that way that at the first method call of game.next(), it advances the currentPlayer to the actual first player
         currentPlayer = playerTurnOrder.getFirst();
         while(currentPlayer.next != playerTurnOrder.getFirst()) {
             currentPlayer = currentPlayer.next;
@@ -130,16 +133,16 @@ public class Game {
         CommunityChest ccc4 = new CommunityChest("From sale of stock you get $50.", 50, null, 0);
         CommunityChest ccc5 = new CommunityChest("Get Out Of Jail Free!", 0, "getOutOfJail", 0);
         CommunityChest ccc6 = new CommunityChest("Go to Jail. Go directly to jail. Do not pass GO, do not collect $200.", 0, "goToJail", 0);
-//        CommunityChest ccc7 = new CommunityChest("Grand Opera Night. Collect $50 from every player for opening night seats.", 0, null, 50);
-//        CommunityChest ccc8 = new CommunityChest("Holiday Fund matures. Receive $100.", 100, null, 0);
-//        CommunityChest ccc9 = new CommunityChest("Income Tax refund. Collect $20.", 20, null, 0);
-//        CommunityChest ccc10 = new CommunityChest("It is your birthday. Collect $10 from every player.", 0, null, 10);
-//        CommunityChest ccc11 = new CommunityChest("Life insurance matures - Collect $100", 100, null, 0);
-//        CommunityChest ccc12 = new CommunityChest("Hospital Fees. Pay $50.", -50, null, 0);
-//        CommunityChest ccc13 = new CommunityChest("School fees. Pay $50.", -50, null, 0);
-//        CommunityChest ccc14 = new CommunityChest("Receive $25 consultancy fee.", 25, null, 0);
-//        CommunityChest ccc15 = new CommunityChest("You have won second prize in a beauty contest. Collect $10.", 10, null, 0);
-//        CommunityChest ccc16 = new CommunityChest("You inherit $100.", 100, null, 0);
+        CommunityChest ccc7 = new CommunityChest("Grand Opera Night. Collect $50 from every player for opening night seats.", 0, null, 50);
+        CommunityChest ccc8 = new CommunityChest("Holiday Fund matures. Receive $100.", 100, null, 0);
+        CommunityChest ccc9 = new CommunityChest("Income Tax refund. Collect $20.", 20, null, 0);
+        CommunityChest ccc10 = new CommunityChest("It is your birthday. Collect $10 from every player.", 0, null, 10);
+        CommunityChest ccc11 = new CommunityChest("Life insurance matures - Collect $100", 100, null, 0);
+        CommunityChest ccc12 = new CommunityChest("Hospital Fees. Pay $50.", -50, null, 0);
+        CommunityChest ccc13 = new CommunityChest("School fees. Pay $50.", -50, null, 0);
+        CommunityChest ccc14 = new CommunityChest("Receive $25 consultancy fee.", 25, null, 0);
+        CommunityChest ccc15 = new CommunityChest("You have won second prize in a beauty contest. Collect $10.", 10, null, 0);
+        CommunityChest ccc16 = new CommunityChest("You inherit $100.", 100, null, 0);
 
         communityChestCards.insertFirst(ccc1);
         communityChestCards.insertFirst(ccc2);
@@ -147,18 +150,18 @@ public class Game {
         communityChestCards.insertFirst(ccc4);
         communityChestCards.insertFirst(ccc5);
         communityChestCards.insertFirst(ccc6);
-//        communityChestCards.insertFirst(ccc7);
-//        communityChestCards.insertFirst(ccc8);
-//        communityChestCards.insertFirst(ccc9);
-//        communityChestCards.insertFirst(ccc10);
-//        communityChestCards.insertFirst(ccc11);
-//        communityChestCards.insertFirst(ccc12);
-//        communityChestCards.insertFirst(ccc13);
-//        communityChestCards.insertFirst(ccc14);
-//        communityChestCards.insertFirst(ccc15);
-//        communityChestCards.insertFirst(ccc16);
+        communityChestCards.insertFirst(ccc7);
+        communityChestCards.insertFirst(ccc8);
+        communityChestCards.insertFirst(ccc9);
+        communityChestCards.insertFirst(ccc10);
+        communityChestCards.insertFirst(ccc11);
+        communityChestCards.insertFirst(ccc12);
+        communityChestCards.insertFirst(ccc13);
+        communityChestCards.insertFirst(ccc14);
+        communityChestCards.insertFirst(ccc15);
+        communityChestCards.insertFirst(ccc16);
 
-        topCommunityChestCard = ccc6;
+        topCommunityChestCard = ccc9;
 
         // initialize chance list
         Chance chc1 = new Chance("Advance to GO (Collect $200).", spaces.getFirst(), null, 0, 0);
@@ -168,12 +171,12 @@ public class Game {
         Chance chc5 = new Chance("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the rent to which they are otherwise entitled.", null, "railroad", 0, 0);
         Chance chc6 = new Chance("Bank pays you dividend of $50.", null, null, 50, 0);
         Chance chc7 = new Chance("Get Out of Jail Free!", null, "getOutOfJail", 0, 0);
-//        Chance chc8 = new Chance("Go back three spaces.", null, "backThreeSpaces", 0, 0);
-//        Chance chc9 = new Chance("Go to Jail. Do not pass Go, do not collect $200.", spaces.find(jail), "goToJail", 0, 0);
-//        Chance chc10 = new Chance("Take a trip to Reading Railroad (R1). If you pass Go, collect $200.", spaces.find(r1), null, 0, 0);
-//        Chance chc11 = new Chance("Take a walk on the Boardwalk. Advance token to Boardwalk (H2).", spaces.find(h2), null, 0, 0);
-//        Chance chc12 = new Chance("You have been elected Chairman of the Board. Pay each player $50.", null, null, 0, -50);
-//        Chance chc13 = new Chance("Your building loan matures. Receive $150.", null, null, 150, 0);
+        Chance chc8 = new Chance("Go back three spaces.", null, "backThreeSpaces", 0, 0);
+        Chance chc9 = new Chance("Go to Jail. Do not pass Go, do not collect $200.", spaces.find(jail), "goToJail", 0, 0);
+        Chance chc10 = new Chance("Take a trip to Reading Railroad (R1). If you pass Go, collect $200.", spaces.find(r1), null, 0, 0);
+        Chance chc11 = new Chance("Take a walk on the Boardwalk. Advance token to Boardwalk (H2).", spaces.find(h2), null, 0, 0);
+        Chance chc12 = new Chance("You have been elected Chairman of the Board. Pay each player $50.", null, null, 0, -50);
+        Chance chc13 = new Chance("Your building loan matures. Receive $150.", null, null, 150, 0);
 
         chanceCards.insertFirst(chc1);
         chanceCards.insertFirst(chc2);
@@ -182,14 +185,14 @@ public class Game {
         chanceCards.insertFirst(chc5);
         chanceCards.insertFirst(chc6);
         chanceCards.insertFirst(chc7);
-//        chanceCards.insertFirst(chc8);
-//        chanceCards.insertFirst(chc9);
-//        chanceCards.insertFirst(chc10);
-//        chanceCards.insertFirst(chc11);
-//        chanceCards.insertFirst(chc12);
-//        chanceCards.insertFirst(chc13);
+        chanceCards.insertFirst(chc8);
+        chanceCards.insertFirst(chc9);
+        chanceCards.insertFirst(chc10);
+        chanceCards.insertFirst(chc11);
+        chanceCards.insertFirst(chc12);
+        chanceCards.insertFirst(chc13);
 
-        topChanceCard = chc7;
+        topChanceCard = chc10;
     }
 
     public CircularLinkedList<Player> inputPlayers() { /* Jaya */
@@ -274,7 +277,6 @@ public class Game {
         return inputPlayerColor(colorOptions); // repeat this method until the player inputs a valid color
     }
 
-
     public int inputPlayerInt() { /* Jaya */
         while (true) { // repeat until player inputs a valid number
             try {
@@ -292,29 +294,109 @@ public class Game {
             }
         }
     }
+
+    /* Andrew and Jaya */
+    private BoardSpace inputProperty(Player player) {
+        String name = input.nextLine();
+
+        /*Andrew*/
+        //Loop through all the properties (including railroads and utilities) that this player owns and check if it matches the input, then return the property if it does
+        for (BoardSpace property : player.getProperties()) {
+            if (property.getRealName().equals(name) || property.getSpaceName().equals(name)) {
+                return property;
+            }
+        }
+
+        /*Jaya*/
+        //Otherwise, loop using recursion until player inputs a valid property that the own
+        System.out.println("Please input a valid property.");
+        return inputProperty(player);
+    }
+
+    /* Andrew and Jaya */
+    private Player inputPlayer() {
+        String name = input.nextLine();
+
+        /*Andrew*/
+        //Loop through all players in the circular linked list and check for the validity of the input, return the player if it was a valid input
+        Link<Player> current = playerTurnOrder.getFirst();
+        int i = 0;
+        while(true) {
+            if (current.data.getName().equals(name) && (!name.equals(currentPlayer.data.getName()))) { //Make sure the inputted name is the name of a player, and that it is not the name of the player whose turn it is
+                return current.data;
+            }
+            if (i > 6) { //Game can never have more than 6 players, so this will break out of loop if an incorrect player name is inputted
+                break;
+            }
+            current = current.next;
+            i++;
+        }
+
+        /*Jaya*/
+        //Otherwise, loop using recursion until player inputs a valid player that is any player in the game other than them
+        System.out.println("Please input a valid player name.");
+        return inputPlayer();
+    }
+
+    /* Jaya */
+    private int inputPlayerMoney(Player player) {
+        while (true) {
+            try {
+                String response = input.nextLine();
+                int num = Integer.parseInt(response);
+                if (num < 0) { // makes sure the number is positive
+                    System.out.println("Please input a number that is greater than or equal to 0.");
+                }
+                else if (num > player.getMoney()) { // makes sure that have at least as much money as they are offering
+                    System.out.println("Please input a number that is less than " + player.getName() + "'s current balance.");
+                } else {
+                    return num;
+                }
+            } catch (Exception e) {
+                System.out.println("Please input an integer.");
+            }
+        }
+    }
+
+    /* Jaya */
+    public boolean yesNoInput() { // gets a yes or no input from the user (returns true for yes, false for no)
+        String response = input.nextLine();
+        if (response.equalsIgnoreCase("yes")) {
+            return true;
+        }
+        else if (response.equalsIgnoreCase("no")) {
+            return false;
+        }
+        else {
+            System.out.println("Please input either \"yes\" or \"no\"."); // this is reached if the user input something other than "yes" or "no"
+            return yesNoInput(); // repeats this method until the user inputs either "yes" or "no"
+        }
+    }
+
     /* Andrew */
     public void next() {
-        printBoard();
+        printBoard(); //Prints the board in between each player's turn
 
-        currentPlayer = currentPlayer.next;
-        playerTurn(currentPlayer.data, null, 0, false);
+        currentPlayer = currentPlayer.next; //Next player will have their turn
+        playerTurn(currentPlayer.data, null, 0, false); //Start next player's turn with a random dice roll, 0 doubles so far, and they are not leaving jail early by means of a double
 
-        Link<Player> currentPlayerCheck = currentPlayer.next;
+        Link<Player> currentPlayerCheck = currentPlayer.next; //Start with the nextPlayer for checking if bankrupt
 
-        checkIfBankrupt(currentPlayerCheck.data);
+        checkIfBankrupt(currentPlayerCheck.data); //Check first currentPlayerCheck for bankruptcy
+
+        //Loop through all other players and check for bankruptcy
         currentPlayerCheck = currentPlayerCheck.next;
-
         while(currentPlayerCheck != currentPlayer.next) {
             checkIfBankrupt(currentPlayerCheck.data);
             currentPlayerCheck = currentPlayerCheck.next;
         }
 
-        checkGameOver();
+        checkGameOver(); //End the game if the game is over after this turn
     }
     /* Andrew */
     private void playerTurn(Player player, int[] inputDiceRoll, int numOfDoubles, boolean leavingJailEarlyWithDouble) {
+        //If this is the start of the turn, diceRoll should be null (and defined randomly later), otherwise diceRoll will be inputted
         int[] diceRoll;
-
         if (inputDiceRoll == null) {
             System.out.println("-------------------------------------------\nStart of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney());
             diceRoll = rollDice();
@@ -323,20 +405,21 @@ public class Game {
             diceRoll = inputDiceRoll;
         }
 
+        //If the player is currently in Jail
         if (player.getTurnsLeftInJail() > 0) {
-            player.setTurnsLeftInJail(player.getTurnsLeftInJail() - 1);
+            player.setTurnsLeftInJail(player.getTurnsLeftInJail() - 1); //Lower turns left in jail by 1
 
-            System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]);
+            System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]); //Roll to check for double
 
-            if (diceRoll[0] == diceRoll[1]) {
+            if (diceRoll[0] == diceRoll[1]) { //If double player can leave jail early, then they can start their normal turn immediately with that roll
                 System.out.println("It's a double! You are free from jail. Move forward immediately with this roll.");
-                playerTurn(player, new int[] {(diceRoll[0]+1), (diceRoll[1]-1)}, 0, true);
+                playerTurn(player, new int[] {(diceRoll[0]+1), (diceRoll[1]-1)}, 0, true); //Dice roll here still has the same sum but will no longer be a double, to prevent player from getting multiple turns in during this leaving jail early with double turn
                 return;
             }
-            else if (player.isChanceGetOutOfJail() || player.isComChestGetOutOfJail()) {
+            else if (player.isChanceGetOutOfJail() || player.isComChestGetOutOfJail()) { //If the player has a get out of jail free card
                 System.out.println("Would you like to use your Get Out of Jail Free Card? (Yes/No)");
                 if (yesNoInput()) {
-                    if (player.isChanceGetOutOfJail() && player.isComChestGetOutOfJail()) {
+                    if (player.isChanceGetOutOfJail() && player.isComChestGetOutOfJail()) { //If they have both the chance and the community chest ones, they can choose which one they want to use
                         System.out.println("You have both a Chance and Community Chest Get Out of Jail Free Card! Would you like to use the Chance one? (Yes/No)");
                         if (yesNoInput()) {
                             player.setChanceGetOutOfJail(false);
@@ -347,6 +430,7 @@ public class Game {
                             communityChestCards.insertFirst(new CommunityChest("Get Out Of Jail Free!", 0, "getOutOfJail", 0));
                         }
                     }
+                    //Else they automatically use whichever get out of jail free card they have
                     else if (player.isChanceGetOutOfJail()) {
                         player.setChanceGetOutOfJail(false);
                         chanceCards.insertFirst(new Chance("Get Out of Jail Free!", null, "getOutOfJail", 0, 0));
@@ -357,17 +441,17 @@ public class Game {
                     }
                     System.out.println("You are free. Start your normal turn.");
                     player.setTurnsLeftInJail(0);
-                    playerTurn(player, null, 0, false);
+                    playerTurn(player, null, 0, false); //Player is freed and immediately starts normal turn
                     return;
                 }
             }
-            else if (player.getTurnsLeftInJail() == 0) {
+            else if (player.getTurnsLeftInJail() == 0) { //The player must leave after 3 turns in jail (they will have to pay $50 if they don't roll a double or use a get out of jail free card on this turn)
                 System.out.println("After 3 turns in jail, you are free. Please pay $50. Start your normal turn.");
                 player.setMoney(player.getMoney() - 50);
                 playerTurn(player, null, 0, false);
                 return;
             }
-            else {
+            else { //The player has the option to leave jail for $50 on any of their turns
                 System.out.println("Would you like to pay $50 to leave jail early? (Yes/No)");
                 if (yesNoInput()) {
                     System.out.println("You paid $50. You are free. Start your normal turn.");
@@ -377,43 +461,48 @@ public class Game {
                     return;
                 }
             }
+            //Otherwise the player stays in jail and cannot continue their turn anymore
             System.out.println("You have " + player.getTurnsLeftInJail() + " turns left in jail.");
-            System.out.println("Turn over!");
+            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------"); //End of their turn
             return;
         }
 
-        if (!leavingJailEarlyWithDouble) {
+        if (!leavingJailEarlyWithDouble) { //If the player left jail early with a double, they should not see their diceRoll printed out again
             System.out.println("" + player.getName() + ", you rolled a " + diceRoll[0] + " and a " + diceRoll[1]);
         }
 
+        //If this is the third double
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles >= 2)) {
             System.out.print("This was your third double!");
             System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
-            while(!player.getLocation().data.getType().equals("Jail")) {
+            while(!player.getLocation().data.getType().equals("Jail")) { //Move player to jail
                 player.setLocation(player.getLocation().next);
             }
-            player.setTurnsLeftInJail(3);
-            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
+            player.setTurnsLeftInJail(3); //Player has 3 turns left in jail
+            System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------"); //End of their turn
             return;
         }
 
-        player.setLocation(player.getLocation().next);
-        for (int i=1; i<(diceRoll[0]+diceRoll[1] - 1); i++) {
-            if (player.getLocation().data.getType().equals("GO")) {
+        //Move the player the given amount of spaces by the diceRoll
+        player.setLocation(player.getLocation().next); //All players move forward at least one (you can't roll a 0 or a 1 b/c minimum roll is a 2) (This is to prevent GO checking logic for applying for where the player moves from)
+        for (int i=1; i<(diceRoll[0]+diceRoll[1] - 1); i++) { //Advance the player one at a time (up until 1 less than what the roll dictates) and check for GO
+            if (player.getLocation().data.getType().equals("GO")) { //If GO is passed, give the player $200
                 System.out.println("You passed GO! Collect $200.");
                 player.setMoney(player.getMoney() + 200);
             }
             player.setLocation(player.getLocation().next);
         }
-        player.setLocation(player.getLocation().next);
+        player.setLocation(player.getLocation().next); //Advance the player the final time (to allow for landing on GO to be a different message from passing GO)
 
-        printBoard();
+        printBoard(); //Print the board to show where the player has now moved to
 
+        //Landing on GO results in collecting $200
         if (player.getLocation().data.getType().equals("GO")) {
             System.out.println("You landed on GO! Collect $200");
             player.setMoney(player.getMoney() + 200);
         }
 
+        //Depending on the type of the BoardSpace landed on, different Land methods are called (other than GO which is handled in if statement above)
         else if (player.getLocation().data.getType().equals("Property")) {
             propertyLand(player);
         }
@@ -446,80 +535,79 @@ public class Game {
             freeParkingLand(player);
         }
 
+        //Landing on Jail sends the player instantly to jail and ends their turn
         else if (player.getLocation().data.getType().equals("To Jail")) {
             toJailLand(player);
             System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
             return;
         }
 
+        //Technically the last one could be just an else statement, but I prefer it to be more explicit with what is happening
         else {
-            System.out.print("FIX THIS ERROR THIS ISNT SUPPOSED TO BE POSSIBLE!");
+            System.out.print("FIX THIS ERROR THIS ISNT SUPPOSED TO BE POSSIBLE!"); //This should never be called because all the else ifs above should cover all BoardSpace types
         }
 
+        //If the roll was a double (but not the third double)
         if ((diceRoll[0] == diceRoll[1]) && (numOfDoubles < 2)) {
             System.out.print("Your roll was a double! You get to roll again!");
-            playerTurn(player, rollDice(), numOfDoubles+1, false);
+            playerTurn(player, rollDice(), numOfDoubles+1, false); //Start a new roll (but don't pass in a null diceRoll because it is the same turn) Also increment numOfDoubles by 1
         }
 
+        //Turn will end whenever the final roll is not a double (earlier turn ends from jail are covered above)
         if ((diceRoll[0] != diceRoll[1])) {
-            if (player.getProperties().size() > 0) {
+            //Before turn ends (if not from going to jail or being in jail), player can sell properties (including railroads and utilities) back to the bank at full price
+            if (player.getProperties().size() > 0) { //Make sure player has properties
                 System.out.print("Would you like to sell any of your properties (including railroads and utilities) to the bank? (Yes/No)");
                 if (yesNoInput()) {
-                    while (true) {
+                    while (true) { //Loop through and ask for name of property, then set the owner of that property to null, remove the property from the player's property list, and give the player the full price
                         System.out.print("What is the name of the property you would like to sell?");
                         BoardSpace property = inputProperty(player); //Including Railroads and Utilities
                         if (property.getType().equals("Property")) {
-                            ((Property) property).setOwner(null);
+                            ((Property) property).setOwner(null); //Cast the type of property to the right class to get access to owner
                             player.removeProperty(property);
-                            player.setMoney(player.getMoney() + (((Property) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
+                            player.setMoney(player.getMoney() + (((Property) property).getPrice()));
                         } else if (property.getType().equals("Railroad")) {
                             player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
-                            player.setMoney(player.getMoney() + (((Railroad) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
-                            ((Railroad) property).setOwner(null);
+                            player.setMoney(player.getMoney() + (((Railroad) property).getPrice()));
+                            ((Railroad) property).setOwner(null); //Cast the type of property to the right class to get access to owner
                             player.removeProperty(property);
                         } else {
-                            player.setMoney(player.getMoney() + (((Utility) property).getPrice())/*/2*/); //Ask mr bounds if divide by 2 cuz mortgage
-                            ((Utility) property).setOwner(null);
+                            player.setMoney(player.getMoney() + (((Utility) property).getPrice()));
+                            ((Utility) property).setOwner(null); //Cast the type of property to the right class to get access to owner
                             player.removeProperty(property);
                         }
-                        System.out.print("Would you like to stop selling properties? (Yes/No)");
-                        if (yesNoInput()) {
+                        System.out.print("You sold " + property.getRealName() + " to the Bank.");
+                        if (player.getProperties().size() > 0) { //Check to make sure that they have more properties to sell
+                            System.out.print("Would you like to stop selling properties? (Yes/No)"); //Keep looping and selling properties if the player wants to
+                            if (yesNoInput()) {
+                                break;
+                            }
+                        }
+                        else {
                             break;
                         }
                     }
                 }
             }
 
+            //Before turn ends (if not from going to jail or being in jail), player can offer trades to other players
             tradeWithOtherPlayers(player);
 
+            //Message that clearly shows this player's turn is over
             System.out.println("End of " + player.getName() + "'s Turn | Current Money: $" + player.getMoney() + "\n-------------------------------------------");
-        }
-    }
-    /* Jaya */
-    public boolean yesNoInput() { // gets a yes or no input from the user
-        String response = input.nextLine();
-        if (response.equalsIgnoreCase("yes")) {
-            return true;
-        }
-        else if (response.equalsIgnoreCase("no")) {
-            return false;
-        }
-        else {
-            System.out.println("Please input either \"yes\" or \"no\"."); // this is reached if the user input something other than "yes" or "no"
-            return yesNoInput(); // repeats this method until the user inputs either "yes" or "no"
         }
     }
 
     /*Andrew*/
     public void propertyLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell player where they landed
         Property property = (Property) player.getLocation().data;
-        if (property.getOwner() == player) {
+        if (property.getOwner() == player) { //Player does nothing if they own the property
             System.out.println("You already own this property. You do not need to pay rent.");
         }
-        else if (property.getOwner() == null) {
+        else if (property.getOwner() == null) { //Player can buy the property if it's available
             System.out.println("This property is available to purchase. It costs $" + property.getPrice());
-            if (player.getMoney() >= property.getPrice()) {
+            if (player.getMoney() >= property.getPrice()) { //Make sure player can afford the property
                 System.out.println("Would you like to buy this property? (Yes/No)");
                 if (yesNoInput()) {
                     property.setOwner(player);
@@ -532,36 +620,36 @@ public class Game {
                 System.out.println("You unfortunately cannot afford this property.");
             }
         }
-        else {
+        else { //Player has to pay rent if another player owns the property
             System.out.println("This property is owned by " + property.getOwner().getName() + ", and rent costs $" + property.getRent());
             player.setMoney(player.getMoney() - property.getRent());
             property.getOwner().setMoney(property.getOwner().getMoney() + property.getRent());
             System.out.println("You paid $" + property.getRent() + " to " + property.getOwner().getName());
         }
     }
-    /* Andrew */
+    /* Jaya */
     private void communityChestLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
-        Link<CommunityChest> nextCard = communityChestCards.find(topCommunityChestCard).next;
-        topCommunityChestCard.useCard(player, playerTurnOrder, spaces, this);
-        topCommunityChestCard = nextCard.data;
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell player where they landed
+        Link<CommunityChest> nextCard = communityChestCards.find(topCommunityChestCard).next; // finds the next card after the top card
+        topCommunityChestCard.useCard(player, playerTurnOrder, spaces, this); // uses the top card
+        topCommunityChestCard = nextCard.data; // sets the new top card as the previously found next card
     }
     /* Andrew */
     private void taxLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell player where they landed
         TaxSpace taxSpace = (TaxSpace) player.getLocation().data;
-        if (taxSpace.getDynamicTax() == -1) {
+        if (taxSpace.getDynamicTax() == -1) { //If this is luxury tax, player has to pay fixed tax
             System.out.println("You must pay $" + taxSpace.getFixedTax());
             player.setMoney(player.getMoney() - taxSpace.getFixedTax());
         }
-        else {
+        else { //If this is income tax, player can choose between fixed or dynamic tax (percentage of player's money)
             System.out.println("You must pay $" + taxSpace.getFixedTax() + " or " + ((int) (taxSpace.getDynamicTax()*100)) + "% (For you this is $" + ((int) (taxSpace.getDynamicTax()*player.getMoney())) + ")");
             System.out.println("Would you rather pay the fixed tax ($" + taxSpace.getFixedTax() + ")? (Yes/No)");
-            if (yesNoInput()) {
+            if (yesNoInput()) { //Choose whether to pay fixed tax
                 player.setMoney(player.getMoney() - taxSpace.getFixedTax());
                 System.out.println("You paid $" + taxSpace.getFixedTax() + " to the bank.");
             }
-            else {
+            else { //Pay dynamic tax otherwise
                 System.out.println("You paid $" + ((int) (taxSpace.getDynamicTax()*player.getMoney())) + " to the bank.");
                 player.setMoney(player.getMoney() - ((int) (taxSpace.getDynamicTax()*player.getMoney())));
             }
@@ -569,19 +657,19 @@ public class Game {
     }
     /* Andrew */
     public void railroadLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell player where they landed
         Railroad railroad = (Railroad) player.getLocation().data;
-        if (railroad.getOwner() == player) {
+        if (railroad.getOwner() == player) { //Player does nothing if they own the railroad
             System.out.println("You already own this railroad. You do not need to pay rent.");
         }
-        else if (railroad.getOwner() == null) {
+        else if (railroad.getOwner() == null) { //Player can buy the railroad if nobody owns it yet
             System.out.println("This railroad is available to purchase. It costs $" + railroad.getPrice());
-            if (player.getMoney() >= railroad.getPrice()) {
+            if (player.getMoney() >= railroad.getPrice()) { //Check that player can afford the railroad
                 System.out.println("Would you like to buy this railroad? (Yes/No)");
                 if (yesNoInput()) {
                     railroad.setOwner(player);
                     player.addProperty(railroad);
-                    player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
+                    player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1); //Player's numOfRailroads goes up by 1 (this influences the rent for all railroads owned by this player)
                     player.setMoney(player.getMoney() - railroad.getPrice());
                     System.out.println("You now own " + railroad.getRealName());
                 }
@@ -590,8 +678,8 @@ public class Game {
                 System.out.println("You unfortunately cannot afford this railroad.");
             }
         }
-        else {
-            int rent = (int) (12.5 * Math.pow(2, railroad.getOwner().getNumOfRailroadsOwned()));
+        else { //Otherwise, player has to pay rent to owner of this railroad
+            int rent = (int) (12.5 * Math.pow(2, railroad.getOwner().getNumOfRailroadsOwned())); //Rent for one railroad starts at $25 and doubles for every subsequent railroad owned by the same player (this can be modeled by the function: P = 12.5 * 2^n (where P is price and n is numOfRailroadsOwned)
             System.out.println("This railroad is owned by " + railroad.getOwner().getName() + ", and rent costs $" + rent);
             player.setMoney(player.getMoney() - rent);
             railroad.getOwner().setMoney(railroad.getOwner().getMoney() + rent);
@@ -600,26 +688,26 @@ public class Game {
     }
     /* Jaya */
     private void chanceLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //print the space they landed on
-        Link<Chance> nextCard = chanceCards.find(topChanceCard).next; // sets the topChanceCard to the next card in deck
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell the player where they landed
+        Link<Chance> nextCard = chanceCards.find(topChanceCard).next; // finds the next card after the top card
         topChanceCard.useCard(player, playerTurnOrder, spaces, this); // uses the top card
-        topChanceCard = nextCard.data; // the same thing as above
+        topChanceCard = nextCard.data; // sets the new top card as the previously found next card
     }
     /* Andrew */
-    private void jailVisitingLand(Player player) {
+    private void jailVisitingLand(Player player) { //Nothing happens if player naturally advances to jail, they are just visiting and can pass by immediately on their next turn
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         System.out.println("Don't worry, you are just visiting.");
     }
     /* Andrew */
     private void utilityLand(Player player, int[] diceRoll) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell player where they landed
         Utility utility = (Utility) player.getLocation().data;
-        if (utility.getOwner() == player) {
+        if (utility.getOwner() == player) { //Player does nothing if they own the utility
             System.out.println("You already own this utility. You do not need to pay rent.");
         }
-        else if (utility.getOwner() == null) {
+        else if (utility.getOwner() == null) { //Player can buy the utility if nobody owns it yet
             System.out.println("This utility is available to purchase. It costs $" + utility.getPrice());
-            if (player.getMoney() >= utility.getPrice()) {
+            if (player.getMoney() >= utility.getPrice()) { //Check that player can afford the utility
                 System.out.println("Would you like to buy this utility? (Yes/No)");
                 if (yesNoInput()) {
                     utility.setOwner(player);
@@ -633,13 +721,13 @@ public class Game {
                 System.out.println("You unfortunately cannot afford this utility.");
             }
         }
-        else {
+        else { //Otherwise, player has to pay rent to owner of this utility
             int rentFactor;
             if (utility.getOwner().getNumOfUtilitiesOwned() == 2) {
-                rentFactor = 10;
+                rentFactor = 10; //If both utilities are owned, rent is 10x the roll to land on utility
             }
             else {
-                rentFactor = 4;
+                rentFactor = 4; //If only one utility is owned, rent is 4x the roll to land on utility
             }
             System.out.println("This utility is owned by " + utility.getOwner().getName() + ", and rent costs " + rentFactor + " times your last roll (" + diceRoll[0] + " + " + diceRoll[1] + ").");
             player.setMoney(player.getMoney() - (rentFactor * (diceRoll[0] + diceRoll[1])));
@@ -648,55 +736,60 @@ public class Game {
         }
     }
     /* Andrew */
-    private void freeParkingLand(Player player) {
+    private void freeParkingLand(Player player) { //Nothing happens if player lands on free parking
         System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
         System.out.println("Nothing happens.");
     }
     /* Andrew */
     private void toJailLand(Player player) {
-        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")");
+        System.out.println("You landed on " + player.getLocation().data.getRealName() + " (" + player.getLocation().data.getSpaceName() + ")"); //Tell player where they landed
         System.out.println("You move to jail, directly to jail. Do not pass GO, do not collect $200");
-        while(!player.getLocation().data.getType().equals("Jail")) {
+        while(!player.getLocation().data.getType().equals("Jail")) { //Keep advancing player until they get to jail
             player.setLocation(player.getLocation().next);
         }
-        player.setTurnsLeftInJail(3);
+        player.setTurnsLeftInJail(3); //Player now has 3 turns in jail
     }
     /* Andrew */
     private void tradeWithOtherPlayers(Player player) {
-        //GET OUT OF JAIL FREE CARD TRADING
-
         System.out.print("Would you like to offer any trades to other player? (Yes/No)");
-        if (yesNoInput()) {
+        if (yesNoInput()) { //Can exit method immediately if they don't want to trade
             while(true) {
                 System.out.print("Who is the player you want to trade with?");
-                Player recipient = inputPlayer();
-                System.out.print("How much money are you offering?");
-                int moneyToRecipient = inputPlayerMoney(player); //Make sure they are not offering more money than they have (and make sure it is a positive number)
+                Player recipient = inputPlayer(); //Choose player to trade with
 
-                ArrayList<BoardSpace> propertiesToRecipient = new ArrayList<>();
-                if (player.getProperties().size() > 0) {
+                System.out.print("How much money are you offering?");
+                int moneyToRecipient = inputPlayerMoney(player); //Input a valid amount of money to offer
+
+                ArrayList<BoardSpace> propertiesToRecipient = new ArrayList<>(); //ArrayList will hold properties to be given to recipient
+                if (player.getProperties().size() > 0) { //Make sure player has properties to trade
                     System.out.print("Would you like to offer properties?");
                     if (yesNoInput()) {
                         while (true) {
                             System.out.print("What is the name of the property you would like to offer?");
-                            propertiesToRecipient.add(inputProperty(player)); //Including Railroads and Utilities
-                            System.out.print("Would you like to stop offering properties? (Yes/No)");
-                            if (yesNoInput()) {
-                                break;
+                            propertiesToRecipient.add(inputProperty(player)); //Choose which property to offer
+                            if ((player.getProperties().size() - propertiesToRecipient.size()) > 0) { //Make sure player still has other properties to offer
+                                System.out.print("Would you like to stop offering properties? (Yes/No)");
+                                if (yesNoInput()) {
+                                    break; //Exit property offering loop
+                                }
+                            }
+                            else {
+                                break; //Exit property offering loop
                             }
                         }
                     }
                 }
 
-                boolean chanceGetOutOfJailToRecipient = false;
-                if (player.isChanceGetOutOfJail()) {
+                boolean chanceGetOutOfJailToRecipient = false; //Boolean that will allow the get out of jail free card to change hands later in this method
+                if (player.isChanceGetOutOfJail()) { //Player can offer their chance get out of jail free card if they have it
                     System.out.print("Would you like to offer your Chance Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         chanceGetOutOfJailToRecipient = true;
                     }
                 }
-                boolean comChestGetOutOfJailToRecipient = false;
-                if (player.isComChestGetOutOfJail()) {
+
+                boolean comChestGetOutOfJailToRecipient = false; //Boolean that will allow the get out of jail free card to change hands later in this method
+                if (player.isComChestGetOutOfJail()) { //Player can offer their community chest get out of jail free card if they have it
                     System.out.print("Would you like to offer your Community Chest Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         comChestGetOutOfJailToRecipient = true;
@@ -705,30 +798,37 @@ public class Game {
 
                 System.out.print("How much money are you requesting?");
                 int moneyFromRecipient = inputPlayerMoney(recipient); //Make sure they are not offering more money than they have (and make sure it is a positive number)
-                ArrayList<BoardSpace> propertiesFromRecipient = new ArrayList<>();
-                if (recipient.getProperties().size() > 0) {
+
+                ArrayList<BoardSpace> propertiesFromRecipient = new ArrayList<>(); //ArrayList will hold properties to be given to player
+                if (recipient.getProperties().size() > 0) { //Make sure recipient has properties to trade
                     System.out.print("Would you like to request properties?");
                     if (yesNoInput()) {
                         while (true) {
                             System.out.print("What is the name of the property you would like to request?");
-                            propertiesFromRecipient.add(inputProperty(recipient)); //Including Railroads and Utilities
-                            System.out.print("Would you like to stop requesting properties? (Yes/No)");
-                            if (yesNoInput()) {
-                                break;
+                            propertiesFromRecipient.add(inputProperty(recipient)); //Choose which property to offer
+                            if ((recipient.getProperties().size() - propertiesFromRecipient.size()) > 0) { //Make sure player still has other properties to offer
+                                System.out.print("Would you like to stop requesting properties? (Yes/No)");
+                                if (yesNoInput()) {
+                                    break; //Exit property offering loop
+                                }
+                            }
+                            else {
+                                break; //Exit property offering loop
                             }
                         }
                     }
                 }
 
-                boolean chanceGetOutOfJailFromRecipient = false;
-                if (recipient.isChanceGetOutOfJail()) {
+                boolean chanceGetOutOfJailFromRecipient = false; //Boolean that will allow the get out of jail free card to change hands later in this method
+                if (recipient.isChanceGetOutOfJail()) { //Player can request their chance get out of jail free card if the recipient has it
                     System.out.print("Would you like to request their Chance Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         chanceGetOutOfJailFromRecipient = true;
                     }
                 }
-                boolean comChestGetOutOfJailFromRecipient = false;
-                if (recipient.isComChestGetOutOfJail()) {
+
+                boolean comChestGetOutOfJailFromRecipient = false; //Boolean that will allow the get out of jail free card to change hands later in this method
+                if (recipient.isComChestGetOutOfJail()) { //Player can request their community chest get out of jail free card if the recipient has it
                     System.out.print("Would you like to request their Community Chest Get out Of Jail Free Card? (Yes/No)");
                     if (yesNoInput()) {
                         comChestGetOutOfJailFromRecipient = true;
@@ -736,10 +836,13 @@ public class Game {
                 }
 
                 System.out.print("Does the player you are trading with agree to the deal you just inputted? (Yes/No)");
-                if (yesNoInput()) {
+                if (yesNoInput()) { //Both parties agree to the deal
+
+                    //Money changes hands according to terms of deal
                     player.setMoney(player.getMoney() + moneyFromRecipient - moneyToRecipient);
                     recipient.setMoney(recipient.getMoney() + moneyToRecipient - moneyFromRecipient);
 
+                    //Get out of jail free cards change hands according to terms of deal
                     if (chanceGetOutOfJailToRecipient) {
                         player.setChanceGetOutOfJail(false);
                         recipient.setChanceGetOutOfJail(true);
@@ -752,38 +855,44 @@ public class Game {
                         player.setComChestGetOutOfJail(false);
                         recipient.setComChestGetOutOfJail(true);
                     }
-                    if (comChestGetOutOfJailToRecipient) {
+                    if (comChestGetOutOfJailFromRecipient) {
                         player.setComChestGetOutOfJail(true);
                         recipient.setComChestGetOutOfJail(false);
                     }
 
+                    //Loop through all properties that are being given from recipient to player and change the ownership of the property
                     for (BoardSpace property : propertiesFromRecipient) {
                         if (property.getType().equals("Property")) {
                             ((Property) property).setOwner(player);
                         }
                         else if (property.getType().equals("Railroad")) {
-                            player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
-                            recipient.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
+                            player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1); //Change numOfRailroads for rent prices
+                            recipient.setNumOfRailroadsOwned(recipient.getNumOfRailroadsOwned() - 1); //Change numOfRailroads for rent prices
                             ((Railroad) property).setOwner(player);
 
                         }
                         else {
+                            player.setNumOfUtilitiesOwned(player.getNumOfUtilitiesOwned() + 1); //Change numOfUtilities for rent factors
+                            recipient.setNumOfUtilitiesOwned(recipient.getNumOfUtilitiesOwned() - 1); //Change numOfUtilities for rent factors
                             ((Utility) property).setOwner(player);
                         }
-                        player.addProperty(property);
-                        recipient.removeProperty(property);
+                        player.addProperty(property); //Change which player has access to which property
+                        recipient.removeProperty(property); //Change which player has access to which property
                     }
 
+                    //Same thing as above but from player to recipient
                     for (BoardSpace property : propertiesToRecipient) {
                         if (property.getType().equals("Property")) {
                             ((Property) property).setOwner(recipient);
                         }
                         else if (property.getType().equals("Railroad")) {
                             player.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() - 1);
-                            recipient.setNumOfRailroadsOwned(player.getNumOfRailroadsOwned() + 1);
+                            recipient.setNumOfRailroadsOwned(recipient.getNumOfRailroadsOwned() + 1);
                             ((Railroad) property).setOwner(recipient);
                         }
                         else {
+                            player.setNumOfUtilitiesOwned(player.getNumOfUtilitiesOwned() - 1);
+                            recipient.setNumOfUtilitiesOwned(recipient.getNumOfUtilitiesOwned() + 1);
                             ((Utility) property).setOwner(recipient);
                         }
                         player.removeProperty(property);
@@ -794,7 +903,7 @@ public class Game {
                 }
 
                 System.out.print("Would you like to offer another trade to any player? (Yes/No)");
-                if (!yesNoInput()) {
+                if (!yesNoInput()) { //Stop loop to offer more trades if yes
                     break;
                 }
             }
@@ -803,11 +912,11 @@ public class Game {
 
     /*Andrew*/
     private void checkIfBankrupt(Player player) {
-        if (player.getMoney() < 0) {
-            playerTurnOrder.delete(player);
+        if (player.getMoney() < 0) { //Player is bankrupt if they have negative money (debt)
+            playerTurnOrder.delete(player); //Player can no longer play in the game
             System.out.println("" + player.getName() + " went bankrupt. Sorry, you are out of the game.");
-            if (player.getProperties().size() > 0) {
-                for (BoardSpace property : player.getProperties()) {
+            if (player.getProperties().size() > 0) { //Make sure player has properties to remove
+                for (BoardSpace property : player.getProperties()) { //For each property get rid of its owner so that those properties can be purchased by the other players in the game
                     if (property.getType().equals("Property")) {
                         ((Property) property).setOwner(null);
                         player.removeProperty(property);
@@ -827,16 +936,16 @@ public class Game {
 
     /*Andrew*/
     private void checkGameOver() {
-        if (playerTurnOrder.getFirst() == playerTurnOrder.getFirst().next) {
+        if (playerTurnOrder.getFirst() == playerTurnOrder.getFirst().next) { //If there is only one player in the circularly linked list, then that is the only player left in the game, and they win
             System.out.print("" + playerTurnOrder.getFirst().data.getName() + " wins!");
-            isGameOver = true;
+            isGameOver = true; //This will stop the loop in Main
         }
     }
 
     /*Andrew*/
-    public int[] rollDice() {
-        int firstVal = (random.nextInt( 6) + 1);
-        int secondVal = (random.nextInt( 6) + 1);
+    public int[] rollDice() { //Returns two random ints between 1 and 6
+        int firstVal = (random.nextInt( 6) + 1); //add 1 to shift 0-5 to 1-6
+        int secondVal = (random.nextInt( 6) + 1); //add 1 to shift 0-5 to 1-6
 
         int[] values = new int[2];
         values[0] = firstVal;
@@ -846,10 +955,10 @@ public class Game {
     }
 
     /*Andrew*/
-    private void printBoard() {
+    private void printBoard() { //Prints the board as shown (uncolored) in pseudocode.txt
         System.out.println("--------------------------------------------------------------------------------");
 
-        //TopRow
+        //Top row (has 11 spaces)
         String topRowString = "| ";
         topRowString += colorSpaceString("Jail", "[JAIL]");
         topRowString += " ";
@@ -875,7 +984,7 @@ public class Game {
         topRowString += " |";
         System.out.println(topRowString);
 
-        //Middle Rows
+        //Middle Rows (each row has 2 spaces) (there are 9 middle rows)
         System.out.println("| " + colorSpaceString("Connecticut Avenue", "[ B3 ]") +
                 " -------------------------------------------------------------- " +
                 colorSpaceString("Kentucky Avenue", "[ E1 ]") + " |");
@@ -912,7 +1021,7 @@ public class Game {
                 " -------------------------------------------------------------- " +
                 colorSpaceString("Marvin Gardens", "[ F3 ]") + " |");
 
-        //TopRow
+        //Bottom Row (has 11 spaces)
         String bottomRowString = "| ";
         bottomRowString += colorSpaceString("GO", "[ GO ]");
         bottomRowString += " ";
@@ -942,9 +1051,10 @@ public class Game {
     }
 
     /*Andrew*/
-    private String colorSpaceString(String realName, String uncoloredOutput) {
+    private String colorSpaceString(String realName, String uncoloredOutput) { //Colors each space from printBoard method based on if players are on this space and (if it is a property) which players own this property
         String RESET = "\033[0m";
 
+        //Split the "[SPAC]" space string (uncoloredOutput) into its 6 characters
         String char0 = uncoloredOutput.substring(0, 1);
         String char1 = uncoloredOutput.substring(1, 2);
         String char2 = uncoloredOutput.substring(2, 3);
@@ -952,15 +1062,17 @@ public class Game {
         String char4 = uncoloredOutput.substring(4, 5);
         String char5 = uncoloredOutput.substring(5, 6);
 
-        String[] chars = new String[]{char0, char1, char2, char3, char4, char5};
+        String[] chars = new String[]{char0, char1, char2, char3, char4, char5}; //Make it into an array so looping works later
 
+        //Loop through all boardSpaces until the right link is found (check both ["SPAC"] and [S"PA"C] (some spaces have length 2 space names and some have 4)
         Link<BoardSpace> current2 = spaces.getFirst();
         while(!((current2.data.getSpaceName().equals(uncoloredOutput.substring(1, 5))) || (current2.data.getSpaceName().equals(uncoloredOutput.substring(2, 4))))) {
             current2 = current2.next;
         }
 
-        String ownerPrefix = "";
+        String ownerPrefix = ""; //In case nobody owns this property, ownerPrefix is empty to start with
 
+        //If the space is a property/railroad/utility and someone owns it, color it with the correct foregroundColor
         if (current2.data.getType().equals("Property")) {
             if (((Property) current2.data).getOwner() != null){
                 ownerPrefix = ((Property) current2.data).getOwner().getForegroundColorString();
@@ -977,12 +1089,14 @@ public class Game {
             }
         }
 
+        //For the first player (there will always be at least 1), color this space with that player's backgroundColor if they are on it
         Link<Player> current = playerTurnOrder.getFirst();
         if (current.data.getLocation().data.getRealName().equals(realName)) {
             chars[0] = ("" + current.data.getBackgroundColorString() + chars[0] + RESET);
         }
-        current = current.next;
+        current = current.next; //Player 1 not in loop for other players, so that loop can end when it reaches player 1 again
 
+        //Same thing as above but loop through for the rest of the players
         int i = 1;
         while(current != playerTurnOrder.getFirst()) {
             if (current.data.getLocation().data.getRealName().equals(realName)) {
@@ -991,7 +1105,8 @@ public class Game {
             current = current.next;
             i++;
         }
-        
+
+        //Add in the ownerColoration for all the characters in this space
         chars[0] = ownerPrefix + chars[0] + RESET;
         chars[1] = ownerPrefix + chars[1] + RESET;
         chars[2] = ownerPrefix + chars[2] + RESET;
@@ -999,7 +1114,7 @@ public class Game {
         chars[4] = ownerPrefix + chars[4] + RESET;
         chars[5] = ownerPrefix + chars[5] + RESET;
 
-        return (chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]);
+        return (chars[0] + chars[1] + chars[2] + chars[3] + chars[4] + chars[5]); //Return the fully colored string (all the individual character strings added together)
     }
 
     public boolean getIsGameOver() {
@@ -1013,63 +1128,5 @@ public class Game {
     public CircularLinkedList<Chance> getChanceCards() {
         return chanceCards;
     }
-    /* Andrew and Jaya */
-    private BoardSpace inputProperty(Player player) {
-        String name = input.nextLine();
-        Link<BoardSpace> current = spaces.getFirst();
-        int i = 0;
-        while(true) {
-            if (current.data.getRealName().equals(name) || current.data.getSpaceName().equals(name)) {
-                for (BoardSpace property : player.getProperties()) {
-                    if (property.getRealName().equals(name) || property.getSpaceName().equals(name) ) {
-                        return current.data;
-                    }
-                }
-            }
-            if (i > 40) {
-                break;
-            }
-            current = current.next;
-            i++;
-        }
-        System.out.println("Please input a valid property.");
-        return inputProperty(player);
-    }
-    /* Andrew and Jaya */
-    private Player inputPlayer() {
-        String name = input.nextLine();
-        Link<Player> current = playerTurnOrder.getFirst();
-        int i = 0;
-        while(true) {
-            if (current.data.getName().equals(name) && (!name.equals(currentPlayer.data.getName()))) {
-                return current.data;
-            }
-            if (i > 6) {
-                break;
-            }
-            current = current.next;
-            i++;
-        }
-        System.out.println("Please input a valid player name.");
-        return inputPlayer();
-    }
-    /* Jaya */
-    private int inputPlayerMoney(Player player) {
-        while (true) {
-            try {
-                String response = input.nextLine();
-                int num = Integer.parseInt(response);
-                if (num < 0) { // makes sure the number is positive
-                    System.out.println("Please input a number that is greater than or equal to 0.");
-                }
-                else if (num > player.getMoney()) { // makes sure that have at least as much money as they are offering
-                    System.out.println("Please input a number that is less than " + player.getName() + "'s current balance.");
-                } else {
-                    return num;
-                }
-            } catch (Exception e) {
-                System.out.println("Please input an integer.");
-            }
-        }
-    }
+
 }
