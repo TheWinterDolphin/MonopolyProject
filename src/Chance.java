@@ -90,11 +90,12 @@ public class Chance {
             else if (railroad.getOwner() == player) {
                 System.out.println("You already own this railroad. You do not need to pay rent.");
             }
-            else {
-                System.out.println("This railroad is owned by " + railroad.getOwner().getName() + ", and rent costs $" + railroad.getRent() + ", so you have to pay $" + railroad.getRent() * 2);
-                player.setMoney(player.getMoney() - railroad.getRent() * 2); // player pays railroad's rents * 2
-                railroad.getOwner().setMoney(railroad.getOwner().getMoney() + railroad.getRent()); // pay the owner
-
+            else { //Otherwise, player has to pay rent to owner of this railroad
+                int rent = (int) (12.5 * Math.pow(2, railroad.getOwner().getNumOfRailroadsOwned())); //Rent for one railroad starts at $25 and doubles for every subsequent railroad owned by the same player (this can be modeled by the function: P = 12.5 * 2^n (where P is price and n is numOfRailroadsOwned) but since from chance, you have to pay double, so its actually 25 * 2^n
+                System.out.println("This railroad is owned by " + railroad.getOwner().getName() + ", and rent costs $" + rent + ", so you have to pay $" + (rent*2));
+                player.setMoney(player.getMoney() - (rent*2));
+                railroad.getOwner().setMoney(railroad.getOwner().getMoney() + (rent*2));
+                System.out.println("You paid $" + (rent*2) + " to " + railroad.getOwner().getName());
             }
         }
         else if (type.equals("utility")) {
